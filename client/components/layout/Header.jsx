@@ -7,7 +7,7 @@ import clsx from "clsx";
 export const Header = ({ fluid }) => {
   return (
     <header>
-      <nav className="bg-[#080B16] w-full top-0 left-0 text-white max-sm:py-2 px-4 sm:pt-1 border-b border-gray-100/40">
+      <nav className="bg-[#292D33] w-full top-0 left-0 text-white max-sm:py-2 px-4 sm:pt-1 border-b border-gray-100/40">
         <div
           className={clsx(
             "flex items-center justify-between px-2",
