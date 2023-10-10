@@ -8,7 +8,3 @@ export interface Barber {
   role: string
   services: ObjectId[]
 }
-
-/* USER RESPONSE TYPE */
-
-export type BarberRequest = Barber

@@ -1,5 +1,4 @@
 import { Schema, model } from 'mongoose'
-import modelOptions from './modelOptions'
 import { type Client } from '../types/client.type'
 
 const ClientSchema = new Schema<Client>(
@@ -11,18 +10,21 @@ const ClientSchema = new Schema<Client>(
     },
     phone: {
       type: String,
-      required: [true, 'Teléfono es requerido']
+      required: [true, 'Teléfono es requerido'],
+      unique: true
     },
     email: {
       type: String,
-      required: [true, 'Correo electrónico es requerido']
+      required: [true, 'Correo electrónico es requerido'],
+      unique: true
     },
     role: {
       type: String,
-      required: true
+      default: 'client'
     }
   },
-  modelOptions
+
+  { timestamps: true }
 )
 
 const ClientModel = model('Client', ClientSchema)
