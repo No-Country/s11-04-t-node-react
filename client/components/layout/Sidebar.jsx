@@ -132,7 +132,7 @@ export const Sidebar = () => {
           </>
 
           {/* Barbero */}
-          <>
+          {/* <>
             <div className="p-4 flex flex-col items-center justify-center sm:py-4">
               <div className="flex justify-center items-center border-[4px] border-[#B5AF93] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
                 <Image
@@ -209,10 +209,10 @@ export const Sidebar = () => {
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
             </div>
-          </>
+          </> */}
 
-          <div className="mt-auto pb-20 sm:pb-4">
-            <div className="py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-white fill-current">
+          <div className="mt-auto max-sm:pb-20">
+            <div className="flex flex-col py-4 px-6 sm:px-12 transition-colors items-center justify-between sm:text-white fill-current">
               <Link
                 href="/"
                 onClick={() => setSidebarOpen(false)}
