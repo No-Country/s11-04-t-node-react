@@ -1,12 +1,12 @@
-import express from 'express'
+import express, { type Express } from 'express'
 import router from './routes'
 import cors from 'cors'
 import morgan from 'morgan'
 
-const app = express()
+const app: Express = express()
 
 /* MIDDLEWARES */
-app.use(cors())
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))

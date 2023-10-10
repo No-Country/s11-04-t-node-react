@@ -20,7 +20,8 @@ const BarberSchema = new Schema<Barber>(
     },
     role: {
       type: String,
-      default: 'barber'
+      default: 'barber',
+      enum: ['barber', 'admin']
     },
     services: [
       {

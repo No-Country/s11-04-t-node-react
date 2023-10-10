@@ -27,12 +27,15 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.3",
     "morgan": "^1.10.0",
-    "pnpm": "^8.9.0"
+    "pnpm": "^8.9.0",
+    "twilio": "^4.18.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.4",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
     "@types/express-validator": "^3.0.0",
+    "@types/jsonwebtoken": "^9.0.3",
     "@types/morgan": "^1.9.6",
     "@types/node": "^20.8.2",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
