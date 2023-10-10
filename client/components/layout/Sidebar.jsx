@@ -1,14 +1,13 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { FaRegEdit, FaRegCalendarAlt } from "react-icons/fa";
+import { FaRegEdit, FaRegCalendarAlt, FaRegIdBadge } from "react-icons/fa";
 import { AiOutlineSetting } from "react-icons/ai";
 import { HiOutlineUsers } from "react-icons/hi";
 import { BsArrowDownUp } from "react-icons/bs";
+import { FaPowerOff } from "react-icons/fa";
 import {
-  RiLogoutBoxLine,
   RiHome3Line,
-  RiCloseLine,
   RiMenu3Fill,
   RiUser3Line,
   RiNotification3Line,
@@ -26,14 +25,14 @@ export const Sidebar = () => {
 
   return (
     <>
-      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#080B16] text-[#F0B35B] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40">
+      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40">
         <Link href="/">
           <RiHome3Line />
         </Link>
-        <Link href="/notificacion">
+        <Link href="/panel/notificaciones">
           <RiNotification3Line />
         </Link>
-        <Link href="/perfil">
+        <Link href="/panel/mi-cuenta">
           <RiUser3Line />
         </Link>
 
@@ -49,11 +48,11 @@ export const Sidebar = () => {
           sidebarOpen ? "top-0" : "-top-full"
         )}
       >
-        <aside className="bg-[#080B16] flex flex-col min-h-screen overflow-auto">
+        <aside className="bg-[#292D33] flex flex-col min-h-screen overflow-auto">
           {/* Administrador */}
           <>
             <div className="p-4 flex flex-col items-center justify-center sm:py-4">
-              <div className="flex justify-center items-center border-[4px] border-[#F0B35B] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
+              <div className="flex justify-center items-center border-[4px] border-[#B5AF93] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
                 <Image
                   src="/images/barbero-admin.png"
                   alt="logo-admin"
@@ -67,104 +66,162 @@ export const Sidebar = () => {
               </h3>
             </div>
 
-            <ul className="pl-4">
-              <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors flex items-center justify-between">
+            <div className="sm:border-y-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
                 <Link
                   href="/panel/admin/barberos"
                   onClick={() => setSidebarOpen(false)}
-                  className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
                 >
-                  <FaRegEdit />
-                  <p>Barberos</p>
+                  <div className="flex items-center gap-3">
+                    <FaRegIdBadge />
+                    <p>Barberos</p>
+                  </div>
+                  <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
                 </Link>
-                <RiArrowUpSLine className="text-[#F0B35B] text-4xl sm:hidden" />
               </div>
-            </ul>
+            </div>
 
-            <ul className="pl-4">
-              <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors flex items-center justify-between">
+            <div className="sm:border-b-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
+                <Link
+                  href="/panel/admin/agenda"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                >
+                  <div className="flex items-center gap-3">
+                    <FaRegEdit />
+                    <p>Agenda</p>
+                  </div>
+                </Link>
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
+            </div>
+
+            <div className="sm:border-b-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
+                <Link
+                  href="/panel/admin/cronograma"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                >
+                  <div className="flex items-center gap-3">
+                    <FaRegCalendarAlt />
+                    <p>Cronograma</p>
+                  </div>
+                </Link>
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
+            </div>
+
+            <div className="sm:border-b-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
                 <Link
                   href="/panel/admin/servicios"
                   onClick={() => setSidebarOpen(false)}
-                  className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
                 >
-                  <AiOutlineSetting />
-                  <p>Servicios</p>
+                  <div className="flex items-center gap-3">
+                    <AiOutlineSetting />
+                    <p>Servicios</p>
+                  </div>
                 </Link>
-                <RiArrowUpSLine className="text-[#F0B35B] text-4xl sm:hidden" />
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
-            </ul>
+            </div>
           </>
 
           {/* Barbero */}
           <>
             <div className="p-4 flex flex-col items-center justify-center sm:py-4">
-              <div className="flex justify-center items-center border-[4px] border-[#F0B35B] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
+              <div className="flex justify-center items-center border-[4px] border-[#B5AF93] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
                 <Image
                   src="/images/barbero.png"
                   alt="logo-admin"
                   width={80}
                   height={80}
+                  priority
                 />
               </div>
               <h3 className="font-bold text-lg text-white pb-2">Barbero</h3>
             </div>
-            <ul className="pl-4">
-              <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors flex items-center justify-between">
-                <Link
-                  href="/panel/barbero/agenda"
-                  onClick={() => setSidebarOpen(false)}
-                  className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
-                >
-                  <FaRegEdit />
-                  <p>Agenda</p>
-                </Link>
-                <RiArrowUpSLine className="text-[#F0B35B] text-4xl sm:hidden" />
-              </div>
-              <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors flex items-center justify-between">
-                <Link
-                  href="/panel/barbero/cronograma"
-                  onClick={() => setSidebarOpen(false)}
-                  className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
-                >
-                  <FaRegCalendarAlt />
-                  <p>Cronograma</p>
-                </Link>
-                <RiArrowUpSLine className="text-[#F0B35B] text-4xl sm:hidden" />
-              </div>
-              <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors flex items-center justify-between">
+
+            <div className="sm:border-y-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
                 <Link
                   href="/panel/barbero/clientes"
                   onClick={() => setSidebarOpen(false)}
-                  className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
                 >
-                  <HiOutlineUsers />
-                  <p>Clientes</p>
+                  <div className="flex items-center gap-3">
+                    <HiOutlineUsers />
+                    <p>Clientes</p>
+                  </div>
                 </Link>
-                <RiArrowUpSLine className="text-[#F0B35B] text-4xl sm:hidden" />
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
-              <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors flex items-center justify-between">
+            </div>
+
+            <div className="sm:border-b-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
+                <Link
+                  href="/panel/barbero/agenda"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                >
+                  <div className="flex items-center gap-3">
+                    <FaRegEdit />
+                    <p>Agenda</p>
+                  </div>
+                </Link>
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
+            </div>
+
+            <div className="sm:border-b-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
+                <Link
+                  href="/panel/barbero/cronograma"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                >
+                  <div className="flex items-center gap-3">
+                    <FaRegCalendarAlt />
+                    <p>Cronograma</p>
+                  </div>
+                </Link>
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
+            </div>
+
+            <div className="sm:border-b-2 sm:border-black">
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
                 <Link
                   href="/panel/barbero/servicios"
                   onClick={() => setSidebarOpen(false)}
-                  className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
+                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
                 >
-                  <AiOutlineSetting />
-                  <p>Servicios</p>
+                  <div className="flex items-center gap-3">
+                    <AiOutlineSetting />
+                    <p>Servicios</p>
+                  </div>
                 </Link>
-                <RiArrowUpSLine className="text-[#F0B35B] text-4xl sm:hidden" />
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
-            </ul>
+            </div>
           </>
 
-          <div className="pl-4 mt-auto py-20 sm:py-4">
-            <div className="sm:hover:bg-[#D9D9D9] p-2 px-4 rounded-tl-xl rounded-bl-xl sm:group transition-colors">
+          <div className="mt-auto pb-20 sm:pb-4">
+            <div className="py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-white fill-current">
               <Link
                 href="/"
-                className="sm:group-hover:bg-[#F0B35B] p-2 px-4 flex items-center gap-5 justify-start rounded-xl text-[#F0B35B] group-hover:text-white transition-colors fill-current text-xl w-full"
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center gap-5 justify-between sm:justify-center text-xl sm:text-2xl w-full max-sm:text-[#B5AF93]"
               >
-                <RiLogoutBoxLine />
-                <p>Salir</p>
+                <div className="flex sm:flex-col items-center gap-3">
+                  <FaPowerOff className="text-[#C13636DB] sm:text-5xl" />
+                  <p>Salir</p>
+                </div>
               </Link>
             </div>
           </div>

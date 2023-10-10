@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { RiMenuLine } from "react-icons/ri";
-// import { SideMenu } from "../shared/SideMenu";
 import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import { TbUser, TbUserEdit } from "react-icons/tb";
@@ -9,7 +8,7 @@ import Image from "next/image";
 
 export const UserMenu = () => {
   return (
-    <Menu as="div" className="relative hidden sm:flex">
+    <Menu as="div" className="relative">
       <Menu.Button>
         <RiMenuLine className="text-4xl max-sm:pt-1" />
       </Menu.Button>
@@ -24,7 +23,7 @@ export const UserMenu = () => {
         className="absolute z-10 top-full right-0"
       >
         <Menu.Items>
-          <div className="flex flex-col justify-start mt-2 sm:mt-0.5 gap-3 p-4 w-52 sm:w-[210px] bg-white border border-gray-100/40 shadow-md text-[#080B16] rounded">
+          <div className="flex flex-col justify-start mt-2 sm:mt-0.5 gap-3 p-4 w-52 sm:w-[210px] bg-white border border-gray-100/40 shadow-md text-[#292D33] rounded">
             <div className="flex items-center flex-col">
               <h3 className="font-roboto text-center px-2 font-bold">
                 Bienvenidos a
@@ -44,7 +43,7 @@ export const UserMenu = () => {
             <Menu.Item>
               <Link
                 href="/acceso"
-                className="flex items-center gap-2 hover:text-[#F0B35B] transition"
+                className="flex items-center gap-2 hover:text-[#B5AF93] transition"
               >
                 <TbUser className="text-2xl" />
                 <p>Inicia sesión</p>
@@ -54,7 +53,7 @@ export const UserMenu = () => {
             <Menu.Item>
               <Link
                 href="/registro"
-                className="flex items-center gap-2 hover:text-[#F0B35B]"
+                className="flex items-center gap-2 hover:text-[#B5AF93]"
               >
                 <TbUserEdit className="text-2xl" />
                 <p>Regístrate</p>

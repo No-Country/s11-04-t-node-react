@@ -22,8 +22,8 @@ export const Banner = () => {
           Horario de funcionamento: 09:00 a 18:00
         </p>
         <Link
-          href="/registro"
-          className="py-2 px-12 bg-[#F0B35B] hover:bg-transparent border hover:border hover:border-[#F0B35B] hover:text-white rounded-md text-black transition-colors"
+          href="/acceso"
+          className="py-2 px-12 bg-[#000000] hover:bg-transparent border hover:border hover:border-[#000000] hover:text-white rounded-md text-black transition-colors"
         >
           Agendar horário
         </Link>
