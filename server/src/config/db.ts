@@ -21,3 +21,5 @@ export async function connectToDb(): Promise<void> {
 connectToDb().catch((err) => {
   console.log(err)
 })
+
+void connectToDb()
