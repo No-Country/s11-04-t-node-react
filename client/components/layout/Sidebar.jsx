@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { FaRegEdit, FaRegCalendarAlt, FaRegIdBadge } from "react-icons/fa";
 import { AiOutlineSetting } from "react-icons/ai";
-import { HiOutlineUsers } from "react-icons/hi";
 import { BsArrowDownUp } from "react-icons/bs";
 import { FaPowerOff } from "react-icons/fa";
 import {
@@ -132,7 +131,7 @@ export const Sidebar = () => {
           </>
 
           {/* Barbero */}
-          <>
+          {/* <>
             <div className="p-4 flex flex-col items-center justify-center sm:py-4">
               <div className="flex justify-center items-center border-[4px] border-[#B5AF93] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
                 <Image
@@ -209,7 +208,7 @@ export const Sidebar = () => {
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
             </div>
-          </>
+          </> */}
 
           <div className="mt-auto pb-20 sm:pb-4">
             <div className="py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-white fill-current">
