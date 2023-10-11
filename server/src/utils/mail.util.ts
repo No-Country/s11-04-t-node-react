@@ -20,7 +20,7 @@ export const sendEmail = async (receiverMail: string, otpcode: string) => {
 
   try {
     const res = await sender.sendMail(mail)
-    console.log(res)
+    console.log(res.response)
   } catch (error) {
     console.log(error)
   }

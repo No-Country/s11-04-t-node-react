@@ -10,3 +10,4 @@ export const SECRET_KEY_APP_USE_JWT = process.env
   .SECRET_KEY_APP_USE_JWT as string
 export const LOCAL_DB_URL = process.env.LOCAL_DB_URL as string
 export const DEPLOYMENT_DB_URL = process.env.DEPLOYMENT_DB_URL as string
+export const FRONTEND_DEV_DB = process.env.FRONTEND_DEV_DB as string

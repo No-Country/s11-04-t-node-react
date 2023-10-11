@@ -1,11 +1,22 @@
 import mongoose from 'mongoose'
-import { DEPLOYMENT_DB_URL, LOCAL_DB_URL } from '../config'
+import { DEPLOYMENT_DB_URL, FRONTEND_DEV_DB, LOCAL_DB_URL } from '../config'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 mongoose.set('strictQuery', false)
 
-const dbUrl =
-  process.env.NODE_ENV === 'production' ? DEPLOYMENT_DB_URL : LOCAL_DB_URL
+let dbUrl: string
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    dbUrl = DEPLOYMENT_DB_URL
+    break
+  case 'development':
+    dbUrl = LOCAL_DB_URL
+    break
+  case 'frontend':
+    dbUrl = FRONTEND_DEV_DB
+    break
+}
 
 export async function connectToDb(): Promise<void> {
   try {
