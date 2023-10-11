@@ -1,11 +1,11 @@
 import mongoose from 'mongoose'
+import { DEPLOYMENT_DB_URL, LOCAL_DB_URL } from '../config'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 mongoose.set('strictQuery', false)
 
-const LOCAL_DB = process.env.LOCAL_DB_URL
-const DEPLOYMENT_DB = process.env.DEPLOYMENT_DB_URL
-const dbUrl = process.env.NODE_ENV === 'production' ? DEPLOYMENT_DB : LOCAL_DB
+const dbUrl =
+  process.env.NODE_ENV === 'production' ? DEPLOYMENT_DB_URL : LOCAL_DB_URL
 
 export async function connectToDb(): Promise<void> {
   try {

@@ -12,7 +12,7 @@ import { sendEmail } from '../utils/mail.util'
 export const loginService = async (email: string): Promise<ILoginUser> => {
   try {
     // Revisar que el correo tenga formato de email
-    if (validator.isEmail(email) === false) {
+    if (!validator.isEmail(email)) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -32,7 +32,7 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
 
     const OTP = generateOTP()
     const hashOTP = generateHashOTP(OTP)
-    const tokenOTP = await jwtOTPHash(hashOTP)
+    const tokenOTP = await jwtOTPHash(hashOTP, barber._id)
 
     // enviar el OTP al usuario que quiere hacer login
     await sendEmail(barber.email, OTP)
@@ -41,12 +41,9 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
       success: true,
       msg: SUCCESS_MSGS.OTP_SENT,
       statusCode: HttpStatusCode.OK,
-      token: tokenOTP,
-      barberId: barber?._id
+      token: tokenOTP
     }
   } catch (err) {
-    console.log(err)
-
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

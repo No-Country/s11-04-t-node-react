@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import { login, verifyEmail } from '../controllers/barber.controller'
-import { extractToken } from '../middlewares/extractToken.middleware'
+import { tokenOTP } from '../middlewares/tokenOTP.middleware'
 
 const loginRouter = Router()
 
 loginRouter.post('/login', login)
-loginRouter.post('/verify-email', extractToken, verifyEmail)
+loginRouter.post('/verify-email', tokenOTP, verifyEmail)
 
 export { loginRouter }

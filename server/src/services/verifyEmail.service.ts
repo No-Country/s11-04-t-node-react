@@ -1,5 +1,6 @@
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import { isValidObjectId } from 'mongoose'
+import { SECRET_KEY_OTP_JWT } from '../config'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
@@ -12,14 +13,18 @@ import type {
 import { compareOTPWithItsHash } from '../utils/hashOTP.util'
 import { jwtForApp } from '../utils/jwtForApp.util'
 
-const SECRET_KEY = process.env.SECRET_KEY_OTP_JWT as string
-
 export const verifyEmailService = async (
   userData: VerifyOTPProps,
   tokenOTP: string
 ): Promise<IVerifyOTP> => {
   try {
-    const { barberId, otp } = userData
+    const { otp } = userData
+
+    // Validamos el otp que nos envía el usuario usando el token que tiene el OTP hash
+    const { otpHash, barberId } = jwt.verify(
+      tokenOTP,
+      SECRET_KEY_OTP_JWT
+    ) as JwtPayload & JwtOtpVerificationResponse
 
     if (barberId === '' || otp.trim().length === 0) {
       return {
@@ -39,10 +44,13 @@ export const verifyEmailService = async (
 
     // Buscamos al usuario en la base de datos
     const barber = await BarberModel.findById(barberId)
-
-    // Validamos el otp que nos envía el usuario usando el token que tiene el OTP hash
-    const { otpHash } = jwt.verify(tokenOTP, SECRET_KEY) as JwtPayload &
-      JwtOtpVerificationResponse
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.VERIFY_OTP_USER_NOT_FOUND
+      }
+    }
 
     const isMatched = compareOTPWithItsHash(otp, otpHash)
     if (!isMatched) {
