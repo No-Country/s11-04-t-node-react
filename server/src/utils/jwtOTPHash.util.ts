@@ -1,9 +1,11 @@
 import jwt from 'jsonwebtoken'
 import { ERROR_MSGS } from '../constants/errorMsgs'
+
 export const jwtOTPHash = async (otpHash: string): Promise<string> => {
   return await new Promise((resolve, reject) => {
     const payload = { otpHash }
     const secretKey = process.env.SECRET_KEY_OTP_JWT
+    console.log('secretKey', secretKey)
     const expiresIn = '10m' // 10 minutos
     if (typeof secretKey === 'string') {
       jwt.sign(payload, secretKey, { expiresIn }, (error, token) => {

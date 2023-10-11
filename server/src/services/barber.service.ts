@@ -1,10 +1,10 @@
-import BarberModel from '../models/barber.model'
-import { HttpStatusCode } from '../constants/http'
 import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HttpStatusCode } from '../constants/http'
+import BarberModel from '../models/barber.model'
 import { generateOTP } from '../utils/generateOTP.util'
 import { generateHashOTP } from '../utils/hashOTP.util'
-import { sendSms } from '../utils/twilio.util'
 import { jwtOTPHash } from '../utils/jwtOTPHash.util'
+import { sendSms } from '../utils/twilio.util'
 
 interface ILoginUser {
   success: boolean
@@ -16,7 +16,6 @@ interface ILoginUser {
 export const loginService = async (phone: string): Promise<ILoginUser> => {
   try {
     const user = await BarberModel.findOne({ phone })
-
     if (!user) {
       return {
         success: false,

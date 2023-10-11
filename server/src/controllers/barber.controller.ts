@@ -1,5 +1,5 @@
-import { loginService } from '../services/barber.service'
 import { type Request, type Response } from 'express'
+import { loginService } from '../services/barber.service'
 
 export const login = async (req: Request, res: Response): Promise<void> => {
   const { phone } = req.body

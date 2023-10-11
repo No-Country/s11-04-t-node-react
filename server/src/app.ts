@@ -1,7 +1,8 @@
-import express, { type Express } from 'express'
-import router from './routes'
 import cors from 'cors'
+import 'dotenv/config'
+import express, { type Express } from 'express'
 import morgan from 'morgan'
+import { loginRouter } from './routes/barber.route'
 
 const app: Express = express()
 
@@ -11,7 +12,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
-//   ROUTES
-app.use(router)
+// ROUTES
+app.use('/api/v1', loginRouter)
 
 export default app
