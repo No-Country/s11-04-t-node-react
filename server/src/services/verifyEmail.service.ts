@@ -6,7 +6,7 @@ import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import BarberModel from '../models/barber.model'
 import type {
-  IVerifyOTP,
+  IVerifyAuth,
   JwtOtpVerificationResponse,
   VerifyOTPProps
 } from '../types/barber.type'
@@ -16,7 +16,7 @@ import { jwtForApp } from '../utils/jwtForApp.util'
 export const verifyEmailService = async (
   userData: VerifyOTPProps,
   tokenOTP: string
-): Promise<IVerifyOTP> => {
+): Promise<IVerifyAuth> => {
   try {
     const { otp } = userData
 
