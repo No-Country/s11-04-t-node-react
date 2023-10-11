@@ -6,9 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/js/server.js",
-    "prod": "NODE_ENV=production concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
-    "dev": "NODE_ENV=development concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
-    "frontend": "NODE_ENV=frontend concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
+    "prod": "set NODE_ENV=production && concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
+    "dev": "set NODE_ENV=development && concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
+    "frontend": "set NODE_ENV=frontend && concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "eslint --ext js",
