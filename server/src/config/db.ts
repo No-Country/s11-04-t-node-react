@@ -21,9 +21,13 @@ switch (process.env.NODE_ENV) {
 export async function connectToDb(): Promise<void> {
   try {
     if (dbUrl !== undefined) {
-      await mongoose.connect(dbUrl)
+      const db = await mongoose.connect(dbUrl)
+
+      console.log(SUCCESS_MSGS.DB_CONNECTED)
+      console.log(`Connected to collection: ${db.connection.name}`)
+    } else {
+      console.log('El string de conexion esta vacio.')
     }
-    console.log(SUCCESS_MSGS.DB_CONNECTED)
   } catch (error) {
     console.log(ERROR_MSGS.DB_CONNECTION_ERROR, error)
   }

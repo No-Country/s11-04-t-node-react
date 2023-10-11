@@ -27,7 +27,7 @@ export interface VerifyOTPProps {
   otp: string
 }
 
-export interface IVerifyOTP {
+export interface IVerifyAuth {
   success: boolean
   msg: string
   statusCode: number
