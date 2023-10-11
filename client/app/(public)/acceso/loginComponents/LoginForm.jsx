@@ -57,7 +57,7 @@ const LoginForm = () => {
             value={loginData.email}
             event={hanldeChangeInput}
             name={"email"}
-            style={"flex-grow w-full rounded-lg"}
+            style={"flex-grow w-full rounded-lg h-[44px]"}
             label={"Email"}
             placeholder={"Ingresa tu correo"}
           />

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { backend, getAuthorization } from "@/utils/backend";
 import AWN from "awesome-notifications";
 import { useDispatch } from "react-redux";
-import { login } from "@/redux/slices/user-slice";
+import { login } from "@/redux/slices/userSlice";
 
 const ErrorMesaje = ({ codeCounter, setCodeCounter, setIsPopupOpen }) => {
   const [segundos, setSegundos] = useState(60);
@@ -53,30 +53,42 @@ const ErrorMesaje = ({ codeCounter, setCodeCounter, setIsPopupOpen }) => {
 };
 
 const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
-  const [code, setcode] = useState("");
+  const [code, setcode] = useState(["", "", "", ""]);
   const [codeCounter, setCodeCounter] = useState(3);
   const notifier = new AWN();
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const changeCodeValue = (e) => setcode(e.target.value);
+  const changeCodeValue = (e, index) => {
+    let value = eval(e.target.value);
+    const validatorNumber = /^[0-9]$/;
+    if (!validatorNumber.test(value)) value = "";
+    const newCode = [...code];
+    newCode.splice(index, 1, value);
+    setcode(newCode);
+  };
 
   const hanldeAuthorizedUser = () => {
+    const data = {
+      code: code.join(""),
+    };
+    console.log(data);
     notifier.asyncBlock(
       backend.get(`charizard/`, { headers: getAuthorization(OTPCode) }),
       (res) => {
-        if (true === true) {
+        if (false === true) {
           router.push("/panel");
           return dispatch(
             login({
-              fullName: 'fulname user',
-              userId : 1,
-              token: 'eltokenxD',
+              fullName: "fulname user",
+              userId: 1,
+              token: "eltokenxD",
             })
           );
         }
         notifier.alert("codigo errado, intentalo otra vez");
         setCodeCounter((prev) => prev - 1);
+        setcode(["", "", "", ""]);
       },
       (err) => console.log(err)
     );
@@ -107,13 +119,20 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
             intentos restantes:{" "}
             <span className="text-red-600 font-semibold">{codeCounter}</span>
           </div>
-          <Input
-            type="number"
-            placeholder={"x-x-x-x"}
-            style={"text-3xl text-black py-6 shadow-2xl shadow-black/70"}
-            value={code}
-            event={changeCodeValue}
-          />
+          <div className="grid grid-cols-4 w-full gap-2">
+            {[0, 1, 2, 3].map((index) => (
+              <Input
+                key={index}
+                type="number"
+                placeholder={"x"}
+                style={
+                  "text-3xl w-full text-black py-6 shadow-2xl shadow-black/70"
+                }
+                value={code[index]}
+                event={(e) => changeCodeValue(e, index)}
+              />
+            ))}
+          </div>
           <button
             onClick={hanldeAuthorizedUser}
             className="bg-black px-3 text-white w-60 mx-auto mt-2 tracking-widest text-lg

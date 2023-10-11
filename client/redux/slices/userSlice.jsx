@@ -1,3 +1,4 @@
+"use client";
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -18,7 +19,7 @@ export const user = createSlice({
       return initialState;
     },
     login: (state, action) => {
-        console.log(action.payload)
+      console.log(action.payload);
       const { fullName, id, token } = action.payload;
       const newStateValue = {
         ...state.value,

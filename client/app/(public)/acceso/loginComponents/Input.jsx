@@ -1,9 +1,9 @@
 const Input = ({ type, name, event, onBlur, value, label, style, placeholder }) => {
   const className =
-    "outline-none h-10 pl-1 border-b-2 border-gray-200 rounded-xl " + style;
+    "outline-none pl-1 border-b-2 border-gray-200 rounded-xl " + style;
   return (
     <div className="grid w-full">
-      <label htmlFor={name} className="capitalize tracking-widest py-1 text-white font-medium text-2xl">{label}</label>
+      <label htmlFor={name} className="capitalize text-2xl tracking-widest py-1 text-white font-medium">{label}</label>
       <input
         required
         className={className}
