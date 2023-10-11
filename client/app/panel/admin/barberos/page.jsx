@@ -1,8 +1,15 @@
 import iconInfo from '@/public/images/icon-info.svg'
 import iconDel from '@/public/images/icon-delete.png'
 import Image from 'next/image'
+import { getBarbers } from './services/barbers.service'
 
-export default function Barbers() {
+export default async function Barbers() {
+	// Traer servicios del store
+	// Traer usuario del store y extraer token
+	// const barbers = await getBarbers(token)
+
+	// Actualizar el store con la respuesta
+
 	const services = ['Corte', 'Barba', 'Tintura', 'Peinado', 'Alisado']
 
 	const barbers = [
