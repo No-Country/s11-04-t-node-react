@@ -1,6 +1,6 @@
 import app from './app'
-import './config/db'
 import { PORT } from './config'
+import './config/db'
 
 const server = app.listen(PORT, () => {
   console.log(`Server running on PORT: ${PORT}...`)
