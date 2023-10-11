@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
-import { RiMenuLine } from "react-icons/ri";
-import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
-import { TbUser, TbUserEdit } from "react-icons/tb";
 import Image from "next/image";
+import { RiMenuLine } from "react-icons/ri";
+import { TbUser, TbUserEdit } from "react-icons/tb";
+import { Menu, Transition } from "@headlessui/react";
 
 export const UserMenu = () => {
   return (
