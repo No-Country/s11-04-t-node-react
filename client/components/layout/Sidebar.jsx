@@ -210,8 +210,8 @@ export const Sidebar = () => {
             </div>
           </> */}
 
-          <div className="mt-auto pb-20 sm:pb-4">
-            <div className="py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-white fill-current">
+          <div className="mt-auto max-sm:pb-20">
+            <div className="flex flex-col py-4 px-6 sm:px-12 transition-colors items-center justify-between sm:text-white fill-current">
               <Link
                 href="/"
                 onClick={() => setSidebarOpen(false)}
