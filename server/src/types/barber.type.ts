@@ -8,3 +8,10 @@ export interface Barber {
   role: string
   services: ObjectId[]
 }
+
+export interface ILoginUser {
+  success: boolean
+  msg: string
+  statusCode: number
+  token?: string
+}

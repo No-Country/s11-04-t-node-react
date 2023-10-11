@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer'
 import { EMAIL_ADDRESS, EMAIL_PASSWORD } from '../config'
+import { generateSendOTPTemplate } from './sendOTPEmailTemplate'
 
 export const sendEmail = async (receiverMail: string, otpcode: string) => {
   const sender = nodemailer.createTransport({
@@ -14,7 +15,7 @@ export const sendEmail = async (receiverMail: string, otpcode: string) => {
     from: EMAIL_ADDRESS,
     to: receiverMail,
     subject: 'Usar este codigo para iniciar sesion en BarberBuddy',
-    text: `Le enviamos el codigo de inicio de sesion en BurberBuddy: "${otpcode}"`
+    html: generateSendOTPTemplate(otpcode)
   }
 
   try {
