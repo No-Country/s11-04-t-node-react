@@ -1,5 +1,4 @@
 import cors from 'cors'
-import 'dotenv/config'
 import express, { type Express } from 'express'
 import morgan from 'morgan'
 import { loginRouter } from './routes/barber.route'

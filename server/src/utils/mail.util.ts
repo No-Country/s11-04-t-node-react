@@ -1,20 +1,19 @@
 import nodemailer from 'nodemailer'
-
-import { EMAIL_ADRESS, EMAIL_PASSWORD } from '../config'
+import { EMAIL_ADDRESS, EMAIL_PASSWORD } from '../config'
 
 export const sendEmail = async (receiverMail: string, otpcode: string) => {
   const sender = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: EMAIL_ADRESS,
+      user: EMAIL_ADDRESS,
       pass: EMAIL_PASSWORD
     }
   })
 
   const mail = {
-    from: 'conivetmailsender@gmail.com',
+    from: EMAIL_ADDRESS,
     to: receiverMail,
-    subject: 'No contestar, codigo QR de su mascota',
+    subject: 'Usar este codigo para iniciar sesion en BarberBuddy',
     text: `Le enviamos el codigo de inicio de sesion en BurberBuddy: "${otpcode}"`
   }
 
