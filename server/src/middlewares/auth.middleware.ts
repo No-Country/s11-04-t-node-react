@@ -3,12 +3,11 @@ import { HttpStatusCode } from '../constants/http'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { SECRET_KEY_APP_USE_JWT } from '../config'
 import BarberModel from '../models/barber.model'
-import { SUCCESS_MSGS } from '../constants/successMsgs'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import { type JwtOtpVerificationResponse } from '../types/barber.type'
-import type { Request, Response } from 'express'
+import type { NextFunction, Request, Response } from 'express'
 
-export const auth = async (req: Request, res: Response) => {
+export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const token = req.token
 
@@ -40,12 +39,10 @@ export const auth = async (req: Request, res: Response) => {
       })
     }
 
-    res.status(HttpStatusCode.OK).json({
-      success: true,
-      msg: SUCCESS_MSGS.VERIFY_OTP_SUCCESS,
-      fullName: barber?.fullName,
-      role: barber?.role
-    })
+    if (barber?.role) req.role = barber?.role
+
+    next()
+
   } catch (error) {
     console.log(error)
 

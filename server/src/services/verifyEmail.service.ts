@@ -80,6 +80,9 @@ export const verifyEmailService = async (
         msg: ERROR_MSGS.VERIFY_OTP_TOKEN_EXPIRED
       }
     }
+
+    console.log(err)
+
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

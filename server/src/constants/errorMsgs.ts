@@ -13,5 +13,6 @@ export enum ERROR_MSGS {
   VERIFY_OTP_ERROR = 'Error al intentar verificar el código OTP',
   VERIFY_OTP_TOKEN_EXPIRED = 'El token para verificar el OTP ha expirado. Solicite uno nuevo OTP.',
   VERIFY_OTP_USER_NOT_FOUND = 'El usuario no se ha encontrado',
-  SERVER_ERROR = 'SERVER_ERROR'
+  SERVER_ERROR = 'SERVER_ERROR',
+  UNAUTHORIZED = 'No tiene permiso para acceder a esta funcionalidad.'
 }
