@@ -1,5 +1,7 @@
+import validator from 'validator'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HttpStatusCode } from '../constants/http'
+import { SUCCESS_MSGS } from '../constants/successMsgs'
 import BarberModel from '../models/barber.model'
 import { type ILoginUser } from '../types/barber.type'
 import { generateOTP } from '../utils/generateOTP.util'
@@ -9,8 +11,18 @@ import { sendEmail } from '../utils/mail.util'
 
 export const loginService = async (email: string): Promise<ILoginUser> => {
   try {
-    const user = await BarberModel.findOne({ email })
-    if (!user) {
+    // Revisar que el correo tenga formato de email
+    if (validator.isEmail(email) === false) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.EMAIL_INVALID
+      }
+    }
+
+    // Revisar que el usuario exista en la base de datos
+    const barber = await BarberModel.findOne({ email })
+    if (!barber) {
       return {
         success: false,
         statusCode: HttpStatusCode.NOT_FOUND,
@@ -23,13 +35,14 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
     const tokenOTP = await jwtOTPHash(hashOTP)
 
     // enviar el OTP al usuario que quiere hacer login
-    await sendEmail(user.email, OTP)
+    await sendEmail(barber.email, OTP)
 
     return {
       success: true,
-      msg: 'El código para usar la app fue enviado correctamente',
+      msg: SUCCESS_MSGS.OTP_SENT,
       statusCode: HttpStatusCode.OK,
-      token: tokenOTP
+      token: tokenOTP,
+      barberId: barber?._id
     }
   } catch (err) {
     console.log(err)
@@ -37,7 +50,7 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: 'Error al intentar hacer login del usuario'
+      msg: ERROR_MSGS.LOGIN_ERROR
     }
   }
 }

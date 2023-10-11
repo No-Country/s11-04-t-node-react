@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/validator": "^13.11.2",
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -28,7 +29,8 @@
     "mongoose": "^7.5.3",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.6",
-    "pnpm": "^8.9.0"
+    "pnpm": "^8.9.0",
+    "validator": "^13.11.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.4",
