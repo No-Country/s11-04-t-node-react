@@ -35,7 +35,6 @@ const BarberSchema = new Schema<Barber>(
       }
     ]
   },
-
   { timestamps: true }
 )
 
