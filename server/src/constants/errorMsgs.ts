@@ -18,5 +18,7 @@ export enum ERROR_MSGS {
   BARBER_CREATION_ERROR = 'Error al intentar crear el barbero.',
   FULL_NAME_REQUIRED = 'Nombre completo es requerido',
   FULL_NAME_MIN_LENGTH = 'Nombre completo debe tener almenos 4 caracteres.',
-  FULL_NAME_MAX_LENGTH = 'Nombre completo debe tener máximo 50 caracteres.'
+  FULL_NAME_MAX_LENGTH = 'Nombre completo debe tener máximo 50 caracteres.',
+  TELEPHONE_REQUIRED = 'El teléfono es requerido',
+  EMAIL_REQUIRED = 'El correo electrónico es requerido'
 }

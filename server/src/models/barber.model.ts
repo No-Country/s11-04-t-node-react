@@ -13,13 +13,13 @@ const BarberSchema = new Schema<Barber>(
     },
     phone: {
       type: String,
-      required: [true, 'Teléfono es requerido'],
+      required: [true, ERROR_MSGS.TELEPHONE_REQUIRED],
       unique: true,
       trim: true
     },
     email: {
       type: String,
-      required: [true, 'Correo electrónico es requerido'],
+      required: [true, ERROR_MSGS.EMAIL_REQUIRED],
       unique: true,
       trim: true
     },
