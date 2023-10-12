@@ -2,7 +2,8 @@ import { Router } from 'express'
 import {
   createBarber,
   login,
-  verifyEmail
+  verifyEmail,
+  getBarbers
 } from '../controllers/barber.controller'
 import { auth } from '../middlewares/auth.middleware'
 import { extractToken } from '../middlewares/extractToken.middleware'
@@ -15,3 +16,4 @@ loginRouter.post('/login', login)
 loginRouter.post('/verify-email', extractToken, verifyEmail)
 
 barberRouter.post('/create', extractToken, auth, isAdmin, createBarber)
+barberRouter.get('/get-barbers', getBarbers)
