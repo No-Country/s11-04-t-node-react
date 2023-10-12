@@ -4,5 +4,6 @@ export enum SUCCESS_MSGS {
   VERIFY_OTP_SUCCESS = 'Código verificado correctamente',
   BARBER_CREATED = 'Barbero creado correctamente',
   GET_BARBERS_SUCCESS = 'Barberos enviados correctamente',
-  DELETED_BARBER_SUCCESS = 'Barbero eliminado correctamente'
+  DELETED_BARBER_SUCCESS = 'Barbero eliminado correctamente',
+  GET_BARBER_SUCCESS = 'Barbero enviado correctamente'
 }
