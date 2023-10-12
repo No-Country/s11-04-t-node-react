@@ -1,5 +1,5 @@
 import { type Request, type Response } from 'express'
-import { loginService } from '../services/barber.service'
+import { createBarberService, loginService } from '../services/barber.service'
 import { verifyEmailService } from '../services/verifyEmail.service'
 
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -21,7 +21,7 @@ export const verifyEmail = async (
   res: Response
 ): Promise<void> => {
   const tokenOTP = req.token
-  const body = req.body
+  const { body } = req
   const { success, statusCode, msg, token, fullName, role } =
     await verifyEmailService(body, tokenOTP)
 
@@ -31,5 +31,19 @@ export const verifyEmail = async (
     token,
     fullName,
     role
+  })
+}
+
+export const createBarber = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { body } = req
+  const { success, msg, statusCode, barber } = await createBarberService(body)
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    barber
   })
 }

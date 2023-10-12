@@ -5,9 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
-  '@types/validator':
-    specifier: ^13.11.2
-    version: 13.11.2
   axios:
     specifier: ^1.5.1
     version: 1.5.1
@@ -55,9 +52,6 @@ devDependencies:
   '@types/express':
     specifier: ^4.17.18
     version: 4.17.18
-  '@types/express-validator':
-    specifier: ^3.0.0
-    version: 3.0.0
   '@types/jsonwebtoken':
     specifier: ^9.0.3
     version: 9.0.3
@@ -70,6 +64,9 @@ devDependencies:
   '@types/nodemailer':
     specifier: ^6.4.11
     version: 6.4.11
+  '@types/validator':
+    specifier: ^13.11.2
+    version: 13.11.2
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.4.0
     version: 6.7.4(@typescript-eslint/parser@6.7.4)(eslint@8.50.0)(typescript@5.2.2)
@@ -917,13 +914,6 @@ packages:
       '@types/send': 0.17.2
     dev: true
 
-  /@types/express-validator@3.0.0:
-    resolution: {integrity: sha512-LusnB0YhTXpBT25PXyGPQlK7leE1e41Vezq1hHEUwjfkopM1Pkv2X2Ppxqh9c+w/HZ6Udzki8AJotKNjDTGdkQ==}
-    deprecated: This is a stub types definition for express-validator (https://github.com/ctavan/express-validator). express-validator provides its own type definitions, so you don't need @types/express-validator installed!
-    dependencies:
-      express-validator: 7.0.1
-    dev: true
-
   /@types/express@4.17.18:
     resolution: {integrity: sha512-Sxv8BSLLgsBYmcnGdGjjEjqET2U+AKAdCRODmMiq02FgjwuV75Ut85DRpvFjyw/Mk0vgUOliGRU0UUmuuZHByQ==}
     dependencies:
@@ -1029,7 +1019,7 @@ packages:
 
   /@types/validator@13.11.2:
     resolution: {integrity: sha512-nIKVVQKT6kGKysnNt+xLobr+pFJNssJRi2s034wgWeFBUx01fI8BeHTW2TcRp7VcFu9QCYG8IlChTuovcm0oKQ==}
-    dev: false
+    dev: true
 
   /@types/webidl-conversions@7.0.1:
     resolution: {integrity: sha512-8hKOnOan+Uu+NgMaCouhg3cT9x5fFZ92Jwf+uDLXLu/MFRbXxlWwGeQY7KVHkeSft6RvY+tdxklUBuyY9eIEKg==}
@@ -2293,6 +2283,7 @@ packages:
     dependencies:
       lodash: 4.17.21
       validator: 13.11.0
+    dev: false
 
   /express@4.18.2:
     resolution: {integrity: sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==}
@@ -4657,6 +4648,7 @@ packages:
   /validator@13.11.0:
     resolution: {integrity: sha512-Ii+sehpSfZy+At5nPdnyMhx78fEoPDkR2XW/zimHEL3MyGJQOCQ7WeP20jPYRz7ZCpcKLB21NxuXHF3bxjStBQ==}
     engines: {node: '>= 0.10'}
+    dev: false
 
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
