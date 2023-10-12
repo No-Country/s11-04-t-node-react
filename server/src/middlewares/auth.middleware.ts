@@ -40,10 +40,22 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (barber?.role) req.role = barber?.role
-
     next()
-  } catch (error) {
-    console.log(error)
+  } catch (error: any) {
+    if (error.name === 'TokenExpiredError') {
+      res.status(HttpStatusCode.BAD_REQUEST).json({
+        success: false,
+        tokenExpired: true,
+        msg: ERROR_MSGS.TOKEN_APP_EXPIRED
+      })
+    }
+
+    if (error.name === 'JsonWebTokenError') {
+      res.status(HttpStatusCode.BAD_REQUEST).json({
+        success: false,
+        msg: `${error.message} 😭😭😭}`
+      })
+    }
 
     res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
       success: false,
