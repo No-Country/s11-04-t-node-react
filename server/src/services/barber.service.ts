@@ -189,3 +189,35 @@ export const getBarberByIdService = async (id: string) => {
     }
   }
 }
+
+export const modifyBarberService = async (id: string, body: any) => {
+  try {
+    const barber = await BarberModel.findById(id)
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.BARBERID_INVALID
+      }
+    }
+    barber.fullName = body.fullName || barber.fullName
+    barber.phone = body.phone || barber.phone
+    barber.email = body.email || barber.email
+    barber.role = body.role || barber.role
+    barber.services = body.services || barber.services
+
+    await barber.save()
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.MODIFIED_BARBER_SUCCESS
+    }
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.BARBERID_INVALID
+    }
+  }
+}
