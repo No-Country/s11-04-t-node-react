@@ -5,3 +5,10 @@ export interface Service extends Document {
   price: number
   duration: number
 }
+
+export interface CreateServicesResponse {
+  success: boolean
+  statusCode: number
+  msg: string
+  service?: Service
+}

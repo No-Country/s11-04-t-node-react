@@ -48,9 +48,11 @@ axios.post('https://example.com/endpoint', data, {
     ```json
     {
       "success": false,
-      "msg": "El token para verificar el OTP ha expirado. Solicite uno nuevo OTP."
+      "msg": "El token para verificar el OTP ha expirado. Solicite uno nuevo OTP.",
+      "tokenExpired": true
     }
     ```
+    Tienen una key tokenExpired a true, por si la quieren usar en el frontend para que cuando se cumpla esa condición, limpien el localstorage y lo obliguen a solicitar el OTP nuevamente. Recuerden que el token para validar el OTP dura 10 minutos.
 
   Si envían un OTP vacío
 

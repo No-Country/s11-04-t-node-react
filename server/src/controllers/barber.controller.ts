@@ -1,10 +1,10 @@
 import { type Request, type Response } from 'express'
 import {
-  getBarbersService,
   createBarberService,
-  loginService,
   deleteBarberService,
   getBarberByIdService,
+  getBarbersService,
+  loginService,
   modifyBarberService
 } from '../services/barber.service'
 import { verifyEmailService } from '../services/verifyEmail.service'
@@ -29,7 +29,7 @@ export const verifyEmail = async (
 ): Promise<void> => {
   const tokenOTP = req.token
   const { body } = req
-  const { success, statusCode, msg, token, fullName, role } =
+  const { success, statusCode, msg, token, fullName, role, tokenExpired } =
     await verifyEmailService(body, tokenOTP)
 
   res.status(statusCode).json({
@@ -37,7 +37,8 @@ export const verifyEmail = async (
     msg,
     token,
     fullName,
-    role
+    role,
+    tokenExpired
   })
 }
 
