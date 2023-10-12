@@ -32,6 +32,12 @@ export enum HttpStatusCode {
   NOT_FOUND = 404,
 
   /**
+   * Indicates that the request could not be processed because of conflict in the request,
+   * such as an edit conflict between multiple simultaneous updates.
+   */
+  CONFLICT = 409,
+
+  /**
    * A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.
    */
   INTERNAL_SERVER_ERROR = 500,

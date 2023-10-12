@@ -5,7 +5,7 @@ export default function PanelLayout({ children }) {
   return (
     <>
       <Header fluid />
-      <div className="grid grid-cols-1 sm:grid-cols-[250px_1fr]">
+      <div className="grid grid-cols-1 sm:grid-cols-[250px_1fr] sm:gap-6">
         <Sidebar />
         <main>{children}</main>
       </div>

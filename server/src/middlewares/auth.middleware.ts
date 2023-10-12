@@ -1,11 +1,11 @@
-import { isValidObjectId } from 'mongoose'
-import { HttpStatusCode } from '../constants/http'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { SECRET_KEY_APP_USE_JWT } from '../config'
-import BarberModel from '../models/barber.model'
-import jwt, { type JwtPayload } from 'jsonwebtoken'
-import { type JwtOtpVerificationResponse } from '../types/barber.type'
 import type { NextFunction, Request, Response } from 'express'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
+import { isValidObjectId } from 'mongoose'
+import { SECRET_KEY_APP_USE_JWT } from '../config'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HttpStatusCode } from '../constants/http'
+import BarberModel from '../models/barber.model'
+import { type JwtOtpVerificationResponse } from '../types/barber.type'
 import { internalServerError, notFound } from '../handlers/response.handler'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
@@ -38,10 +38,25 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (barber?.role) req.role = barber?.role
-
     next()
   } catch (error) {
     console.log(error)
+    
+    if (error.name === 'TokenExpiredError') {
+      res.status(HttpStatusCode.BAD_REQUEST).json({
+        success: false,
+        tokenExpired: true,
+        msg: ERROR_MSGS.TOKEN_APP_EXPIRED
+      })
+    }
+
+    if (error.name === 'JsonWebTokenError') {
+      res.status(HttpStatusCode.BAD_REQUEST).json({
+        success: false,
+        msg: `${error.message} 😭😭😭}`
+      })
+    }
+
     internalServerError(res)
   }
 }

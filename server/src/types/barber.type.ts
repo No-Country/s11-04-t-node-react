@@ -34,4 +34,19 @@ export interface IVerifyAuth {
   token?: string
   fullName?: string
   role?: string
+  tokenExpired?: boolean
+}
+
+export interface CreateBarberProps {
+  fullName: string
+  phone: string
+  email: string
+  services: ObjectId[]
+}
+
+export interface ICreateBarber {
+  success: boolean
+  msg: string
+  statusCode: number
+  barber?: Barber
 }
