@@ -10,25 +10,18 @@ const ServiceSchema = new Schema<Service>(
       min: [4, ERROR_MSGS.SERVICE_NAME_MIN_LENGTH],
       max: [50, ERROR_MSGS.SERVICE_NAME_MAX_LENGTH],
       unique: true,
-      trim: true
+      trim: true,
+      lowercase: true
     },
     price: {
       type: Number,
       required: [true, ERROR_MSGS.SERVICE_PRICE_REQUIRED],
-      trim: true,
-      validate: {
-        validator: (value: number) => /^\d+$/.test(value.toString()),
-        message: ERROR_MSGS.SERVICE_PRICE_INVALID
-      }
+      trim: true
     },
     duration: {
       type: Number,
       required: [true, ERROR_MSGS.SERVICE_DURATION_REQUIRED],
-      trim: true,
-      validate: {
-        validator: (value: number) => /^\d{2}$/.test(value.toString()),
-        message: ERROR_MSGS.SERVICE_DURATION_INVALID
-      }
+      trim: true
     }
   },
   { timestamps: true }

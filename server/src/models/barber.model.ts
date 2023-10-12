@@ -21,7 +21,8 @@ const BarberSchema = new Schema<Barber>(
       type: String,
       required: [true, ERROR_MSGS.EMAIL_REQUIRED],
       unique: true,
-      trim: true
+      trim: true,
+      lowercase: true
     },
     role: {
       type: String,
