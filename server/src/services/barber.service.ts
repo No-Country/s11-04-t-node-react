@@ -121,3 +121,21 @@ export const createBarberService = async (
     }
   }
 }
+
+export const getBarbersService = async () => {
+  try {
+    const barbers = await BarberModel.find()
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.GET_BARBERS_SUCCESS,
+      statusCode: HttpStatusCode.OK,
+      barbers
+    }
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.DB_CONNECTION_ERROR
+    }
+  }
+}
