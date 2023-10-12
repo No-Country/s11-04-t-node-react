@@ -2,7 +2,8 @@ import type { Request, Response } from 'express'
 import {
   createServicesService,
   deleteServiceService,
-  getServiceService
+  getServiceService,
+  modifyServiceService
 } from '../services/services.service'
 
 export const createService = async (
@@ -44,5 +45,20 @@ export const getService = async (
     success,
     msg,
     service
+  })
+}
+
+export const modifyService = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { body } = req
+
+  const { success, statusCode, msg } = await modifyServiceService(id, body)
+
+  res.status(statusCode).json({
+    success,
+    msg
   })
 }

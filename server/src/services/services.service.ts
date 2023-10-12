@@ -89,15 +89,16 @@ export const deleteServiceService = async (
   }
 }
 
-export const getServiceService = async (id: string): Promise<CreateServicesResponse> => {
-
+export const getServiceService = async (
+  id: string
+): Promise<CreateServicesResponse> => {
   try {
     const service = await ServiceModel.findById(id)
     if (!service) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.SERVICEID_INVALID,
+        msg: ERROR_MSGS.SERVICEID_INVALID
       }
     }
 
@@ -107,10 +108,40 @@ export const getServiceService = async (id: string): Promise<CreateServicesRespo
       msg: SUCCESS_MSGS.GET_SERVICE_SUCCES,
       service
     }
-
   } catch (err) {
     console.log(err)
 
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const modifyServiceService = async (id: string, body: any) => {
+  try {
+    const service = await ServiceModel.findById(id)
+    if (!service) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.SERVICEID_INVALID
+      }
+    }
+    service.name = body.name || service.name
+    service.price = body.price || service.price
+    service.duration = body.duration || service.duration
+
+    await service.save()
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.MODIFIED_SERVICE_SUCCESS
+    }
+  } catch (err) {
+    console.log(err)
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

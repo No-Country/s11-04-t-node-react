@@ -219,7 +219,7 @@ export const modifyBarberService = async (id: string, body: any) => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.BARBERID_INVALID
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }

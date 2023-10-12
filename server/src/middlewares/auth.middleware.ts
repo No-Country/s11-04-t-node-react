@@ -34,7 +34,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     const barber = await BarberModel.findById(barberId)
 
     if (!barber) {
-      notFound(res)
+      return notFound(res)
     }
 
     if (barber?.role) req.role = barber?.role
