@@ -182,10 +182,12 @@ export const getBarberByIdService = async (id: string) => {
       barber
     }
   } catch (err: any) {
+    console.log(err)
+
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.BARBERID_INVALID
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }

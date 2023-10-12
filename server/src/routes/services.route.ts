@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import {
   createService,
-  deleteService
+  deleteService,
+  getService
 } from '../controllers/services.controller'
 import { auth } from '../middlewares/auth.middleware'
 import { extractToken } from '../middlewares/extractToken.middleware'
@@ -11,3 +12,4 @@ export const servicesRouter = Router()
 
 servicesRouter.post('/create', extractToken, auth, isAdmin, createService)
 servicesRouter.delete('/delete/:id', extractToken, auth, isAdmin, deleteService)
+servicesRouter.get('/:id', extractToken, auth, isAdmin, getService)
