@@ -1,11 +1,11 @@
-import { isValidObjectId } from 'mongoose'
-import { HttpStatusCode } from '../constants/http'
-import { ERROR_MSGS } from '../constants/errorMsgs'
-import { SECRET_KEY_APP_USE_JWT } from '../config'
-import BarberModel from '../models/barber.model'
-import jwt, { type JwtPayload } from 'jsonwebtoken'
-import { type JwtOtpVerificationResponse } from '../types/barber.type'
 import type { NextFunction, Request, Response } from 'express'
+import jwt, { type JwtPayload } from 'jsonwebtoken'
+import { isValidObjectId } from 'mongoose'
+import { SECRET_KEY_APP_USE_JWT } from '../config'
+import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HttpStatusCode } from '../constants/http'
+import BarberModel from '../models/barber.model'
+import { type JwtOtpVerificationResponse } from '../types/barber.type'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,14 +35,13 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     if (!barber) {
       res.status(HttpStatusCode.NOT_FOUND).json({
         success: false,
-        msg: ERROR_MSGS.VERIFY_OTP_USER_NOT_FOUND
+        msg: ERROR_MSGS.USER_NOT_FOUND
       })
     }
 
     if (barber?.role) req.role = barber?.role
 
     next()
-
   } catch (error) {
     console.log(error)
 
