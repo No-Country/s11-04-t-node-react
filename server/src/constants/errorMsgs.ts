@@ -29,5 +29,6 @@ export enum ERROR_MSGS {
   SERVICE_PRICE_INVALID = 'El precio del servicio debe contener solo números.',
   SERVICE_DURATION_REQUIRED = 'La duración del servicio es requerida.',
   SERVICE_DURATION_INVALID = 'La duración del servicio debe contener solo 2 números.',
-  TOKEN_APP_EXPIRED = 'El token para usar la app ha expirado. Inicie sesión nuevamente.'
+  TOKEN_APP_EXPIRED = 'El token para usar la app ha expirado. Inicie sesión nuevamente.',
+  SERVICE_EXISTS = 'El servicio ya existe.'
 }
