@@ -6,6 +6,7 @@ import BarberModel from '../models/barber.model'
 import jwt, { type JwtPayload } from 'jsonwebtoken'
 import { type JwtOtpVerificationResponse } from '../types/barber.type'
 import type { NextFunction, Request, Response } from 'express'
+import { internalServerError, notFound } from '../handlers/response.handler'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -33,22 +34,14 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     const barber = await BarberModel.findById(barberId)
 
     if (!barber) {
-      res.status(HttpStatusCode.NOT_FOUND).json({
-        success: false,
-        msg: ERROR_MSGS.VERIFY_OTP_USER_NOT_FOUND
-      })
+      notFound(res)
     }
 
     if (barber?.role) req.role = barber?.role
 
     next()
-
   } catch (error) {
     console.log(error)
-
-    res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      msg: ERROR_MSGS.SERVER_ERROR
-    })
+    internalServerError(res)
   }
 }
