@@ -1,18 +1,33 @@
 import mongoose from 'mongoose'
+import { DEPLOYMENT_DB_URL, FRONTEND_DEV_DB, LOCAL_DB_URL } from '../config'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 mongoose.set('strictQuery', false)
 
-const LOCAL_DB = process.env.LOCAL_DB_URL
-const DEPLOYMENT_DB = process.env.DEPLOYMENT_DB_URL
-const dbUrl = process.env.NODE_ENV === 'production' ? DEPLOYMENT_DB : LOCAL_DB
+let dbUrl: string
+
+switch (process.env.NODE_ENV) {
+  case 'production':
+    dbUrl = DEPLOYMENT_DB_URL
+    break
+  case 'development':
+    dbUrl = LOCAL_DB_URL
+    break
+  case 'frontend':
+    dbUrl = FRONTEND_DEV_DB
+    break
+}
 
 export async function connectToDb(): Promise<void> {
   try {
     if (dbUrl !== undefined) {
-      await mongoose.connect(dbUrl)
+      const db = await mongoose.connect(dbUrl)
+
+      console.log(SUCCESS_MSGS.DB_CONNECTED)
+      console.log(`Connected to collection: ${db.connection.name}`)
+    } else {
+      console.log('El string de conexion esta vacio.')
     }
-    console.log(SUCCESS_MSGS.DB_CONNECTED)
   } catch (error) {
     console.log(ERROR_MSGS.DB_CONNECTION_ERROR, error)
   }

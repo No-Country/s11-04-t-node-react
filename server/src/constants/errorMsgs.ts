@@ -11,5 +11,8 @@ export enum ERROR_MSGS {
   JWT_FOR_APP_ERROR_1 = 'Error al generar el token para la app',
   JWT_FOR_APP_ERROR_2 = 'El token para la app es undefined',
   VERIFY_OTP_ERROR = 'Error al intentar verificar el código OTP',
-  VERIFY_OTP_TOKEN_EXPIRED = 'El token para verificar el OTP ha expirado. Solicite uno nuevo OTP.'
+  VERIFY_OTP_TOKEN_EXPIRED = 'El token para verificar el OTP ha expirado. Solicite uno nuevo OTP.',
+  VERIFY_OTP_USER_NOT_FOUND = 'El usuario no se ha encontrado',
+  SERVER_ERROR = 'SERVER_ERROR',
+  UNAUTHORIZED = 'No tiene permiso para acceder a esta funcionalidad.'
 }

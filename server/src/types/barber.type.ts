@@ -25,10 +25,9 @@ export interface JwtOtpVerificationResponse {
 
 export interface VerifyOTPProps {
   otp: string
-  barberId: string
 }
 
-export interface IVerifyOTP {
+export interface IVerifyAuth {
   success: boolean
   msg: string
   statusCode: number

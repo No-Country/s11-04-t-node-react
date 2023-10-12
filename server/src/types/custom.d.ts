@@ -5,6 +5,7 @@ declare global {
     interface Request {
       instance?: AxiosInstance
       token: string
+      role: string
     }
   }
 }
