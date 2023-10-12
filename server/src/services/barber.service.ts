@@ -157,10 +157,34 @@ export const deleteBarberService = async (id: string) => {
       msg: SUCCESS_MSGS.DELETED_BARBER_SUCCESS
     }
   } catch (err: any) {
-    // En el caso de un error, devuelve un objeto con propiedades adecuadas
     return {
-      success: false, // Otra opción es true o false según tus necesidades
-      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR, // Puedes usar el código de estado que prefieras
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.BARBERID_INVALID
+    }
+  }
+}
+
+export const getBarberByIdService = async (id: string) => {
+  try {
+    const barber = await BarberModel.findById(id)
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.BARBERID_INVALID
+      }
+    }
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.GET_BARBER_SUCCESS,
+      barber
+    }
+  } catch (err: any) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
       msg: ERROR_MSGS.BARBERID_INVALID
     }
   }

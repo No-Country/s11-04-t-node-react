@@ -4,7 +4,8 @@ import {
   login,
   verifyEmail,
   getBarbers,
-  deleteBarber
+  deleteBarber,
+  getBarberById
 } from '../controllers/barber.controller'
 import { auth } from '../middlewares/auth.middleware'
 import { extractToken } from '../middlewares/extractToken.middleware'
@@ -17,5 +18,6 @@ loginRouter.post('/login', login)
 loginRouter.post('/verify-email', extractToken, verifyEmail)
 
 barberRouter.post('/create', extractToken, auth, isAdmin, createBarber)
-barberRouter.get('/get-barbers', extractToken, auth, isAdmin, getBarbers)
+barberRouter.get('/get-barbers', extractToken, auth, getBarbers)
 barberRouter.delete('/delete/:id', extractToken, auth, isAdmin, deleteBarber)
+barberRouter.get('/get-barber/:id', extractToken, auth, getBarberById)
