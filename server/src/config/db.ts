@@ -7,9 +7,9 @@ mongoose.set('strictQuery', false)
 export async function connectToDb(): Promise<void> {
   try {
     const dbUrl =
-      process.env.NODE_ENV === 'production'
+      process.env.NODE_ENV?.trim() === 'production'
         ? DEPLOYMENT_DB_URL
-        : process.env.NODE_ENV === 'development'
+        : process.env.NODE_ENV?.trim() === 'development'
         ? LOCAL_DB_URL
         : FRONTEND_DEV_DB
 
