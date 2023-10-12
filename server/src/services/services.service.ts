@@ -72,7 +72,7 @@ export const createServicesService = async (
 
 export const deleteServiceService = async (
   id: string
-): Promise<CreateServicesResponse> => {
+): Promise<ServicesResponse> => {
   try {
     const service = await ServiceModel.findById(id)
     if (!service) {
@@ -102,7 +102,7 @@ export const deleteServiceService = async (
 
 export const getServiceService = async (
   id: string
-): Promise<CreateServicesResponse> => {
+): Promise<ServicesResponse> => {
   try {
     const service = await ServiceModel.findById(id)
     if (!service) {
