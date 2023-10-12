@@ -31,5 +31,6 @@ export enum ERROR_MSGS {
   SERVICE_DURATION_INVALID = 'La duración del servicio debe contener solo 2 números.',
   TOKEN_APP_EXPIRED = 'El token para usar la app ha expirado. Inicie sesión nuevamente.',
   SERVICE_EXISTS = 'El servicio ya existe.',
-  VERIFY_OTP_USER_NOT_FOUND = 'Usuario de autenticacion no encontrado.'
+  VERIFY_OTP_USER_NOT_FOUND = 'Usuario de autenticacion no encontrado.',
+  SERVICEID_INVALID = 'El id del servicio es inválido'
 }

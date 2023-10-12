@@ -160,7 +160,7 @@ export const deleteBarberService = async (id: string) => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.BARBERID_INVALID
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }

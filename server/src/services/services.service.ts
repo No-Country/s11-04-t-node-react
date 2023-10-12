@@ -58,3 +58,33 @@ export const createServicesService = async (
     }
   }
 }
+
+export const deleteServiceService = async (
+  id: string
+): Promise<CreateServicesResponse> => {
+  try {
+    const service = await ServiceModel.findById(id)
+    if (!service) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.SERVICEID_INVALID
+      }
+    }
+
+    await service.deleteOne()
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.DELETED_SERVICE_SUCCES
+    }
+  } catch (error) {
+    console.log(error)
+
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
