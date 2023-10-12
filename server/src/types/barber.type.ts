@@ -34,6 +34,7 @@ export interface IVerifyAuth {
   token?: string
   fullName?: string
   role?: string
+  tokenExpired?: boolean
 }
 
 export interface CreateBarberProps {
