@@ -1,10 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { FaRegEdit, FaRegCalendarAlt, FaRegIdBadge } from "react-icons/fa";
-import { AiOutlineSetting } from "react-icons/ai";
 import { BsArrowDownUp } from "react-icons/bs";
 import { FaPowerOff } from "react-icons/fa";
+import clsx from "clsx";
 import {
   RiHome3Line,
   RiMenu3Fill,
@@ -12,8 +11,6 @@ import {
   RiNotification3Line,
   RiArrowUpSLine,
 } from "react-icons/ri";
-import Image from "next/image";
-import clsx from "clsx";
 
 export const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -42,92 +39,73 @@ export const Sidebar = () => {
 
       <div
         className={clsx(
-          `fixed sm:sticky left-0 z-20 flex flex-col h-screen transition-all duration-500 bg-white`,
+          `fixed sm:sticky left-0 z-20 flex flex-col h-screen transition-all duration-500 bg-[#292D33] rounded-t-2xl`,
           "w-full sm:w-auto",
           sidebarOpen ? "top-0" : "-top-full"
         )}
       >
-        <aside className="bg-[#292D33] flex flex-col min-h-screen overflow-auto">
+        <aside className="bg-[#292D33] flex flex-col min-h-screen overflow-auto sm:rounded-t-2xl sm:border-2 sm:border-black">
           {/* Administrador */}
           <>
-            <div className="p-4 flex flex-col items-center justify-center sm:py-4">
-              <div className="flex justify-center items-center border-[4px] border-[#B5AF93] bg-white rounded-full w-[120px] h-[120px] my-4 mx-auto">
-                <Image
-                  src="/images/barbero-admin.png"
-                  alt="logo-admin"
-                  width={80}
-                  height={80}
-                  priority
-                />
-              </div>
-              <h3 className="font-bold text-lg text-white pb-2">
-                Administrador
-              </h3>
-            </div>
-
-            <div className="sm:border-y-2 sm:border-black">
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
-                <Link
-                  href="/panel/admin/barberos"
+            <Link
+              href="/panel/admin/barberos"
+              className="sm:border-b-2 sm:border-black"
+            >
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+                <div
                   onClick={() => setSidebarOpen(false)}
-                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                  className="flex items-center justify-between sm:justify-start text-left text-xl w-full font-bold"
                 >
-                  <div className="flex items-center gap-3">
-                    <FaRegIdBadge />
-                    <p>Barberos</p>
-                  </div>
+                  <p>Barberos</p>
                   <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
-                </Link>
+                </div>
               </div>
-            </div>
+            </Link>
 
-            <div className="sm:border-b-2 sm:border-black">
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
-                <Link
-                  href="/panel/admin/agenda"
+            <Link
+              href="/panel/admin/agenda"
+              className="sm:border-b-2 sm:border-black"
+            >
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+                <div
                   onClick={() => setSidebarOpen(false)}
-                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                  className="flex items-center justify-between sm:justify-start text-left text-xl w-full font-bold"
                 >
-                  <div className="flex items-center gap-3">
-                    <FaRegEdit />
-                    <p>Agenda</p>
-                  </div>
-                </Link>
+                  <p>Agenda</p>
+                </div>
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
-            </div>
+            </Link>
 
-            <div className="sm:border-b-2 sm:border-black">
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
-                <Link
-                  href="/panel/admin/cronograma"
+            <Link
+              href="/panel/admin/cronograma"
+              className="sm:border-b-2 sm:border-black"
+            >
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+                <div
                   onClick={() => setSidebarOpen(false)}
-                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                  className="flex items-center justify-between sm:justify-start text-xl w-full font-bold"
                 >
-                  <div className="flex items-center gap-3">
-                    <FaRegCalendarAlt />
-                    <p>Cronograma</p>
-                  </div>
-                </Link>
+                  <p>Cronograma</p>
+                </div>
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
-            </div>
+            </Link>
 
-            <div className="sm:border-b-2 sm:border-black">
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] sm:hover:bg-white py-4 px-6 sm:px-12 transition-colors flex items-center justify-between sm:text-black sm:hover:text-[#B5AF93] fill-current">
-                <Link
-                  href="/panel/admin/servicios"
+            <Link
+              href="/panel/admin/servicios"
+              className="sm:border-b-2 sm:border-black"
+            >
+              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+                <div
                   onClick={() => setSidebarOpen(false)}
-                  className="flex items-center gap-5 justify-between sm:justify-start text-xl w-full"
+                  className="flex items-center justify-between sm:justify-start text-xl w-full font-bold"
                 >
-                  <div className="flex items-center gap-3">
-                    <AiOutlineSetting />
-                    <p>Servicios</p>
-                  </div>
-                </Link>
+                  <p>Servicios</p>
+                </div>
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
               </div>
-            </div>
+            </Link>
           </>
 
           {/* Barbero */}
