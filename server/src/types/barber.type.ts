@@ -35,3 +35,17 @@ export interface IVerifyAuth {
   fullName?: string
   role?: string
 }
+
+export interface CreateBarberProps {
+  fullName: string
+  phone: string
+  email: string
+  services: ObjectId[]
+}
+
+export interface ICreateBarber {
+  success: boolean
+  msg: string
+  statusCode: number
+  barber?: Barber
+}

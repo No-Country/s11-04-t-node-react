@@ -48,7 +48,7 @@ export const verifyEmailService = async (
       return {
         success: false,
         statusCode: HttpStatusCode.NOT_FOUND,
-        msg: ERROR_MSGS.VERIFY_OTP_USER_NOT_FOUND
+        msg: ERROR_MSGS.USER_NOT_FOUND
       }
     }
 

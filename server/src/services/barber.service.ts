@@ -2,8 +2,16 @@ import validator from 'validator'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
+import {
+  duplicateKeyErrorHandler,
+  mongooseValidatonErrorHandler
+} from '../handlers/mongooseErrors.handler'
 import BarberModel from '../models/barber.model'
-import { type ILoginUser } from '../types/barber.type'
+import type {
+  CreateBarberProps,
+  ICreateBarber,
+  ILoginUser
+} from '../types/barber.type'
 import { generateOTP } from '../utils/generateOTP.util'
 import { generateHashOTP } from '../utils/hashOTP.util'
 import { jwtOTPHash } from '../utils/jwtOTPHash.util'
@@ -48,6 +56,68 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
       msg: ERROR_MSGS.LOGIN_ERROR
+    }
+  }
+}
+
+export const createBarberService = async (
+  body: CreateBarberProps
+): Promise<ICreateBarber> => {
+  try {
+    const { fullName, phone, email, services } = body
+
+    // Revisar que el correo tenga formato de email
+    if (!validator.isEmail(email)) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.EMAIL_INVALID
+      }
+    }
+
+    // Revisar que el usuario exista en la base de datos
+    const barber = await BarberModel.findOne({ email })
+    if (barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.CONFLICT,
+        msg: ERROR_MSGS.USER_ALREADY_EXISTS
+      }
+    }
+
+    // Crear el barbero
+    const newBarber = await BarberModel.create({
+      fullName,
+      phone,
+      email,
+      services
+    })
+
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.BARBER_CREATED,
+      statusCode: HttpStatusCode.CREATED,
+      barber: newBarber
+    }
+  } catch (err: any) {
+    if (err.name === 'ValidationError') {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: mongooseValidatonErrorHandler(err)
+      }
+    }
+    if (err.code === 11000) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: duplicateKeyErrorHandler(err)
+      }
+    }
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.BARBER_CREATION_ERROR
     }
   }
 }

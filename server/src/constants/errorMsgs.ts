@@ -12,7 +12,11 @@ export enum ERROR_MSGS {
   JWT_FOR_APP_ERROR_2 = 'El token para la app es undefined',
   VERIFY_OTP_ERROR = 'Error al intentar verificar el código OTP',
   VERIFY_OTP_TOKEN_EXPIRED = 'El token para verificar el OTP ha expirado. Solicite uno nuevo OTP.',
-  VERIFY_OTP_USER_NOT_FOUND = 'El usuario no se ha encontrado',
   SERVER_ERROR = 'SERVER_ERROR',
-  UNAUTHORIZED = 'No tiene permiso para acceder a esta funcionalidad.'
+  UNAUTHORIZED = 'No tiene permiso para acceder a esta funcionalidad.',
+  USER_ALREADY_EXISTS = 'El usuario ya existe.',
+  BARBER_CREATION_ERROR = 'Error al intentar crear el barbero.',
+  FULL_NAME_REQUIRED = 'Nombre completo es requerido',
+  FULL_NAME_MIN_LENGTH = 'Nombre completo debe tener almenos 4 caracteres.',
+  FULL_NAME_MAX_LENGTH = 'Nombre completo debe tener máximo 50 caracteres.'
 }
