@@ -4,9 +4,9 @@ import { isValidObjectId } from 'mongoose'
 import { SECRET_KEY_APP_USE_JWT } from '../config'
 import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HttpStatusCode } from '../constants/http'
+import { internalServerError, notFound } from '../handlers/response.handler'
 import BarberModel from '../models/barber.model'
 import { type JwtOtpVerificationResponse } from '../types/barber.type'
-import { internalServerError, notFound } from '../handlers/response.handler'
 
 export const auth = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -18,14 +18,14 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     ) as JwtPayload & JwtOtpVerificationResponse
 
     if (barberId === '') {
-      res.status(HttpStatusCode.BAD_REQUEST).json({
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
         msg: ERROR_MSGS.VERIFY_OTP_INVALID_REQUEST
       })
     }
 
     if (!isValidObjectId(barberId)) {
-      res.status(HttpStatusCode.BAD_REQUEST).json({
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
         msg: ERROR_MSGS.VERIFY_OTP_INVALID_USER_ID
       })
@@ -34,7 +34,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     const barber = await BarberModel.findById(barberId)
 
     if (!barber) {
-      notFound(res)
+      return notFound(res)
     }
 
     if (barber?.role) req.role = barber?.role
@@ -43,7 +43,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     console.log(error)
 
     if (error.name === 'TokenExpiredError') {
-      res.status(HttpStatusCode.BAD_REQUEST).json({
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
         tokenExpired: true,
         msg: ERROR_MSGS.TOKEN_APP_EXPIRED
@@ -51,12 +51,11 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (error.name === 'JsonWebTokenError') {
-      res.status(HttpStatusCode.BAD_REQUEST).json({
+      return res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
-        msg: `${error.message} 😭😭😭}`
+        msg: `${error.message} 😭😭😭`
       })
     }
-
     internalServerError(res)
   }
 }
