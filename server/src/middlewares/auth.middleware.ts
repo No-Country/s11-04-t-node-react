@@ -39,9 +39,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
     if (barber?.role) req.role = barber?.role
     next()
-  } catch (error) {
+  } catch (error: any) {
     console.log(error)
-    
+
     if (error.name === 'TokenExpiredError') {
       res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
