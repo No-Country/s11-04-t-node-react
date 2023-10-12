@@ -2,7 +2,8 @@ import { type Request, type Response } from 'express'
 import {
   getBarbersService,
   createBarberService,
-  loginService
+  loginService,
+  deleteBarberService
 } from '../services/barber.service'
 import { verifyEmailService } from '../services/verifyEmail.service'
 
@@ -61,5 +62,17 @@ export const getBarbers = async (
     success,
     msg,
     barbers
+  })
+}
+
+export const deleteBarber = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { success, statusCode, msg } = await deleteBarberService(id)
+  res.status(statusCode).json({
+    success,
+    msg
   })
 }

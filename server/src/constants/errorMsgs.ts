@@ -17,15 +17,9 @@ export enum ERROR_MSGS {
   USER_ALREADY_EXISTS = 'El usuario ya existe.',
   BARBER_CREATION_ERROR = 'Error al intentar crear el barbero.',
   FULL_NAME_REQUIRED = 'Nombre completo es requerido',
-  FULL_NAME_MIN_LENGTH = 'Nombre completo debe tener al menos 4 caracteres.',
+  FULL_NAME_MIN_LENGTH = 'Nombre completo debe tener almenos 4 caracteres.',
   FULL_NAME_MAX_LENGTH = 'Nombre completo debe tener máximo 50 caracteres.',
   TELEPHONE_REQUIRED = 'El teléfono es requerido',
   EMAIL_REQUIRED = 'El correo electrónico es requerido',
-  SERVICE_NAME_REQUIRED = 'El nombre del servicio es requerido',
-  SERVICE_NAME_MIN_LENGTH = 'El nombre del servicio debe tener al menos 4 caracteres.',
-  SERVICE_NAME_MAX_LENGTH = 'El nombre del servicio debe tener máximo 50 caracteres.',
-  SERVICE_PRICE_REQUIRED = 'El precio del servicio es requerido',
-  SERVICE_PRICE_INVALID = 'El precio del servicio debe ser un número.',
-  SERVICE_DURATION_REQUIRED = 'La duración del servicio es requerida',
-  SERVICE_DURATION_INVALID = 'La duración del servicio debe ser un número de dos dígitos.'
+  BARBERID_INVALID = 'El id del barbero es inválido'
 }
