@@ -52,3 +52,6 @@ Esta ruta sirve para solicitar el OTP de un usuario ya registrado. Solo deben in
       "msg": "El correo electrónico tiene formato inválido."
     }
     ```
+
+- **Nota importante:** <br />
+  El token que le enviamos tiene una vigencia de 10 minutos.

@@ -26,7 +26,7 @@ export const verifyEmailService = async (
       SECRET_KEY_OTP_JWT
     ) as JwtPayload & JwtOtpVerificationResponse
 
-    if (barberId === '' || otp.trim().length === 0) {
+    if (otp.trim().length === 0) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,

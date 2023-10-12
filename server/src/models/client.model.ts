@@ -25,7 +25,6 @@ const ClientSchema = new Schema<Client>(
       default: 'client'
     }
   },
-
   { timestamps: true }
 )
 
