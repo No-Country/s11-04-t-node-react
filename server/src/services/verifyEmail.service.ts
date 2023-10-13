@@ -6,7 +6,7 @@ import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import BarberModel from '../models/barber.model'
 import type {
-  IVerifyOTP,
+  IVerifyAuth,
   JwtOtpVerificationResponse,
   VerifyOTPProps
 } from '../types/barber.type'
@@ -16,7 +16,7 @@ import { jwtForApp } from '../utils/jwtForApp.util'
 export const verifyEmailService = async (
   userData: VerifyOTPProps,
   tokenOTP: string
-): Promise<IVerifyOTP> => {
+): Promise<IVerifyAuth> => {
   try {
     const { otp } = userData
 
@@ -48,7 +48,7 @@ export const verifyEmailService = async (
       return {
         success: false,
         statusCode: HttpStatusCode.NOT_FOUND,
-        msg: ERROR_MSGS.VERIFY_OTP_USER_NOT_FOUND
+        msg: ERROR_MSGS.USER_NOT_FOUND
       }
     }
 
@@ -77,9 +77,19 @@ export const verifyEmailService = async (
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
+        tokenExpired: true,
         msg: ERROR_MSGS.VERIFY_OTP_TOKEN_EXPIRED
       }
     }
+
+    if (err.name === 'JsonWebTokenError') {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: `${err.message} 😭😭😭}`
+      }
+    }
+
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

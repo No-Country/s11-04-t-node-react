@@ -1,5 +1,12 @@
 import { type Request, type Response } from 'express'
-import { loginService } from '../services/barber.service'
+import {
+  createBarberService,
+  deleteBarberService,
+  getBarberByIdService,
+  getBarbersService,
+  loginService,
+  modifyBarberService
+} from '../services/barber.service'
 import { verifyEmailService } from '../services/verifyEmail.service'
 
 export const login = async (req: Request, res: Response): Promise<void> => {
@@ -21,8 +28,8 @@ export const verifyEmail = async (
   res: Response
 ): Promise<void> => {
   const tokenOTP = req.token
-  const body = req.body
-  const { success, statusCode, msg, token, fullName, role } =
+  const { body } = req
+  const { success, statusCode, msg, token, fullName, role, tokenExpired } =
     await verifyEmailService(body, tokenOTP)
 
   res.status(statusCode).json({
@@ -30,6 +37,74 @@ export const verifyEmail = async (
     msg,
     token,
     fullName,
-    role
+    role,
+    tokenExpired
+  })
+}
+
+export const createBarber = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { body } = req
+  const { success, msg, statusCode, barber } = await createBarberService(body)
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    barber
+  })
+}
+
+export const getBarbers = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
+  const { success, msg, statusCode, barbers } = await getBarbersService()
+  res.status(statusCode).json({
+    success,
+    msg,
+    barbers
+  })
+}
+
+export const deleteBarber = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { success, statusCode, msg } = await deleteBarberService(id)
+  res.status(statusCode).json({
+    success,
+    msg
+  })
+}
+
+export const getBarberById = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { success, statusCode, msg, barber } = await getBarberByIdService(id)
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    barber
+  })
+}
+
+export const modifyBarber = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { body } = req
+
+  const { success, statusCode, msg } = await modifyBarberService(id, body)
+
+  res.status(statusCode).json({
+    success,
+    msg
   })
 }

@@ -27,11 +27,27 @@ export interface VerifyOTPProps {
   otp: string
 }
 
-export interface IVerifyOTP {
+export interface IVerifyAuth {
   success: boolean
   msg: string
   statusCode: number
   token?: string
   fullName?: string
   role?: string
+  tokenExpired?: boolean
+}
+
+export interface CreateBarberProps {
+  fullName: string
+  phone: string
+  email: string
+  services: ObjectId[]
+  role: string
+}
+
+export interface ICreateBarber {
+  success: boolean
+  msg: string
+  statusCode: number
+  barber?: Barber
 }

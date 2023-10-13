@@ -1,202 +1,242 @@
+'use client'
+
 import iconInfo from '@/public/images/icon-info.svg'
 import iconDel from '@/public/images/icon-delete.png'
-import Image from 'next/image'
-import { getBarbers } from './services/barbers.service'
+import {
+	createBarber,
+	deleteBarber,
+	getBarbers,
+} from './services/barbers.service'
+import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
+import BarberForm from './components/BarberForm'
+import { createPortal } from 'react-dom'
+import { BarbersModal } from './components/BarbersModal'
+import { DeleteBarber } from './components/DeleteBarber'
+import { BarbersTable } from './components/BarbersTable'
 
-export default async function Barbers() {
-	// Traer servicios del store
-	// Traer usuario del store y extraer token
-	// const barbers = await getBarbers(token)
+export default function Barbers() {
+	// const authUser = useSelector((state) => state.authUser)
+	// const token = authUser.value.token
 
-	// Actualizar el store con la respuesta
+	// const services = useSelector((state) => state.services)
 
-	const services = ['Corte', 'Barba', 'Tintura', 'Peinado', 'Alisado']
+	// useEffect(() => {
+	// 	const fillBarbers = async () => {
+	// 		const barbers = await getBarbers(token)
+	// 		setBarbers(barbers)
+	// 	}
 
-	const barbers = [
+	// 	fillBarbers()
+	// },[])
+
+	const [barbers, setBarbers] = useState([
 		{
-			id: 1,
-			name: 'Carlos',
-			lastname: 'Carlitos',
-			services: ['corte', 'tintura'],
-			phone: 123456789,
+			_id: 1,
+			phone: '123456789',
+			fullName: 'Carlos Carlitos',
 			email: 'carlos@gmail.com',
+			services: ['Corte', 'Tintura'],
+			rol: 'barber',
 		},
 		{
-			id: 2,
-			name: 'Juan',
-			lastname: 'Juancitos',
-			services: ['peinado', 'alisado'],
-			phone: 987654321,
+			_id: 2,
+			phone: '987654321',
+			fullName: 'Juan Juancitos',
 			email: 'juan@gmail.com',
+			services: ['Peinado', 'Alisado'],
+			rol: 'barber',
 		},
 		{
-			id: 3,
-			name: 'Jorge',
-			lastname: 'Jorgitos',
-			services: ['barba', 'corte', 'tintura'],
-			phone: 444333222,
+			_id: 3,
+			phone: '444333222',
+			fullName: 'Jorge Jorgitos',
 			email: 'jorge@gmail.com',
+			services: ['Barba', 'Corte', 'Tintura'],
+			rol: 'barber',
+		},
+	])
+
+	const servicesList = [
+		{
+			_id: 111,
+			name: 'Corte',
+			price: 123,
+		},
+		{
+			_id: 222,
+			name: 'Barba',
+			price: 123,
+		},
+		{
+			_id: 333,
+			name: 'Tintura',
+			price: 123,
+		},
+		{
+			_id: 444,
+			name: 'Peinado',
+			price: 123,
+		},
+		{
+			_id: 555,
+			name: 'Alisado',
+			price: 123,
 		},
 	]
 
+	const [newBarber, setNewBarber] = useState({
+		fullName: '',
+		phone: '',
+		email: '',
+		services: servicesList.map((service) => {
+			return { name: service.name, checked: false }
+		}),
+	})
+	const [toModifyBarber, setToModifyBarber] = useState({})
+	const [toDeleteBarber, setToDeleteBarber] = useState({})
+	const [showModal, setShowModal] = useState(false)
+	const [modifyModal, setModifyModal] = useState(false)
+
+	const resetNewBarber = () => {
+		setNewBarber({
+			fullName: '',
+			phone: '',
+			email: '',
+			services: servicesList.map((service) => {
+				return { name: service.name, checked: false }
+			}),
+		})
+	}
+
+	const submitHandler = async (e) => {
+		e.preventDefault()
+		const selectedServices = newBarber.services
+			.filter((service) => service.checked && service)
+			.map((service) => service.name)
+		const newBarberToCreate = { ...newBarber, services: selectedServices }
+		// const createdBarber = await createBarber(newBarberToCreate)
+
+		// REEMPLAZAR REGISTRO CONCATENADO CON createdBarber DEVUELTO POR SERVER
+		setBarbers(
+			barbers.concat({
+				...newBarberToCreate,
+				rol: 'barber',
+				_id: Math.floor(Math.random() * 1000),
+			})
+		)
+		resetNewBarber()
+	}
+
+	const onSave = async (e) => {
+		e.preventDefault()
+		const selectedServices = toModifyBarber.services
+			.filter((service) => service.checked && service)
+			.map((service) => service.name)
+		const barberToModify = { ...toModifyBarber, services: selectedServices }
+
+		// const modifiedBarber = await updateBarber(barberToModify)
+
+		// REEMPLAZAR REGISTRO CON modifiedBarber DEVUELTO POR SERVER
+
+		setBarbers(
+			barbers.map((barber) => {
+				return barber._id === barberToModify._id ? barberToModify : barber
+			})
+		)
+		setShowModal(false)
+	}
+
+	const onDelete = async () => {
+		// await deleteBarber(toDeleteBarber._id)
+		setBarbers(
+			barbers.filter((barber) => barber._id !== toDeleteBarber._id && barber)
+		)
+		setShowModal(false)
+	}
+
+	const handleCheckboxToggle = (action, barber, index) => {
+		const newServicesArray = barber.services.map((service, i) => {
+			return i === index
+				? { ...service, checked: !service.checked }
+				: { ...service }
+		})
+		action === 'create'
+			? setNewBarber({ ...barber, services: newServicesArray })
+			: setToModifyBarber({ ...barber, services: newServicesArray })
+	}
+
+	const handleDetailsClick = (barber) => {
+		const servicesChecked = servicesList.map((service) => {
+			return {
+				name: service.name,
+				checked: barber.services.includes(service.name),
+			}
+		})
+		setToModifyBarber({ ...barber, services: servicesChecked })
+		setModifyModal(true)
+		setShowModal(true)
+	}
+
+	const handleDeleteClick = (barber) => {
+		setToDeleteBarber(barber)
+		setModifyModal(false)
+		setShowModal(true)
+	}
+
 	return (
-		<div className="h-full py-5 px-7 bg-[#D9D9D9]">
-			<h2 className="mb-7 text-4xl">Barberos</h2>
+		<div className="relative border rounded-2xl h-full py-5 px-7 bg-[#D9D9D9]">
+			<div
+				inert={showModal ? '' : undefined}
+				className={showModal ? 'blur-sm' : ''}
+			>
+				<h2 className="mb-7 text-4xl">Barberos</h2>
 
-			<form>
-				<div className="flex">
-					<div className="flex flex-col w-1/2 mr-10">
-						<label
-							className="text-xl mb-2"
-							htmlFor="barber-first-name"
-						>
-							Nombre
-						</label>
-						<input
-							className="border rounded-lg p-1"
-							type="text"
-							id="barber-first-name"
-							name="barber-first-name"
-						/>
-					</div>
+				<BarberForm
+					submitHandler={submitHandler}
+					barber={newBarber}
+					setBarber={setNewBarber}
+					onClickCancel={resetNewBarber}
+					servicesList={servicesList}
+					handleCheckboxToggle={handleCheckboxToggle}
+					confirmButtonTag="Agregar"
+					action="create"
+				/>
 
-					<div className="flex flex-col w-1/2 mr-auto">
-						<label
-							className="text-xl mb-2"
-							htmlFor="barber-last-name"
-						>
-							Apellido
-						</label>
-						<input
-							className="border rounded-lg p-1"
-							type="text"
-							id="barber-last-name"
-							name="barber-last-name"
-						/>
-					</div>
-				</div>
-
-				<div className="flex">
-					<div className="flex flex-col w-1/2 mr-10">
-						<label
-							className="text-xl mt-5 mb-2"
-							htmlFor="barber-phone"
-						>
-							Teléfono
-						</label>
-						<input
-							className="border rounded-lg p-1"
-							type="phone"
-							id="barber-phone"
-							name="barber-phone"
-						/>
-					</div>
-
-					<div className=" flex flex-col w-1/2 mr-auto">
-						<label
-							className="text-xl mt-5 mb-2"
-							htmlFor="barber-email"
-						>
-							Email
-						</label>
-						<input
-							className="border rounded-lg p-1"
-							type="email"
-							id="barber-email"
-							name="barber-email"
-						/>
-					</div>
-				</div>
-
-				<div className="flex flex-wrap justify-between">
-					{services.map((service) => {
-						return (
-							<div key={service}>
-								<label className="text-xl mr-8">
-									<input
-										className="mt-10 mr-1 h-5 w-5 checked:bg-slate-800"
-										type="checkbox"
-									/>
-									{service}
-								</label>
-							</div>
-						)
-					})}
-				</div>
-				<div className="flex justify-end gap-6">
-					<button
-						className="my-6 border border-black rounded-lg py-1 px-6 bg-[#96B593]"
-						type="submit"
-					>
-						Agregar
-					</button>
-					<button
-						className="my-6 border border-black rounded-lg py-1 px-6 bg-[#BC8F86]"
-						type="button"
-					>
-						Cancelar
-					</button>
-				</div>
-			</form>
-
-			<div className="border rounded-lg">
-				<table className="w-full divide-y divide-white bg-white bg-opacity-10">
-					<thead>
-						<tr className="h-16 border-white">
-							<th>Nombre</th>
-							<th>Apellido</th>
-							<th>Servicios</th>
-							<th></th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody className="divide-y divide-white">
-						{barbers.map((barber) => {
-							return (
-								<tr
-									className="h-16 even:bg-gray-100"
-									key={barber.id}
-								>
-									<td className="text-center">{barber.name}</td>
-									<td className="text-center">{barber.lastname}</td>
-									<td className="">
-										<div className="flex justify-center gap-3">
-											{barber.services.map((service) => {
-												return (
-													<div
-														className="border rounded-lg bg-slate-950 text-slate-200 px-2"
-														key={service}
-													>
-														{service}
-													</div>
-												)
-											})}
-										</div>
-									</td>
-									<td className="">
-										<button className="">
-											<Image
-												width={32}
-												src={iconInfo}
-												alt="info_icon"
-											/>
-										</button>
-									</td>
-									<td className="">
-										<button className="">
-											<Image
-												width={28}
-												src={iconDel}
-												alt="info_icon"
-											/>
-										</button>
-									</td>
-								</tr>
-							)
-						})}
-					</tbody>
-				</table>
+				<BarbersTable
+					barbers={barbers}
+					iconInfo={iconInfo}
+					handleDetailsClick={handleDetailsClick}
+					iconDel={iconDel}
+					handleDeleteClick={handleDeleteClick}
+				/>
 			</div>
+			{showModal &&
+				createPortal(
+					<>
+						<BarbersModal>
+							{modifyModal ? (
+								<BarberForm
+									submitHandler={onSave}
+									barber={toModifyBarber}
+									setBarber={setToModifyBarber}
+									onClickCancel={() => setShowModal(false)}
+									servicesList={servicesList}
+									handleCheckboxToggle={handleCheckboxToggle}
+									confirmButtonTag="Guardar"
+									action="modify"
+								/>
+							) : (
+								<DeleteBarber
+									barber={toDeleteBarber}
+									onClickCancel={() => setShowModal(false)}
+									onClickDelete={onDelete}
+								/>
+							)}
+						</BarbersModal>
+					</>,
+					document.body
+				)}
 		</div>
 	)
 }
