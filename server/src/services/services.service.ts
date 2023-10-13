@@ -7,7 +7,11 @@ import {
   mongooseValidatonErrorHandler
 } from '../handlers/mongooseErrors.handler'
 import ServiceModel from '../models/service.model'
-import type { BodyService, ServicesResponse } from '../types/service.type'
+import type {
+  BodyService,
+  Service,
+  ServicesResponse
+} from '../types/service.type'
 
 export const createServicesService = async (
   body: BodyService
@@ -130,7 +134,7 @@ export const getServiceService = async (
   }
 }
 
-export const modifyServiceService = async (id: string, body: any) => {
+export const modifyServiceService = async (id: string, body: Service) => {
   try {
     const service = await ServiceModel.findById(id)
     if (!service) {
@@ -140,11 +144,11 @@ export const modifyServiceService = async (id: string, body: any) => {
         msg: ERROR_MSGS.SERVICEID_INVALID
       }
     }
-    service.name = body.name || service.name
-    service.price = body.price || service.price
-    service.duration = body.duration || service.duration
 
-    await service.save()
+    await ServiceModel.findByIdAndUpdate({ _id: id }, body, {
+      new: true,
+      runValidators: true
+    })
 
     return {
       success: true,
