@@ -21,91 +21,63 @@ export default function Barbers() {
 
 	// const services = useSelector((state) => state.services)
 
-	// useEffect(() => {
-	// 	const fillBarbers = async () => {
-	// 		const barbers = await getBarbers(token)
-	// 		setBarbers(barbers)
-	// 	}
-
-	// 	fillBarbers()
-	// },[])
-
-	const [barbers, setBarbers] = useState([
-		{
-			_id: 1,
-			phone: '123456789',
-			fullName: 'Carlos Carlitos',
-			email: 'carlos@gmail.com',
-			services: ['Corte', 'Tintura'],
-			rol: 'barber',
-		},
-		{
-			_id: 2,
-			phone: '987654321',
-			fullName: 'Juan Juancitos',
-			email: 'juan@gmail.com',
-			services: ['Peinado', 'Alisado'],
-			rol: 'barber',
-		},
-		{
-			_id: 3,
-			phone: '444333222',
-			fullName: 'Jorge Jorgitos',
-			email: 'jorge@gmail.com',
-			services: ['Barba', 'Corte', 'Tintura'],
-			rol: 'barber',
-		},
-	])
-
-	const servicesList = [
-		{
-			_id: 111,
-			name: 'Corte',
-			price: 123,
-		},
-		{
-			_id: 222,
-			name: 'Barba',
-			price: 123,
-		},
-		{
-			_id: 333,
-			name: 'Tintura',
-			price: 123,
-		},
-		{
-			_id: 444,
-			name: 'Peinado',
-			price: 123,
-		},
-		{
-			_id: 555,
-			name: 'Alisado',
-			price: 123,
-		},
-	]
-
+	const [barbers, setBarbers] = useState([])
+	const [servicesList, setServicesList] = useState([])
 	const [newBarber, setNewBarber] = useState({
 		fullName: '',
 		phone: '',
 		email: '',
-		services: servicesList.map((service) => {
-			return { name: service.name, checked: false }
-		}),
+		services: [],
 	})
 	const [toModifyBarber, setToModifyBarber] = useState({})
 	const [toDeleteBarber, setToDeleteBarber] = useState({})
 	const [showModal, setShowModal] = useState(false)
 	const [modifyModal, setModifyModal] = useState(false)
 
+	useEffect(() => {
+		const fillBarbers = async () => {
+			const barbers = await getBarbers()
+			setBarbers(barbers)
+		}
+
+		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
+		const fillServicesAndNewBarber = async () => {
+			const response = await fetch(
+				'https://barberbuddy.vercel.app/api/v1/services/get-services',
+				{
+					method: 'GET',
+					headers: {
+						Authorization:
+							'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1Mjk2YjkzZmU3ZGM0YWI4MGFiZWZlNSIsImlhdCI6MTY5NzIxNDg1OSwiZXhwIjoxNjk5ODA2ODU5fQ.GP6BhKRsRzSWLCTX7BcLU-UP46DSy44Wz2hpE6LYG5M',
+					},
+				}
+			)
+			const data = await response.json()
+			const servicesFromServer = data.services
+			const services = servicesFromServer.map((service) => {
+				return { _id: service._id, name: service.name, checked: false }
+			})
+			setServicesList(services)
+			setNewBarber(() => {
+				return {
+					fullName: '',
+					phone: '',
+					email: '',
+					services: services,
+				}
+			})
+		}
+
+		fillBarbers()
+		fillServicesAndNewBarber()
+	}, [])
+
 	const resetNewBarber = () => {
 		setNewBarber({
 			fullName: '',
 			phone: '',
 			email: '',
-			services: servicesList.map((service) => {
-				return { name: service.name, checked: false }
-			}),
+			services: servicesList,
 		})
 	}
 
@@ -113,18 +85,11 @@ export default function Barbers() {
 		e.preventDefault()
 		const selectedServices = newBarber.services
 			.filter((service) => service.checked && service)
-			.map((service) => service.name)
+			.map((service) => service._id)
 		const newBarberToCreate = { ...newBarber, services: selectedServices }
-		// const createdBarber = await createBarber(newBarberToCreate)
+		const createdBarber = await createBarber(newBarberToCreate)
 
-		// REEMPLAZAR REGISTRO CONCATENADO CON createdBarber DEVUELTO POR SERVER
-		setBarbers(
-			barbers.concat({
-				...newBarberToCreate,
-				rol: 'barber',
-				_id: Math.floor(Math.random() * 1000),
-			})
-		)
+		setBarbers(barbers.concat(createdBarber))
 		resetNewBarber()
 	}
 
@@ -132,7 +97,7 @@ export default function Barbers() {
 		e.preventDefault()
 		const selectedServices = toModifyBarber.services
 			.filter((service) => service.checked && service)
-			.map((service) => service.name)
+			.map((service) => service._id)
 		const barberToModify = { ...toModifyBarber, services: selectedServices }
 
 		// const modifiedBarber = await updateBarber(barberToModify)
