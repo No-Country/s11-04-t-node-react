@@ -8,6 +8,7 @@ import {
 } from '../handlers/mongooseErrors.handler'
 import BarberModel from '../models/barber.model'
 import type {
+  Barber,
   CreateBarberProps,
   ICreateBarber,
   ILoginUser
@@ -160,7 +161,7 @@ export const deleteBarberService = async (id: string) => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.BARBERID_INVALID
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }
@@ -182,15 +183,17 @@ export const getBarberByIdService = async (id: string) => {
       barber
     }
   } catch (err: any) {
+    console.log(err)
+
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.BARBERID_INVALID
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }
 
-export const modifyBarberService = async (id: string, body: any) => {
+export const modifyBarberService = async (id: string, body: Barber) => {
   try {
     const barber = await BarberModel.findById(id)
     if (!barber) {
@@ -200,13 +203,11 @@ export const modifyBarberService = async (id: string, body: any) => {
         msg: ERROR_MSGS.BARBERID_INVALID
       }
     }
-    barber.fullName = body.fullName || barber.fullName
-    barber.phone = body.phone || barber.phone
-    barber.email = body.email || barber.email
-    barber.role = body.role || barber.role
-    barber.services = body.services || barber.services
 
-    await barber.save()
+    await BarberModel.findByIdAndUpdate({ _id: id }, body, {
+      new: true,
+      runValidators: true
+    })
 
     return {
       success: true,
@@ -217,7 +218,7 @@ export const modifyBarberService = async (id: string, body: any) => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.BARBERID_INVALID
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }

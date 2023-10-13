@@ -86,6 +86,7 @@ export const getBarberById = async (
 ): Promise<void> => {
   const { id } = req.params
   const { success, statusCode, msg, barber } = await getBarberByIdService(id)
+
   res.status(statusCode).json({
     success,
     msg,
