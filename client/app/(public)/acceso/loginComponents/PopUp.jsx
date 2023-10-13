@@ -72,9 +72,8 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
     const data = {
       otp: code.join(""),
     };
-    console.log(data);
     notifier.asyncBlock(
-      backend.get(`verify-email`, data, { headers: getAuthorization(OTPCode) }),
+      backend.post(`verify-email`, data, { headers: getAuthorization(OTPCode) }),
       (res) => {
         if (res.data.success === true) {
           router.push("/panel");
@@ -83,7 +82,7 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
               fullName: res.data.fullName,
               userId: 1,
               token: res.data.token,
-              role: res.data.token,
+              role: res.data.role,
             })
           );
         }

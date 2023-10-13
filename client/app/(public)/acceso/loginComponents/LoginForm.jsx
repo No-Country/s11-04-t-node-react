@@ -35,7 +35,7 @@ const LoginForm = () => {
       return;
     }
     notifier.asyncBlock(
-      backend.get(`login/`),
+      backend.post(`login/`, loginData),
       (res) => {
         null;
         console.log(res.data);
