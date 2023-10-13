@@ -10,5 +10,6 @@ export enum SUCCESS_MSGS {
   SERVICE_CREATED = 'Servicio creado correctamente',
   DELETED_SERVICE_SUCCES = 'Servicio borrado correctamente',
   GET_SERVICE_SUCCES = 'Servicio obtenido correctamente',
-  MODIFIED_SERVICE_SUCCESS = 'Servicio modificado correctamente'
+  MODIFIED_SERVICE_SUCCESS = 'Servicio modificado correctamente',
+  GET_SERVICES_SUCCESS = 'Servicios obtenidos correctamente'
 }

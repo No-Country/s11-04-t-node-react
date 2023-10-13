@@ -3,7 +3,8 @@ import {
   createServicesService,
   deleteServiceService,
   getServiceService,
-  modifyServiceService
+  modifyServiceService,
+  getServicesService
 } from '../services/services.service'
 
 export const createService = async (
@@ -60,5 +61,17 @@ export const modifyService = async (
   res.status(statusCode).json({
     success,
     msg
+  })
+}
+
+export const getServices = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
+  const { success, msg, statusCode, services } = await getServicesService()
+  res.status(statusCode).json({
+    success,
+    msg,
+    services
   })
 }

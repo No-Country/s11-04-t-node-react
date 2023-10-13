@@ -53,14 +53,15 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
 
 ```json
 {
-	"success":  true,
-	"msg":  "Servicio obtenido correctamente",
-	"service":  {
-	"_id":  "65285a7a519d0a5e0aa420f7",
-	"duration":  30,
-	"name":  "alto rapado",
-	"price":  300,
-	"updatedAt":  "2023-10-12T22:01:46.451Z"
+  "success": true,
+  "msg": "Servicio obtenido correctamente",
+  "service": {
+    "_id": "65285a7a519d0a5e0aa420f7",
+    "duration": 30,
+    "name": "alto rapado",
+    "price": 300,
+    "updatedAt": "2023-10-12T22:01:46.451Z"
+  }
 }
 ```
 
@@ -93,5 +94,40 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
 {
   "success": false,
   "msg": "El id del servicio es inválido"
+}
+```
+
+## Obtener todos los servicios
+
+- **Ruta**: `GET /api/v1/services/get-services`
+- **Descripción**: Obtiene información detallada sobre todos los servicios de barbería.
+- **Autenticación**: Bearer Token (`{{token-production-general}}`)
+- **Respuestas:**
+- 200 (OK):
+
+```json
+{
+  "success": true,
+  "msg": "Servicio obtenido correctamente",
+  "services": [
+    {
+      "service": {
+        "_id": "65285a7a519d0a5e0aa420f7",
+        "duration": 30,
+        "name": "alto rapado",
+        "price": 300,
+        "updatedAt": "2023-10-12T22:01:46.451Z"
+      }
+    },
+    {
+      "service": {
+        "_id": "40385a7a59a3c26a5e0aa420f3",
+        "duration": 60,
+        "name": "Tintura",
+        "price": 400,
+        "updatedAt": "2023-10-12T22:01:46.451Z"
+      }
+    }
+  ]
 }
 ```

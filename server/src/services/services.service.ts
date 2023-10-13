@@ -164,3 +164,21 @@ export const modifyServiceService = async (id: string, body: Service) => {
     }
   }
 }
+
+export const getServicesService = async () => {
+  try {
+    const services = await ServiceModel.find()
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.GET_SERVICES_SUCCESS,
+      statusCode: HttpStatusCode.OK,
+      services
+    }
+  } catch {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.DB_CONNECTION_ERROR
+    }
+  }
+}
