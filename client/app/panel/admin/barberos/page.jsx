@@ -2,13 +2,18 @@
 
 import iconInfo from '@/public/images/icon-info.svg'
 import iconDel from '@/public/images/icon-delete.png'
-import Image from 'next/image'
-import { createBarber, getBarbers } from './services/barbers.service'
+import {
+	createBarber,
+	deleteBarber,
+	getBarbers,
+} from './services/barbers.service'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import BarberForm from './components/BarberForm'
 import { createPortal } from 'react-dom'
-import BarberDetailsModal from './components/BarberDetailsModal'
+import { BarbersModal } from './components/BarbersModal'
+import { DeleteBarber } from './components/DeleteBarber'
+import { BarbersTable } from './components/BarbersTable'
 
 export default function Barbers() {
 	// const authUser = useSelector((state) => state.authUser)
@@ -88,10 +93,10 @@ export default function Barbers() {
 			return { name: service.name, checked: false }
 		}),
 	})
-
 	const [toModifyBarber, setToModifyBarber] = useState({})
-
-	const [showDetailsModal, setShowDetailsModal] = useState(false)
+	const [toDeleteBarber, setToDeleteBarber] = useState({})
+	const [showModal, setShowModal] = useState(false)
+	const [modifyModal, setModifyModal] = useState(false)
 
 	const resetNewBarber = () => {
 		setNewBarber({
@@ -123,6 +128,33 @@ export default function Barbers() {
 		resetNewBarber()
 	}
 
+	const onSave = async (e) => {
+		e.preventDefault()
+		const selectedServices = toModifyBarber.services
+			.filter((service) => service.checked && service)
+			.map((service) => service.name)
+		const barberToModify = { ...toModifyBarber, services: selectedServices }
+
+		// const modifiedBarber = await updateBarber(barberToModify)
+
+		// REEMPLAZAR REGISTRO CON modifiedBarber DEVUELTO POR SERVER
+
+		setBarbers(
+			barbers.map((barber) => {
+				return barber._id === barberToModify._id ? barberToModify : barber
+			})
+		)
+		setShowModal(false)
+	}
+
+	const onDelete = async () => {
+		// await deleteBarber(toDeleteBarber._id)
+		setBarbers(
+			barbers.filter((barber) => barber._id !== toDeleteBarber._id && barber)
+		)
+		setShowModal(false)
+	}
+
 	const handleCheckboxToggle = (action, barber, index) => {
 		const newServicesArray = barber.services.map((service, i) => {
 			return i === index
@@ -142,14 +174,21 @@ export default function Barbers() {
 			}
 		})
 		setToModifyBarber({ ...barber, services: servicesChecked })
-		setShowDetailsModal(true)
+		setModifyModal(true)
+		setShowModal(true)
+	}
+
+	const handleDeleteClick = (barber) => {
+		setToDeleteBarber(barber)
+		setModifyModal(false)
+		setShowModal(true)
 	}
 
 	return (
 		<div className="relative border rounded-2xl h-full py-5 px-7 bg-[#D9D9D9]">
 			<div
-				inert={showDetailsModal ? '' : undefined}
-				className={showDetailsModal ? 'blur-sm' : ''}
+				inert={showModal ? '' : undefined}
+				className={showModal ? 'blur-sm' : ''}
 			>
 				<h2 className="mb-7 text-4xl">Barberos</h2>
 
@@ -164,75 +203,38 @@ export default function Barbers() {
 					action="create"
 				/>
 
-				<div className="border rounded-lg">
-					<table className="w-full divide-y divide-white bg-white bg-opacity-10">
-						<thead>
-							<tr className="h-16 border-white">
-								<th>Nombre</th>
-								<th>Servicios</th>
-								<th></th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody className="divide-y divide-white">
-							{barbers.map((barber) => {
-								return (
-									<tr
-										className="h-16 even:bg-gray-100"
-										key={barber._id}
-									>
-										<td className="text-center">{barber.fullName}</td>
-										<td>
-											<div className="flex flex-wrap justify-center gap-3">
-												{barber.services.map((service) => {
-													return (
-														<div
-															className="border rounded-lg bg-slate-950 text-slate-200 px-2"
-															key={service}
-														>
-															{service}
-														</div>
-													)
-												})}
-											</div>
-										</td>
-										<td>
-											<button onClick={() => handleDetailsClick(barber)}>
-												<Image
-													width={32}
-													src={iconInfo}
-													alt="info_icon"
-												/>
-											</button>
-										</td>
-										<td>
-											<button>
-												<Image
-													width={28}
-													src={iconDel}
-													alt="info_icon"
-												/>
-											</button>
-										</td>
-									</tr>
-								)
-							})}
-						</tbody>
-					</table>
-				</div>
+				<BarbersTable
+					barbers={barbers}
+					iconInfo={iconInfo}
+					handleDetailsClick={handleDetailsClick}
+					iconDel={iconDel}
+					handleDeleteClick={handleDeleteClick}
+				/>
 			</div>
-			{showDetailsModal &&
+			{showModal &&
 				createPortal(
-					<BarberDetailsModal
-						onCancel={() => setShowDetailsModal(false)}
-						toModifyBarber={toModifyBarber}
-						setToModifyBarber={setToModifyBarber}
-						barbers={barbers}
-						setBarbers={setBarbers}
-						servicesList={servicesList}
-						setShowDetailsModal={setShowDetailsModal}
-						handleCheckboxToggle={handleCheckboxToggle}
-					/>,
+					<>
+						<BarbersModal>
+							{modifyModal ? (
+								<BarberForm
+									submitHandler={onSave}
+									barber={toModifyBarber}
+									setBarber={setToModifyBarber}
+									onClickCancel={() => setShowModal(false)}
+									servicesList={servicesList}
+									handleCheckboxToggle={handleCheckboxToggle}
+									confirmButtonTag="Guardar"
+									action="modify"
+								/>
+							) : (
+								<DeleteBarber
+									barber={toDeleteBarber}
+									onClickCancel={() => setShowModal(false)}
+									onClickDelete={onDelete}
+								/>
+							)}
+						</BarbersModal>
+					</>,
 					document.body
 				)}
 		</div>
