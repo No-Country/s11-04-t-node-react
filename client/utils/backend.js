@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const backend = axios.create({
-  baseURL: "https://pokeapi.co/api/v2/pokemon",
+  baseURL: "http://localhost:2500/api/v1/",
 });
 
 export const getAuthorization = (token) => {

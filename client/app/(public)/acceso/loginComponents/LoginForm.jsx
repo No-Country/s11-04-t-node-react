@@ -35,12 +35,12 @@ const LoginForm = () => {
       return;
     }
     notifier.asyncBlock(
-      backend.get(`charizard/`),
+      backend.post(`login/`, loginData),
       (res) => {
         null;
-        console.log(res.data.weight);
+        console.log(res.data);
         //guardar token recibido
-        setOTPCode(res.data.weight);
+        setOTPCode(res.data.token);
         setIsPopupOpen(true);
         setLoginData({ email: "" });
       },

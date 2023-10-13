@@ -42,6 +42,7 @@ export interface CreateBarberProps {
   phone: string
   email: string
   services: ObjectId[]
+  role: string
 }
 
 export interface ICreateBarber {

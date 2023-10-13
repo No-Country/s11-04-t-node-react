@@ -70,19 +70,19 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 
   const hanldeAuthorizedUser = () => {
     const data = {
-      code: code.join(""),
+      otp: code.join(""),
     };
-    console.log(data);
     notifier.asyncBlock(
-      backend.get(`charizard/`, { headers: getAuthorization(OTPCode) }),
+      backend.post(`verify-email`, data, { headers: getAuthorization(OTPCode) }),
       (res) => {
-        if (false === true) {
+        if (res.data.success === true) {
           router.push("/panel");
           return dispatch(
             login({
-              fullName: "fulname user",
+              fullName: res.data.fullName,
               userId: 1,
-              token: "eltokenxD",
+              token: res.data.token,
+              role: res.data.role,
             })
           );
         }

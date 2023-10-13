@@ -65,7 +65,7 @@ export const createBarberService = async (
   body: CreateBarberProps
 ): Promise<ICreateBarber> => {
   try {
-    const { fullName, phone, email, services } = body
+    const { fullName, phone, email, services, role } = body
 
     // Revisar que el correo tenga formato de email
     if (!validator.isEmail(email)) {
@@ -91,7 +91,8 @@ export const createBarberService = async (
       fullName,
       phone,
       email,
-      services
+      services,
+      role
     })
 
     return {
