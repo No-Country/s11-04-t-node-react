@@ -49,14 +49,14 @@ export const createBarber = async (token, newBarber) => {
 }
 
 //PUT
-export const updateBarber = async (token, id, modifiedBarber) => {
+export const updateBarber = async (token, id, barberToModify) => {
 	try {
 		const response = await fetch(`url/${id}`, {
 			method: 'PUT',
 			headers: {
 				Authorization: `bearer ${token}`,
 			},
-			body: modifiedBarber,
+			body: barberToModify,
 		})
 		// Solicitar barbero modificado al server
 		const data = await response.json()
