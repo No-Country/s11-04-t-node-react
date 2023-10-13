@@ -80,7 +80,6 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
           return dispatch(
             login({
               fullName: res.data.fullName,
-              userId: 1,
               token: res.data.token,
               role: res.data.role,
             })

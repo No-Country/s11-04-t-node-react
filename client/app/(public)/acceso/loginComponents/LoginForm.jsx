@@ -38,7 +38,6 @@ const LoginForm = () => {
       backend.post(`login/`, loginData),
       (res) => {
         null;
-        console.log(res.data);
         //guardar token recibido
         setOTPCode(res.data.token);
         setIsPopupOpen(true);
