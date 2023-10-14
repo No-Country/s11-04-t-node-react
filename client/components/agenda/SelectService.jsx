@@ -12,6 +12,8 @@ const services = [
 
 import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulingProvider";
 
+import {IoIosArrowDown} from 'react-icons/io'
+
 const SelectService = () => {
 
     const { handleChange } = useAppointmentSchedulingContext()
@@ -30,7 +32,7 @@ const SelectService = () => {
                     })
                 }
             </select>
-            <div className="absolute bottom-1 right-3 text-black text-xl uppercase">v</div>
+            <div className="absolute bottom-1 right-3 text-black text-xl uppercase"><IoIosArrowDown/></div>
         </div>
     )
 }
