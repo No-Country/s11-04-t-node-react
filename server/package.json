@@ -9,7 +9,7 @@
     "unix-dev": "NODE_ENV=development concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
     "prod": "set NODE_ENV=production && concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
     "dev": "set NODE_ENV=development && concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
-    "frontend": "set NODE_ENV=frontend && concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
+    "frontend": "NODE_ENV=frontend concurrently \"tsc -w\" \"nodemon dist/js/server.js\"",
     "check-types": "tsc --pretty --noEmit",
     "check-format": "prettier --check .",
     "check-lint": "eslint --ext js",
@@ -34,7 +34,7 @@
     "validator": "^13.11.0"
   },
   "devDependencies": {
-    "@types/validator": "^13.11.2",
+    "@flydotio/dockerfile": "^0.4.10",
     "@types/bcryptjs": "^2.4.4",
     "@types/cors": "^2.8.14",
     "@types/express": "^4.17.18",
@@ -42,6 +42,7 @@
     "@types/morgan": "^1.9.6",
     "@types/node": "^20.8.2",
     "@types/nodemailer": "^6.4.11",
+    "@types/validator": "^13.11.2",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "concurrently": "^8.2.1",
     "eslint": "^8.0.1",

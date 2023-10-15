@@ -223,3 +223,21 @@ export const modifyBarberService = async (id: string, body: Barber) => {
     }
   }
 }
+
+export const getBarbersWithTheirServicesService = async () => {
+  try {
+    const barbers = await BarberModel.find().populate('services')
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.GET_BARBERS_WITH_THEIR_SERVICES_SUCCESS,
+      statusCode: HttpStatusCode.OK,
+      barbers
+    }
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.DB_CONNECTION_ERROR
+    }
+  }
+}
