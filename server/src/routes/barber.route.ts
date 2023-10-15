@@ -4,6 +4,7 @@ import {
   deleteBarber,
   getBarberById,
   getBarbers,
+  getBarbersWithTheirServices,
   login,
   modifyBarber,
   verifyEmail
@@ -23,3 +24,10 @@ barberRouter.get('/get-barbers', extractToken, auth, isAdmin, getBarbers)
 barberRouter.delete('/delete/:id', extractToken, auth, isAdmin, deleteBarber)
 barberRouter.get('/get-barber/:id', extractToken, auth, isAdmin, getBarberById)
 barberRouter.put('/modify/:id', extractToken, auth, isAdmin, modifyBarber)
+barberRouter.get(
+  '/barbers-with-services',
+  extractToken,
+  auth,
+  isAdmin,
+  getBarbersWithTheirServices
+)

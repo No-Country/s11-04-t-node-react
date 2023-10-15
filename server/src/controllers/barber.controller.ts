@@ -4,6 +4,7 @@ import {
   deleteBarberService,
   getBarberByIdService,
   getBarbersService,
+  getBarbersWithTheirServicesService,
   loginService,
   modifyBarberService
 } from '../services/barber.service'
@@ -106,5 +107,19 @@ export const modifyBarber = async (
   res.status(statusCode).json({
     success,
     msg
+  })
+}
+
+export const getBarbersWithTheirServices = async (
+  _: Request,
+  res: Response
+): Promise<void> => {
+  const { success, statusCode, msg, barbers } =
+    await getBarbersWithTheirServicesService()
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    barbers
   })
 }
