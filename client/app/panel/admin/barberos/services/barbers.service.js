@@ -1,19 +1,21 @@
-const baseUrl = 'https://barberbuddy.vercel.app/api/v1/barber'
+const baseUrl = 'https://barberbuddy.fly.dev/api/v1/barber'
 const token =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1Mjk2YjkzZmU3ZGM0YWI4MGFiZWZlNSIsImlhdCI6MTY5NzIxNDg1OSwiZXhwIjoxNjk5ODA2ODU5fQ.GP6BhKRsRzSWLCTX7BcLU-UP46DSy44Wz2hpE6LYG5M'
+	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1MjZkYzI1ZTkwZmEzYWU1ZDFlMTc2ZSIsImlhdCI6MTY5NzQxODE3MSwiZXhwIjoxNjk3NTA0NTcxfQ.3U3bGrtCI74ENdmlgCP8c7lzXKGIff3UMcn6OSMF6XY'
 const bearerToken = `Bearer ${token}`
 
 //GET
 export const getBarbers = async () => {
 	try {
-		const response = await fetch(`${baseUrl}/get-barbers`, {
+		const response = await fetch(`${baseUrl}/barbers-with-services`, {
 			method: 'GET',
 			headers: {
 				Authorization: bearerToken,
 			},
 		})
+
 		const data = await response.json()
-		return data.barbers
+
+		return data
 	} catch (error) {
 		console.log(error)
 	}
@@ -28,7 +30,7 @@ export const getBarber = async (id) => {
 			},
 		})
 		const data = await response.json()
-		return data.results
+		return data
 	} catch (error) {
 		console.log(error)
 	}
@@ -40,31 +42,32 @@ export const createBarber = async (newBarber) => {
 		const response = await fetch(`${baseUrl}/create`, {
 			method: 'POST',
 			headers: {
+				'Content-Type': 'application/json',
 				Authorization: bearerToken,
 			},
-			body: newBarber,
+			body: JSON.stringify(newBarber),
 		})
 		const data = await response.json()
-		console.log(data)
-		return data.results
+		return data
 	} catch (error) {
 		console.log(error)
 	}
 }
 
 //PUT
-export const updateBarber = async (id, barberToModify) => {
+export const updateBarber = async (barberToModify) => {
 	try {
-		const response = await fetch(`${baseUrl}/modify/${id}`, {
+		const response = await fetch(`${baseUrl}/modify/${barberToModify._id}`, {
 			method: 'PUT',
 			headers: {
+				'Content-Type': 'application/json',
 				Authorization: bearerToken,
 			},
-			body: barberToModify,
+			body: JSON.stringify(barberToModify),
 		})
 		// Solicitar barbero modificado al server
 		const data = await response.json()
-		return data.results
+		return data
 	} catch (error) {
 		console.log(error)
 	}
@@ -73,13 +76,14 @@ export const updateBarber = async (id, barberToModify) => {
 //DELETE
 export const deleteBarber = async (id) => {
 	try {
-		await fetch(`${baseUrl}/delete/${id}`, {
+		const response = await fetch(`${baseUrl}/delete/${id}`, {
 			method: 'DELETE',
 			headers: {
 				Authorization: bearerToken,
 			},
 		})
-		return
+		const data = await response.json()
+		return data
 	} catch (error) {
 		console.log(error)
 	}

@@ -8,10 +8,10 @@ export const BarbersTable = ({
 	handleDeleteClick,
 }) => {
 	return (
-		<div className="border rounded-lg">
+		<div className="border rounded-lg max-h-[40vh] overflow-auto">
 			<table className="w-full divide-y divide-white bg-white bg-opacity-10">
-				<thead>
-					<tr className="h-16 border-white">
+				<thead className="sticky top-0 bg-slate-100 h-10">
+					<tr className="border-white">
 						<th>Nombre</th>
 						<th>Servicios</th>
 						<th></th>
@@ -27,14 +27,14 @@ export const BarbersTable = ({
 							>
 								<td className="text-center">{barber.fullName}</td>
 								<td>
-									<div className="flex flex-wrap justify-center gap-3">
+									<div className="grid grid-cols-2 gap-1">
 										{barber.services.map((service) => {
 											return (
 												<div
-													className="border rounded-lg bg-slate-950 text-slate-200 px-2"
-													key={service}
+													className="border rounded-lg bg-slate-950 text-slate-200 text-center"
+													key={service._id}
 												>
-													{service}
+													{service.name}
 												</div>
 											)
 										})}

@@ -75,7 +75,7 @@ const BarberForm = ({
 								<input
 									className="mt-10 mr-1 h-5 w-5"
 									type="checkbox"
-									id={service.name}
+									id={service._id}
 									name={service.name}
 									checked={barber.services[index].checked}
 									onChange={() => {

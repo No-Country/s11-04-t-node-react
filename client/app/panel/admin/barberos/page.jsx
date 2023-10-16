@@ -6,6 +6,7 @@ import {
 	createBarber,
 	deleteBarber,
 	getBarbers,
+	updateBarber,
 } from './services/barbers.service'
 import { useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
@@ -14,6 +15,7 @@ import { createPortal } from 'react-dom'
 import { BarbersModal } from './components/BarbersModal'
 import { DeleteBarber } from './components/DeleteBarber'
 import { BarbersTable } from './components/BarbersTable'
+import { Notification } from './components/Notification'
 
 export default function Barbers() {
 	// const authUser = useSelector((state) => state.authUser)
@@ -33,22 +35,32 @@ export default function Barbers() {
 	const [toDeleteBarber, setToDeleteBarber] = useState({})
 	const [showModal, setShowModal] = useState(false)
 	const [modifyModal, setModifyModal] = useState(false)
+	const [notification, setNotification] = useState({
+		messageType: 'success',
+		message: '',
+	})
 
 	useEffect(() => {
 		const fillBarbers = async () => {
-			const barbers = await getBarbers()
+			const data = await getBarbers()
+			if (!data.success) {
+				displayNotification('error', data.msg, 5000)
+				return
+			}
+			const barbers = data.barbers
 			setBarbers(barbers)
+			displayNotification('success', data.msg, 3000)
 		}
 
 		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
 		const fillServicesAndNewBarber = async () => {
 			const response = await fetch(
-				'https://barberbuddy.vercel.app/api/v1/services/get-services',
+				'https://barberbuddy.fly.dev/api/v1/services/get-services',
 				{
 					method: 'GET',
 					headers: {
 						Authorization:
-							'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1Mjk2YjkzZmU3ZGM0YWI4MGFiZWZlNSIsImlhdCI6MTY5NzIxNDg1OSwiZXhwIjoxNjk5ODA2ODU5fQ.GP6BhKRsRzSWLCTX7BcLU-UP46DSy44Wz2hpE6LYG5M',
+							'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1MjZkYzI1ZTkwZmEzYWU1ZDFlMTc2ZSIsImlhdCI6MTY5NzQxODE3MSwiZXhwIjoxNjk3NTA0NTcxfQ.3U3bGrtCI74ENdmlgCP8c7lzXKGIff3UMcn6OSMF6XY',
 					},
 				}
 			)
@@ -81,16 +93,48 @@ export default function Barbers() {
 		})
 	}
 
+	const populateServicesData = (barber) => {
+		const populatedServices = []
+
+		for (let i = 0; i < barber.services.length; i++) {
+			const serviceData = servicesList.filter((s) => s._id === barber.services[i])
+			populatedServices.push(serviceData[0])
+		}
+
+		return {
+			...barber,
+			services: populatedServices,
+		}
+	}
+
+	const displayNotification = (messageType, message, time) => {
+		setNotification({ messageType: messageType, message: message })
+		setTimeout(() => {
+			setNotification({ message: '' })
+		}, time)
+	}
+
 	const submitHandler = async (e) => {
 		e.preventDefault()
 		const selectedServices = newBarber.services
 			.filter((service) => service.checked && service)
 			.map((service) => service._id)
 		const newBarberToCreate = { ...newBarber, services: selectedServices }
-		const createdBarber = await createBarber(newBarberToCreate)
+		const data = await createBarber(newBarberToCreate)
 
-		setBarbers(barbers.concat(createdBarber))
+		if (!data.success) {
+			displayNotification('error', data.msg, 5000)
+			return
+		}
+
+		const createdBarber = data.barber
+
+		const createdBarberPopulatedServices = populateServicesData(createdBarber)
+
+		setBarbers(barbers.concat(createdBarberPopulatedServices))
 		resetNewBarber()
+
+		displayNotification('success', data.msg, 3000)
 	}
 
 	const onSave = async (e) => {
@@ -101,23 +145,43 @@ export default function Barbers() {
 		const barberToModify = { ...toModifyBarber, services: selectedServices }
 
 		// const modifiedBarber = await updateBarber(barberToModify)
+		const data = await updateBarber(barberToModify)
+
+		setShowModal(false)
+
+		if (!data.success) {
+			displayNotification('error', data.msg, 5000)
+			return
+		}
 
 		// REEMPLAZAR REGISTRO CON modifiedBarber DEVUELTO POR SERVER
 
+		const modifiedBarberPopServ = populateServicesData(barberToModify)
+
 		setBarbers(
 			barbers.map((barber) => {
-				return barber._id === barberToModify._id ? barberToModify : barber
+				return barber._id === modifiedBarberPopServ._id
+					? modifiedBarberPopServ
+					: barber
 			})
 		)
-		setShowModal(false)
+
+		displayNotification('success', data.msg, 3000)
 	}
 
 	const onDelete = async () => {
-		// await deleteBarber(toDeleteBarber._id)
+		const data = await deleteBarber(toDeleteBarber._id)
+		setShowModal(false)
+
+		if (!data.success) {
+			displayNotification('error', data.msg, 5000)
+			return
+		}
 		setBarbers(
 			barbers.filter((barber) => barber._id !== toDeleteBarber._id && barber)
 		)
-		setShowModal(false)
+
+		displayNotification('success', data.msg, 3000)
 	}
 
 	const handleCheckboxToggle = (action, barber, index) => {
@@ -134,8 +198,9 @@ export default function Barbers() {
 	const handleDetailsClick = (barber) => {
 		const servicesChecked = servicesList.map((service) => {
 			return {
+				_id: service._id,
 				name: service.name,
-				checked: barber.services.includes(service.name),
+				checked: barber.services.some((s) => s._id === service._id),
 			}
 		})
 		setToModifyBarber({ ...barber, services: servicesChecked })
@@ -150,12 +215,14 @@ export default function Barbers() {
 	}
 
 	return (
-		<div className="relative border rounded-2xl h-full py-5 px-7 bg-[#D9D9D9]">
+		<div className="relative border rounded-2xl h-full py-5 px-7 bg-[#D9D9D9] overflow-hidden">
 			<div
 				inert={showModal ? '' : undefined}
 				className={showModal ? 'blur-sm' : ''}
 			>
-				<h2 className="mb-7 text-4xl">Barberos</h2>
+				<h2 className="text-4xl">Barberos</h2>
+
+				<Notification notification={notification} />
 
 				<BarberForm
 					submitHandler={submitHandler}
