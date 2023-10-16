@@ -24,6 +24,7 @@ const BarberForm = ({
 					name="barberFullName"
 					value={barber.fullName}
 					onChange={(e) => setBarber({ ...barber, fullName: e.target.value })}
+					required
 				/>
 			</div>
 
@@ -42,6 +43,7 @@ const BarberForm = ({
 						name="barberPhone"
 						value={barber.phone}
 						onChange={(e) => setBarber({ ...barber, phone: e.target.value })}
+						required
 					/>
 				</div>
 
@@ -59,12 +61,13 @@ const BarberForm = ({
 						name="barberEmail"
 						value={barber.email}
 						onChange={(e) => setBarber({ ...barber, email: e.target.value })}
+						required
 					/>
 				</div>
 			</div>
 
 			{/* CHECKBOXES */}
-			<div className="flex flex-wrap justify-between">
+			<div className="flex flex-wrap justify-stretch">
 				{servicesList.map((service, index) => {
 					return (
 						<div key={service._id}>
@@ -72,7 +75,7 @@ const BarberForm = ({
 								<input
 									className="mt-10 mr-1 h-5 w-5"
 									type="checkbox"
-									id={service.name}
+									id={service._id}
 									name={service.name}
 									checked={barber.services[index].checked}
 									onChange={() => {
