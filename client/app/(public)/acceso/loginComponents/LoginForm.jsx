@@ -43,7 +43,11 @@ const LoginForm = () => {
         setIsPopupOpen(true);
         setLoginData({ email: "" });
       },
-      (err) => console.log(err)
+      (err) => {
+        notifier.alert("Ah ocurrido un error inesperado, intentalo nuevamente");
+        console.log(err);
+        setLoginData({ email: "" });
+      }
     );
   };
 

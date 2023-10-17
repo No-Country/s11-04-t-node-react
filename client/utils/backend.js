@@ -1,8 +1,7 @@
-import { API_URL } from "@/constants/api";
 import axios from "axios";
 
 export const backend = axios.create({
-  baseURL: API_URL + "/api/v1/",
+  baseURL: "https://barberbuddy.fly.dev/api/v1/",
 });
 
 export const getAuthorization = (token) => {

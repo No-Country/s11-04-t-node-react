@@ -73,7 +73,9 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
       otp: code.join(""),
     };
     notifier.asyncBlock(
-      backend.post(`verify-email`, data, { headers: getAuthorization(OTPCode) }),
+      backend.post(`verify-email`, data, {
+        headers: getAuthorization(OTPCode),
+      }),
       (res) => {
         if (res.data.success === true) {
           router.push("/panel");
@@ -85,13 +87,15 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
             })
           );
         }
-        notifier.alert("codigo errado, intentalo otra vez");
         setCodeCounter((prev) => prev - 1);
         setcode(["", "", "", ""]);
       },
-      (err) => console.log(err)
+      (err) => {
+        notifier.alert("codigo errado, intentalo otra vez");
+        setcode(["", "", "", ""]);
+        console.log(err);
+      }
     );
-    //error
   };
 
   return (

@@ -137,7 +137,7 @@ export const getBarbersService = async () => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.DB_CONNECTION_ERROR
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }
@@ -216,6 +216,8 @@ export const modifyBarberService = async (id: string, body: Barber) => {
       msg: SUCCESS_MSGS.MODIFIED_BARBER_SUCCESS
     }
   } catch (err) {
+    console.log(err)
+
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

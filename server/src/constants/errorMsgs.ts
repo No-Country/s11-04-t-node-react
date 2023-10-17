@@ -34,5 +34,6 @@ export enum ERROR_MSGS {
   SERVICEID_INVALID = 'El id del servicio es inválido',
   TOKEN_APP_NOT_FOUND = 'El token para usar la app no se ha encontrado.',
   INVALID_NUMERIC_VALUES = 'Se deben recibir valores numéricos válidos.',
-  SERVICE_CREATION_ERROR = 'Error al intentar crear el servicio.'
+  SERVICE_CREATION_ERROR = 'Error al intentar crear el servicio.',
+  CLIENTID_INVALID = 'EL id del client es inválido.'
 }
