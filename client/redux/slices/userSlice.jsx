@@ -1,14 +1,17 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
 
-const sessionUser = JSON.parse(localStorage.getItem("user"));
-
+const sessionUser =
+  typeof window !== "undefined"
+    ? JSON.parse(localStorage.getItem("user"))
+    : undefined;
 
 const initialState = {
   value: {
     isAuth: sessionUser ? true : false,
     fullName: sessionUser ? sessionUser.fullName : "",
     token: sessionUser ? sessionUser.token : "",
+    role: sessionUser ? sessionUser.role : "",
   },
 };
 
@@ -27,6 +30,7 @@ export const user = createSlice({
         isAuth: true,
         fullName: fullName,
         token: token,
+        role,
       };
       localStorage.setItem("user", JSON.stringify({ fullName, role, token }));
       state.value = newStateValue;

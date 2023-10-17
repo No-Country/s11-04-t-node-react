@@ -1,7 +1,7 @@
 import React from "react";
 import { MdClose } from "react-icons/md";
 
-export const Modal = ({ isVisible, onClose, children }) => {
+export const Modal = ({ isVisible, onClose, children, message }) => {
   if (!isVisible) return null;
 
   const handleClose = (e) => {
@@ -10,7 +10,7 @@ export const Modal = ({ isVisible, onClose, children }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-25 flex justify-center items-center"
+      className="fixed inset-0 flex justify-center items-center sm:top-1/2 sm:left-1/3 sm:-translate-x-1/4 sm:-translate-y-1/2"
       id="wrapper"
       onClick={handleClose}
     >
@@ -24,6 +24,7 @@ export const Modal = ({ isVisible, onClose, children }) => {
           </div>
         </button>
         <div className="bg-[#292D33] text-white pt-4 pb-12 px-16 rounded-b-lg">
+          {message}
           {children}
         </div>
       </div>
