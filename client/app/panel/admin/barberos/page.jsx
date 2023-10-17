@@ -18,8 +18,8 @@ import { BarbersTable } from './components/BarbersTable'
 import { Notification } from './components/Notification'
 
 export default function Barbers() {
-	// const authUser = useSelector((state) => state.authUser)
-	// const token = authUser.value.token
+	const user = JSON.parse(localStorage.getItem('user'))
+	const { fullName, token, rol } = user
 
 	// const services = useSelector((state) => state.services)
 
@@ -42,7 +42,7 @@ export default function Barbers() {
 
 	useEffect(() => {
 		const fillBarbers = async () => {
-			const data = await getBarbers()
+			const data = await getBarbers(token)
 			if (!data.success) {
 				displayNotification('error', data.msg, 5000)
 				return
@@ -59,8 +59,7 @@ export default function Barbers() {
 				{
 					method: 'GET',
 					headers: {
-						Authorization:
-							'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1MjZkYzI1ZTkwZmEzYWU1ZDFlMTc2ZSIsImlhdCI6MTY5NzQxODE3MSwiZXhwIjoxNjk3NTA0NTcxfQ.3U3bGrtCI74ENdmlgCP8c7lzXKGIff3UMcn6OSMF6XY',
+						Authorization: `Bearer ${token}`,
 					},
 				}
 			)
@@ -120,7 +119,7 @@ export default function Barbers() {
 			.filter((service) => service.checked && service)
 			.map((service) => service._id)
 		const newBarberToCreate = { ...newBarber, services: selectedServices }
-		const data = await createBarber(newBarberToCreate)
+		const data = await createBarber(token, newBarberToCreate)
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
@@ -145,7 +144,7 @@ export default function Barbers() {
 		const barberToModify = { ...toModifyBarber, services: selectedServices }
 
 		// const modifiedBarber = await updateBarber(barberToModify)
-		const data = await updateBarber(barberToModify)
+		const data = await updateBarber(token, barberToModify)
 
 		setShowModal(false)
 
@@ -170,7 +169,7 @@ export default function Barbers() {
 	}
 
 	const onDelete = async () => {
-		const data = await deleteBarber(toDeleteBarber._id)
+		const data = await deleteBarber(token, toDeleteBarber._id)
 		setShowModal(false)
 
 		if (!data.success) {
