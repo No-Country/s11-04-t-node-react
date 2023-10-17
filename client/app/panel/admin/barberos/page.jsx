@@ -18,9 +18,6 @@ import { BarbersTable } from './components/BarbersTable'
 import { Notification } from './components/Notification'
 
 export default function Barbers() {
-	const user = JSON.parse(localStorage.getItem('user'))
-	const { fullName, token, rol } = user
-
 	// const services = useSelector((state) => state.services)
 
 	const [barbers, setBarbers] = useState([])
@@ -41,6 +38,9 @@ export default function Barbers() {
 	})
 
 	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('user'))
+		const { fullName, token, rol } = user
+
 		const fillBarbers = async () => {
 			const data = await getBarbers(token)
 			if (!data.success) {
@@ -81,6 +81,7 @@ export default function Barbers() {
 
 		fillBarbers()
 		fillServicesAndNewBarber()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const resetNewBarber = () => {
