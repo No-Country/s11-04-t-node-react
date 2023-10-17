@@ -63,3 +63,21 @@ export const deleteClientService = async (id: string) => {
     }
   }
 }
+
+export const getClientsService = async () => {
+  try {
+    const clients = await ClientModel.find()
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.GET_CLIENTS_SUCCESS,
+      statusCode: HttpStatusCode.OK,
+      clients
+    }
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
