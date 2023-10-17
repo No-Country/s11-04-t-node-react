@@ -35,3 +35,31 @@ export const modifyClientService = async (id: string, body: Client) => {
     }
   }
 }
+
+export const deleteClientService = async (id: string) => {
+  try {
+    const client = await ClientModel.findById(id)
+    if (!client) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.CLIENTID_INVALID
+      }
+    }
+
+    await client.deleteOne()
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.DELETED_CLIENT_SUCCESS
+    }
+  } catch (error) {
+    console.log(error)
+
+    return {
+      success: false,
+      statusCode: HttpStatusCode.BAD_REQUEST,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
