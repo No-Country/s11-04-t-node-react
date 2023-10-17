@@ -1,16 +1,15 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { RiMenuLine } from "react-icons/ri";
-import { TbUser, TbUserEdit } from "react-icons/tb";
+import { PiUserCircleLight } from "react-icons/pi";
 import { Menu, Transition } from "@headlessui/react";
 
 export const UserMenu = () => {
   return (
     <Menu as="div" className="relative">
-      <Menu.Button>
-        <RiMenuLine className="text-4xl max-sm:pt-1" />
+      <Menu.Button className="flex flex-col items-center justify-center">
+        <PiUserCircleLight className="text-4xl max-sm:pt-1" />
+        <div>Administrador</div>
       </Menu.Button>
 
       <Transition
@@ -23,40 +22,13 @@ export const UserMenu = () => {
         className="absolute z-10 top-full right-0"
       >
         <Menu.Items>
-          <div className="flex flex-col justify-start mt-2 sm:mt-0.5 gap-3 p-4 w-52 sm:w-[210px] bg-white border border-gray-100/40 shadow-md text-[#292D33] rounded">
-            <div className="flex items-center flex-col">
-              <h3 className="font-roboto text-center px-2 font-bold">
-                Bienvenidos a
-              </h3>
-              <div className="flex items-center gap-2">
-                <p className="font-bold">BarberBuddy</p>
-                <Image
-                  src="/images/logo-black.png"
-                  alt="logo"
-                  className="text-black"
-                  width={36}
-                  height={36}
-                />
-              </div>
-            </div>
-
+          <div className="flex flex-col justify-start mt-2 sm:mt-2.5 gap-3 p-2 w-36 sm:w-[150px] bg-gradient-to-t from-zinc-600 to-slate-50 border border-gray-100/40 shadow-md text-[#292D33] rounded">
             <Menu.Item>
               <Link
-                href="/acceso"
-                className="flex items-center gap-2 hover:text-[#B5AF93] transition"
+                href="/"
+                className="flex items-center justify-center hover:text-white transition text-xl"
               >
-                <TbUser className="text-2xl" />
-                <p>Inicia sesión</p>
-              </Link>
-            </Menu.Item>
-
-            <Menu.Item>
-              <Link
-                href="/registro"
-                className="flex items-center gap-2 hover:text-[#B5AF93]"
-              >
-                <TbUserEdit className="text-2xl" />
-                <p>Regístrate</p>
+                <p>Salir</p>
               </Link>
             </Menu.Item>
           </div>

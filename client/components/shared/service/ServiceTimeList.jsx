@@ -5,12 +5,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { Controller, useFormContext } from "react-hook-form";
 
-const times = [
-  { name: "15 min" },
-  { name: "30 min" },
-  { name: "45 min" },
-  { name: "60 min" },
-];
+const times = [{ name: "15" }, { name: "30" }, { name: "45" }, { name: "60" }];
 
 export const ServiceTimeList = () => {
   const { control } = useFormContext();
@@ -18,9 +13,9 @@ export const ServiceTimeList = () => {
   return (
     <div className="w-full">
       <Controller
-        name="time"
+        name="duration"
         control={control}
-        rules={{ required: true }}
+        rules={{ required: true, setValueAs: (v) => v + "" }}
         render={({ field }) => (
           <Listbox {...field}>
             <div className="relative mt-0">
@@ -63,7 +58,7 @@ export const ServiceTimeList = () => {
                               selected ? "font-medium" : "font-normal"
                             }`}
                           >
-                            {time.name}
+                            {time.name} minutos
                           </span>
                           {selected ? (
                             <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
