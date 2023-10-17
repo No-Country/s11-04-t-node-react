@@ -1,15 +1,12 @@
 const baseUrl = 'https://barberbuddy.fly.dev/api/v1/barber'
-const token =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJiYXJiZXJJZCI6IjY1MjZkYzI1ZTkwZmEzYWU1ZDFlMTc2ZSIsImlhdCI6MTY5NzQxODE3MSwiZXhwIjoxNjk3NTA0NTcxfQ.3U3bGrtCI74ENdmlgCP8c7lzXKGIff3UMcn6OSMF6XY'
-const bearerToken = `Bearer ${token}`
 
 //GET
-export const getBarbers = async () => {
+export const getBarbers = async (token) => {
 	try {
 		const response = await fetch(`${baseUrl}/barbers-with-services`, {
 			method: 'GET',
 			headers: {
-				Authorization: bearerToken,
+				Authorization: `Bearer ${token}`,
 			},
 		})
 
@@ -21,12 +18,12 @@ export const getBarbers = async () => {
 	}
 }
 
-export const getBarber = async (id) => {
+export const getBarber = async (token, id) => {
 	try {
 		const response = await fetch(`${baseUrl}/get-barber/${id}`, {
 			method: 'GET',
 			headers: {
-				Authorization: bearerToken,
+				Authorization: `Bearer ${token}`,
 			},
 		})
 		const data = await response.json()
@@ -37,13 +34,13 @@ export const getBarber = async (id) => {
 }
 
 //POST
-export const createBarber = async (newBarber) => {
+export const createBarber = async (token, newBarber) => {
 	try {
 		const response = await fetch(`${baseUrl}/create`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: bearerToken,
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify(newBarber),
 		})
@@ -55,13 +52,13 @@ export const createBarber = async (newBarber) => {
 }
 
 //PUT
-export const updateBarber = async (barberToModify) => {
+export const updateBarber = async (token, barberToModify) => {
 	try {
 		const response = await fetch(`${baseUrl}/modify/${barberToModify._id}`, {
 			method: 'PUT',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: bearerToken,
+				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify(barberToModify),
 		})
@@ -74,12 +71,12 @@ export const updateBarber = async (barberToModify) => {
 }
 
 //DELETE
-export const deleteBarber = async (id) => {
+export const deleteBarber = async (token, id) => {
 	try {
 		const response = await fetch(`${baseUrl}/delete/${id}`, {
 			method: 'DELETE',
 			headers: {
-				Authorization: bearerToken,
+				Authorization: `Bearer ${token}`,
 			},
 		})
 		const data = await response.json()
