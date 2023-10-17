@@ -1,7 +1,11 @@
 import { Router } from 'express'
 import { extractToken } from '../middlewares/extractToken.middleware'
 import { auth } from '../middlewares/auth.middleware'
-import { deleteClient, getClients, modifyClient } from '../controllers/client.controller'
+import {
+  deleteClient,
+  getClients,
+  modifyClient
+} from '../controllers/client.controller'
 
 export const clientRouter = Router()
 
