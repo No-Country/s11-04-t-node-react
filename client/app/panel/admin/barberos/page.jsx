@@ -215,12 +215,12 @@ export default function Barbers() {
 	}
 
 	return (
-		<div className="relative border rounded-2xl h-full py-5 px-7 bg-[#D9D9D9] overflow-hidden">
+		<div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
 			<div
 				inert={showModal ? '' : undefined}
 				className={showModal ? 'blur-sm' : ''}
 			>
-				<h2 className="text-4xl">Barberos</h2>
+				<h2 className="text-3xl sm:text-4xl">Barberos</h2>
 
 				<Notification notification={notification} />
 
