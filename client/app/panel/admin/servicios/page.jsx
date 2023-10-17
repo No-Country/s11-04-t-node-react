@@ -102,11 +102,12 @@ export default function ServiceRegistrationPage() {
       {/* Boton Editar */}
       <Modal
         isVisible={showModal}
-        onClose={() => setShowModal(false)}
         onDone={(() => setShowModal(false), mutate())}
+        onClose={() => setShowModal(false)}
       >
         <ServiceForm
           onDone={() => setShowModal(false)}
+          onCancel={() => setShowModal(false)}
           key={selectedService}
           service={selectedService}
         />
