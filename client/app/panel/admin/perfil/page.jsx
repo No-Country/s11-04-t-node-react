@@ -97,6 +97,7 @@ const Profile = () => {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
+			if (data.tokenExpired) router.push('/acceso')
 			return
 		}
 		setDisabled(true)
