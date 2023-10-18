@@ -82,6 +82,7 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 					router.push('/panel')
 					return dispatch(
 						login({
+							_id: res.data._id,
 							fullName: res.data.fullName,
 							token: res.data.token,
 							role: res.data.role,
