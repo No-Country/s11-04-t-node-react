@@ -6,6 +6,7 @@ declare global {
       instance?: AxiosInstance
       token: string
       role: string
+      userInSessionId: string
     }
   }
 }

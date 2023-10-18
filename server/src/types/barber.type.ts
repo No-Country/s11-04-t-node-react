@@ -46,7 +46,7 @@ export interface CreateBarberProps {
   role: string
 }
 
-export interface ICreateBarber {
+export interface BarberResponse {
   success: boolean
   msg: string
   statusCode: number

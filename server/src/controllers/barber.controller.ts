@@ -6,7 +6,8 @@ import {
   getBarbersService,
   getBarbersWithTheirServicesService,
   loginService,
-  modifyBarberService
+  modifyBarberService,
+  modifyBerberInSessionService
 } from '../services/barber.service'
 import { verifyEmailService } from '../services/verifyEmail.service'
 
@@ -122,5 +123,21 @@ export const getBarbersWithTheirServices = async (
     success,
     msg,
     barbers
+  })
+}
+
+export const modifyBerberInSession = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { userInSessionId, body } = req
+
+  const { msg, statusCode, success } = await modifyBerberInSessionService(
+    id,
+    body,
+    userInSessionId
+  )
+
+  res.status(statusCode).json({
+    success,
+    msg
   })
 }
