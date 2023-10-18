@@ -129,6 +129,7 @@ export default function Barbers() {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
+			if (data.tokenExpired) router.push('/acceso')
 			return
 		}
 
@@ -156,6 +157,7 @@ export default function Barbers() {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
+			if (data.tokenExpired) router.push('/acceso')
 			return
 		}
 
@@ -180,6 +182,7 @@ export default function Barbers() {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
+			if (data.tokenExpired) router.push('/acceso')
 			return
 		}
 		setBarbers(
