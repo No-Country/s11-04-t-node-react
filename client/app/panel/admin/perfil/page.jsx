@@ -23,11 +23,8 @@ const Profile = () => {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
-		const { fullName, token, rol } = user
+		const { _id, fullName, token, rol } = user
 		setToken(token)
-
-		//QUITAR CUANDO _id LLEGUE DEL SERVER AL STORE
-		const _id = '6526dc25e90fa3ae5d1e176e'
 
 		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
 		const fillServicesAndBarber = async () => {
