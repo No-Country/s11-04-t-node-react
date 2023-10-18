@@ -9,6 +9,13 @@
 - **Descripción**: Obtiene una lista de todos los barberos registrados en la base de datos.
 - **Restriccones**: ruta protegida solo para admins.
 
+### Listar tel barbero en sesión
+
+- **Ruta**: `https://barberbuddy.fly.dev/api/v1/barber/get-me/:id`
+- **Método HTTP**: GET
+- **Descripción**: Obtiene la información del babero que ha iniciado sesión.
+- **Restriccones**: ruta protegida solo para el barbero que ha iniciado la sesión.
+
 ### Obtener un barbero por ID
 
 - **Ruta**: `https://barberbuddy.fly.dev/api/v1/barber/get-barber/:id`

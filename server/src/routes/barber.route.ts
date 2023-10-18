@@ -3,6 +3,7 @@ import {
   createBarber,
   deleteBarber,
   getBarberById,
+  getBarberInSession,
   getBarbers,
   getBarbersWithTheirServices,
   login,
@@ -38,4 +39,11 @@ barberRouter.put(
   auth,
   isBarber,
   modifyBerberInSession
+)
+barberRouter.get(
+  '/get-me/:id',
+  extractToken,
+  auth,
+  isBarber,
+  getBarberInSession
 )
