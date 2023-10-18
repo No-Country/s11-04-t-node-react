@@ -9,6 +9,7 @@ import {
 	updateBarber,
 } from './services/barbers.service'
 import { useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import BarberForm from './components/BarberForm'
 import { createPortal } from 'react-dom'
@@ -19,6 +20,7 @@ import { Notification } from './components/Notification'
 
 export default function Barbers() {
 	// const services = useSelector((state) => state.services)
+	const router = useRouter()
 
 	const [barbers, setBarbers] = useState([])
 	const [servicesList, setServicesList] = useState([])
@@ -36,15 +38,18 @@ export default function Barbers() {
 		messageType: 'success',
 		message: '',
 	})
+	const [token, setToken] = useState('')
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
 		const { fullName, token, rol } = user
+		setToken(token)
 
 		const fillBarbers = async () => {
 			const data = await getBarbers(token)
 			if (!data.success) {
 				displayNotification('error', data.msg, 5000)
+				if (data.tokenExpired) router.push('/acceso')
 				return
 			}
 			const barbers = data.barbers
@@ -184,13 +189,13 @@ export default function Barbers() {
 		displayNotification('success', data.msg, 3000)
 	}
 
-	const handleCheckboxToggle = (action, barber, index) => {
+	const handleCheckboxToggle = (barber, index) => {
 		const newServicesArray = barber.services.map((service, i) => {
 			return i === index
 				? { ...service, checked: !service.checked }
 				: { ...service }
 		})
-		action === 'create'
+		!showModal
 			? setNewBarber({ ...barber, services: newServicesArray })
 			: setToModifyBarber({ ...barber, services: newServicesArray })
 	}
@@ -232,7 +237,7 @@ export default function Barbers() {
 					servicesList={servicesList}
 					handleCheckboxToggle={handleCheckboxToggle}
 					confirmButtonTag="Agregar"
-					action="create"
+					disabled={false}
 				/>
 
 				<BarbersTable
@@ -256,7 +261,7 @@ export default function Barbers() {
 									servicesList={servicesList}
 									handleCheckboxToggle={handleCheckboxToggle}
 									confirmButtonTag="Guardar"
-									action="modify"
+									disabled={false}
 								/>
 							) : (
 								<DeleteBarber

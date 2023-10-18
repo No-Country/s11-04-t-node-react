@@ -6,7 +6,7 @@ const BarberForm = ({
 	servicesList,
 	handleCheckboxToggle,
 	confirmButtonTag,
-	action,
+	disabled,
 }) => {
 	return (
 		<form onSubmit={submitHandler}>
@@ -25,6 +25,7 @@ const BarberForm = ({
 					value={barber.fullName}
 					onChange={(e) => setBarber({ ...barber, fullName: e.target.value })}
 					required
+					disabled={disabled}
 				/>
 			</div>
 
@@ -44,6 +45,7 @@ const BarberForm = ({
 						value={barber.phone}
 						onChange={(e) => setBarber({ ...barber, phone: e.target.value })}
 						required
+						disabled={disabled}
 					/>
 				</div>
 
@@ -62,6 +64,7 @@ const BarberForm = ({
 						value={barber.email}
 						onChange={(e) => setBarber({ ...barber, email: e.target.value })}
 						required
+						disabled={disabled}
 					/>
 				</div>
 			</div>
@@ -81,15 +84,11 @@ const BarberForm = ({
 								name={service.name}
 								checked={barber.services[index].checked}
 								onChange={() => {
-									handleCheckboxToggle(action, barber, index)
+									handleCheckboxToggle(barber, index)
 								}}
+								disabled={disabled}
 							/>
-							<label
-								className="text-sm sm:text-xl"
-								htmlFor={service._id}
-							>
-								{service.name}
-							</label>
+							<label className="text-sm sm:text-xl">{service.name}</label>
 						</div>
 					)
 				})}
@@ -97,15 +96,17 @@ const BarberForm = ({
 
 			<div className="flex justify-center sm:justify-end gap-2 sm:gap-6">
 				<button
-					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593]"
+					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
 					type="submit"
+					disabled={disabled}
 				>
 					{confirmButtonTag}
 				</button>
 				<button
-					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86]"
+					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
 					type="button"
 					onClick={onClickCancel}
+					disabled={disabled}
 				>
 					Cancelar
 				</button>
