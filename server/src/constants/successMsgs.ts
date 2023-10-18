@@ -15,5 +15,6 @@ export enum SUCCESS_MSGS {
   GET_BARBERS_WITH_THEIR_SERVICES_SUCCESS = 'Barberos con sus servicios obtenidos correctamente',
   MODIFIED_CLIENT_SUCCESS = 'Cliente modificado correctamente',
   DELETED_CLIENT_SUCCESS = 'Cliente borrado correctamente',
-  GET_CLIENTS_SUCCESS = 'Clientes enviados correctamente'
+  GET_CLIENTS_SUCCESS = 'Clientes enviados correctamente',
+  CLIENT_CREATED = 'Cliente creado correctamente'
 }

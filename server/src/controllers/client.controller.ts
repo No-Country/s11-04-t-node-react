@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express'
 import {
+  createClientService,
   deleteClientService,
   getClientsService,
   modifyClientService
@@ -43,5 +44,19 @@ export const getClients = async (
     success,
     msg,
     clients
+  })
+}
+
+export const createClient = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { body } = req
+  const { success, msg, statusCode, client } = await createClientService(body)
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    client
   })
 }

@@ -76,7 +76,7 @@ export const createBarberService = async (
       }
     }
 
-    // Revisar que el usuario exista en la base de datos
+    // Revisar si el barbero existe en la base de datos
     const barber = await BarberModel.findOne({ email })
     if (barber) {
       return {
