@@ -30,7 +30,7 @@ export const verifyEmail = async (
 ): Promise<void> => {
   const tokenOTP = req.token
   const { body } = req
-  const { success, statusCode, msg, token, fullName, role, tokenExpired } =
+  const { success, statusCode, msg, token, fullName, role, tokenExpired, _id } =
     await verifyEmailService(body, tokenOTP)
 
   res.status(statusCode).json({
@@ -39,7 +39,8 @@ export const verifyEmail = async (
     token,
     fullName,
     role,
-    tokenExpired
+    tokenExpired,
+    _id
   })
 }
 

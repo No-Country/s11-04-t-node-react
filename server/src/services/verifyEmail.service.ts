@@ -70,9 +70,26 @@ export const verifyEmailService = async (
       msg: SUCCESS_MSGS.VERIFY_OTP_SUCCESS,
       token: appToken,
       fullName: barber?.fullName,
-      role: barber?.role
+      role: barber?.role,
+      _id: barber?._id
     }
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === 'TokenExpiredError') {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        tokenExpired: true,
+        msg: ERROR_MSGS.VERIFY_OTP_TOKEN_EXPIRED
+      }
+    }
+
+    if (err.name === 'JsonWebTokenError') {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: `${err.message} 😭😭😭}`
+      }
+    }
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
