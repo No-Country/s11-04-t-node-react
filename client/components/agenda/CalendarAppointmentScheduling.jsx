@@ -6,17 +6,14 @@ import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulin
 import { Calendar } from '@/components/ui/calendar'
 
 const CalendarAppointmentScheduling = () => {
-	const { formDataAppointmentScheduling, setFormDataAppointmentScheduling } =
-		useAppointmentSchedulingContext()
+    const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate } = useAppointmentSchedulingContext()
 
-	const [date, setDate] = useState(new Date())
-	useEffect(() => {
-		setFormDataAppointmentScheduling({
-			...formDataAppointmentScheduling,
-			date,
-		})
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [date])
+    useEffect(() => {
+        setFormDataAppointmentScheduling({
+            ...formDataAppointmentScheduling,
+            date,
+        })
+    }, [date])						
 
 	return (
 		<Calendar

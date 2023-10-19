@@ -1,15 +1,17 @@
 "use client"
 
-import {useAppointmentSchedulingContext} from "@/contexts/AppointmentSchedulingProvider";
 import { useEffect } from "react";
+
+import {useAppointmentSchedulingContext} from "@/contexts/AppointmentSchedulingProvider";
+
 const FormAgenda = () => {
 
-  const {formDataAppointmentScheduling, handleChange, errors} = useAppointmentSchedulingContext()
+  const {formDataAppointmentScheduling, handleChange, date} = useAppointmentSchedulingContext()
 
-  useEffect(() => {console.log(formDataAppointmentScheduling);}, [formDataAppointmentScheduling])
+  useEffect(() => {console.log(date);}, [formDataAppointmentScheduling])
 
   return (
-    <div className="w-full flex items-center justify-center flex-wrap gap-x-24 gap-y-8">
+    <div className="w-full flex items-center justify-center flex-wrap gap-x-16 gap-y-8">
       <div className="w-72">
         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
         <input type="text" value={formDataAppointmentScheduling.name} onChange={(e)=>handleChange(e)} name="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John" />
