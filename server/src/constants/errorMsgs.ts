@@ -22,6 +22,7 @@ export enum ERROR_MSGS {
   TELEPHONE_REQUIRED = 'El teléfono es requerido.',
   EMAIL_REQUIRED = 'El correo electrónico es requerido.',
   BARBERID_INVALID = 'El id del barbero es inválido.',
+  APPOIMENTID_INVALID = 'El id de la cita es inválida',
   SERVICE_NAME_REQUIRED = 'El nombre del servicio es requerido.',
   SERVICE_NAME_MIN_LENGTH = 'El nombre del servicio debe tener almenos 4 caracteres.',
   SERVICE_NAME_MAX_LENGTH = 'El nombre del servicio debe tener máximo 50 caracteres.',
