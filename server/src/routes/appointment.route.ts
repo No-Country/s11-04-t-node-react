@@ -1,6 +1,10 @@
 import { Router } from 'express'
-import { deleteAppointment } from '../controllers/appointment.controller'
+import {
+  deleteAppointment,
+  modifyAppointment
+} from '../controllers/appointment.controller'
 
 export const appoimentRouter = Router()
 
 appoimentRouter.delete('/delete/:id', deleteAppointment)
+appoimentRouter.put('/modify/:id', modifyAppointment)
