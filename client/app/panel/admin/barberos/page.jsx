@@ -42,7 +42,7 @@ export default function Barbers() {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
-		const { fullName, token, rol } = user
+		const { token } = user
 		setToken(token)
 
 		const fillBarbers = async () => {

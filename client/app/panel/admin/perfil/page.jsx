@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import BarberForm from '../barberos/components/BarberForm'
 import { getBarber, updateBarber } from '../barberos/services/barbers.service'
 import { Notification } from '../barberos/components/Notification'
+import { useRouter } from 'next/navigation'
 
 const Profile = () => {
 	const [barber, setBarber] = useState({
@@ -21,9 +22,11 @@ const Profile = () => {
 
 	const [token, setToken] = useState('')
 
+	const router = useRouter()
+
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
-		const { _id, fullName, token, rol } = user
+		const { _id, token, role } = user
 		setToken(token)
 
 		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
@@ -38,15 +41,20 @@ const Profile = () => {
 				}
 			)
 			const servicesData = await response.json()
+			if (!servicesData.success) {
+				displayNotification('error', servicesData.msg, 5000)
+				if (servicesData.tokenExpired) router.push('/acceso')
+				return
+			}
 			const servicesFromServer = servicesData.services
 			const services = servicesFromServer.map((service) => {
 				return { _id: service._id, name: service.name, checked: false }
 			})
 
-			const barberData = await getBarber(token, _id)
+			const barberData = await getBarber(token, _id, role)
 			if (!barberData.success) {
 				displayNotification('error', barberData.msg, 5000)
-				if (data.tokenExpired) router.push('/acceso')
+				if (barberData.tokenExpired) router.push('/acceso')
 				return
 			}
 			const barber = barberData.barber
