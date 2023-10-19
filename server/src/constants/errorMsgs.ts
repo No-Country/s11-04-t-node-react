@@ -27,8 +27,6 @@ export enum ERROR_MSGS {
   SERVICE_NAME_MIN_LENGTH = 'El nombre del servicio debe tener almenos 4 caracteres.',
   SERVICE_NAME_MAX_LENGTH = 'El nombre del servicio debe tener máximo 50 caracteres.',
   SERVICE_PRICE_REQUIRED = 'El precio del servicio es requerido.',
-  SERVICE_DURATION_REQUIRED = 'La duración del servicio es requerida.',
-  SERVICE_DURATION_INVALID = 'La duración del servicio debe contener 2 números.',
   TOKEN_APP_EXPIRED = 'El token para usar la app ha expirado. Inicie sesión nuevamente.',
   SERVICE_EXISTS = 'El servicio ya existe.',
   VERIFY_OTP_USER_NOT_FOUND = 'Usuario de autenticación no encontrado.',

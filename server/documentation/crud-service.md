@@ -11,13 +11,12 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
   ```json
   {
     "name": "Secado",
-    "duration": "30",
     "price": "2000"
   }
   ```
 
 - **Autenticación**: Bearer Token (`{{token-production-general}}`)
-- **Validaciones**: El nombre debe tener mínimo 4 caracteres y máximo 50 caracteres. La duración y el precio deben ser strings de números, sin espacios y sin letras. La duración debe ser solo de 2 dígitos.
+- **Validaciones**: El nombre debe tener mínimo 4 caracteres y máximo 50 caracteres. El precio debe ser un string de números, sin espacios y sin letras.
 
 ## Eliminar un Servicio
 
@@ -57,7 +56,6 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
   "msg": "Servicio obtenido correctamente",
   "service": {
     "_id": "65285a7a519d0a5e0aa420f7",
-    "duration": 30,
     "name": "alto rapado",
     "price": 300,
     "updatedAt": "2023-10-12T22:01:46.451Z"
@@ -113,7 +111,6 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
     {
       "service": {
         "_id": "65285a7a519d0a5e0aa420f7",
-        "duration": 30,
         "name": "alto rapado",
         "price": 300,
         "updatedAt": "2023-10-12T22:01:46.451Z"
@@ -122,7 +119,6 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
     {
       "service": {
         "_id": "40385a7a59a3c26a5e0aa420f3",
-        "duration": 60,
         "name": "Tintura",
         "price": 400,
         "updatedAt": "2023-10-12T22:01:46.451Z"
