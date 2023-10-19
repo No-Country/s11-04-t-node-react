@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const backend = axios.create({
-  baseURL: "https://pokeapi.co/api/v2/pokemon",
+  baseURL: "https://barberbuddy.fly.dev/api/v1/",
 });
 
 export const getAuthorization = (token) => {

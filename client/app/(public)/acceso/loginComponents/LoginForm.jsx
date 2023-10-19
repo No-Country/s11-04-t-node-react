@@ -35,16 +35,19 @@ const LoginForm = () => {
       return;
     }
     notifier.asyncBlock(
-      backend.get(`charizard/`),
+      backend.post(`login/`, loginData),
       (res) => {
         null;
-        console.log(res.data.weight);
         //guardar token recibido
-        setOTPCode(res.data.weight);
+        setOTPCode(res.data.token);
         setIsPopupOpen(true);
         setLoginData({ email: "" });
       },
-      (err) => console.log(err)
+      (err) => {
+        notifier.alert("Ah ocurrido un error inesperado, intentalo nuevamente");
+        console.log(err);
+        setLoginData({ email: "" });
+      }
     );
   };
 
@@ -57,7 +60,7 @@ const LoginForm = () => {
             value={loginData.email}
             event={hanldeChangeInput}
             name={"email"}
-            style={"flex-grow w-full rounded-lg"}
+            style={"flex-grow w-full rounded-lg h-[44px]"}
             label={"Email"}
             placeholder={"Ingresa tu correo"}
           />
