@@ -1,6 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { BsArrowDownUp } from "react-icons/bs";
 import { FaPowerOff } from "react-icons/fa";

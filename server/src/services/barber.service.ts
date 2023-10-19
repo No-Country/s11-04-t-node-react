@@ -9,8 +9,8 @@ import {
 import BarberModel from '../models/barber.model'
 import type {
   Barber,
+  BarberResponse,
   CreateBarberProps,
-  ICreateBarber,
   ILoginUser
 } from '../types/barber.type'
 import { generateOTP } from '../utils/generateOTP.util'
@@ -63,7 +63,7 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
 
 export const createBarberService = async (
   body: CreateBarberProps
-): Promise<ICreateBarber> => {
+): Promise<BarberResponse> => {
   try {
     const { fullName, phone, email, services, role } = body
 
@@ -186,6 +186,90 @@ export const getBarberByIdService = async (id: string) => {
   } catch (err: any) {
     console.log(err)
 
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const getBarberInSessionService = async (
+  id: string,
+  userInSessionId: string
+): Promise<BarberResponse> => {
+  try {
+    // Revisar que el id del params sea igual al id del barbero en sesión
+    if (id !== userInSessionId) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.BARBERID_INVALID
+      }
+    }
+
+    // Revisar si el barbero existe en la base de datos
+    const barber = await BarberModel.findById({ _id: id })
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.USER_NOT_FOUND
+      }
+    }
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.GET_BARBER_SUCCESS,
+      barber
+    }
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const modifyBerberInSessionService = async (
+  id: string,
+  body: Barber,
+  userInSessionId: string
+): Promise<BarberResponse> => {
+  try {
+    // Revisar que el id del params sea igual al id del barbero en sesión
+    if (id !== userInSessionId) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.BARBERID_INVALID
+      }
+    }
+
+    // Revisar si el barbero existe en la base de datos
+    const barber = await BarberModel.findById({ _id: id })
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.USER_NOT_FOUND
+      }
+    }
+
+    // Actualizar el barbero
+    await BarberModel.findByIdAndUpdate({ _id: id }, body, {
+      new: true,
+      runValidators: true
+    })
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.MODIFIED_BARBER_SUCCESS
+    }
+  } catch (err) {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

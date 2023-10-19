@@ -1,5 +1,5 @@
 "use client"
-const services = [
+const hours = [
     {
         name: "lavado_de_cabello",
         text: "Lavado de cabello"
@@ -14,18 +14,18 @@ import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulin
 
 import {IoIosArrowDown} from 'react-icons/io'
 
-const SelectService = () => {
+const SelectHour = () => {
 
     const { handleChange } = useAppointmentSchedulingContext()
 
 
     return (
         <div className="relative flex flex-col text-sm gap-y-2 text-stone-700 w-72">
-            <label >Categoría:</label>
-            <select name='serviceType' onChange={handleChange} className=" block py-1.5 px-2 w-full text-sm text-stone-700 bg-transparent border-2 border-b-2 border-gray-500 appearance-none focus:outline-none rounded-xl peer">
-                <option >Elige un servicio</option>
+            <label >Horario:</label>
+            <select name='hour' onChange={handleChange} className=" block py-1.5 px-2 w-full text-sm text-stone-700 bg-transparent border-2 border-b-2 border-gray-500 appearance-none focus:outline-none rounded-xl peer">
+                <option >Elige un horario</option>
                 {
-                    services.map(category => {
+                    hours.map(category => {
                         return (
                             <option key={`a${category.name}`} value={category.name}>{category.text}</option>
                         )
@@ -36,4 +36,4 @@ const SelectService = () => {
         </div>
     )
 }
-export default SelectService;
+export default SelectHour;
