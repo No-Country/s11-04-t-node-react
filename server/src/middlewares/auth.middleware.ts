@@ -38,7 +38,7 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     req.role = barber?.role
-    req.userInSessionId = barber?._id
+    req.userInSessionId = barber?._id.toString()
 
     next()
   } catch (error: any) {
