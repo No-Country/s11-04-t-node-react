@@ -1,10 +1,12 @@
 'use client'
 
+import avatarPlaceholder from '@/public/images/barber_avatar.jpeg'
 import { useEffect, useState } from 'react'
 import BarberForm from '../barberos/components/BarberForm'
 import { getBarber, updateBarber } from '../barberos/services/barbers.service'
 import { Notification } from '../barberos/components/Notification'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 const Profile = () => {
 	const [barber, setBarber] = useState({
@@ -19,15 +21,13 @@ const Profile = () => {
 		message: '',
 	})
 	const [disabled, setDisabled] = useState(true)
-
-	const [token, setToken] = useState('')
+	const [user, setUser] = useState({})
 
 	const router = useRouter()
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
-		const { _id, token, role } = user
-		setToken(token)
+		setUser(user)
 
 		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
 		const fillServicesAndBarber = async () => {
@@ -36,7 +36,7 @@ const Profile = () => {
 				{
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${token}`,
+						Authorization: `Bearer ${user.token}`,
 					},
 				}
 			)
@@ -51,7 +51,7 @@ const Profile = () => {
 				return { _id: service._id, name: service.name, checked: false }
 			})
 
-			const barberData = await getBarber(token, _id, role)
+			const barberData = await getBarber(user.token, user._id, user.role)
 			if (!barberData.success) {
 				displayNotification('error', barberData.msg, 5000)
 				if (barberData.tokenExpired) router.push('/acceso')
@@ -101,7 +101,7 @@ const Profile = () => {
 		const barberToModify = { ...barber, services: selectedServices }
 
 		// const modifiedBarber = await updateBarber(barberToModify)
-		const data = await updateBarber(token, barberToModify)
+		const data = await updateBarber(user.token, barberToModify, user.role)
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
@@ -120,6 +120,13 @@ const Profile = () => {
 		<div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
 			<h2 className="text-3xl sm:text-4xl">Mi Perfil</h2>
 			<Notification notification={notification} />
+			<Image
+				width={64}
+				height={64}
+				src={user.avatar ? user.avatar : avatarPlaceholder}
+				alt="profile"
+				className="border rounded-full mb-4"
+			/>
 			<BarberForm
 				submitHandler={onSave}
 				barber={barber}
