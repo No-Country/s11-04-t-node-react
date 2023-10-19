@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { useEffect, useState } from "react"
-import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulingProvider";
+import { useEffect, useState } from 'react'
+import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulingProvider'
 
-import { Calendar } from "@/components/ui/calendar"
+import { Calendar } from '@/components/ui/calendar'
 
 const CalendarAppointmentScheduling = () => {
     const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate } = useAppointmentSchedulingContext()
@@ -13,15 +13,15 @@ const CalendarAppointmentScheduling = () => {
             ...formDataAppointmentScheduling,
             date,
         })
-    }, [date])
+    }, [date])						
 
-    return (
-        <Calendar
-            mode="single"
-            selected={date}
-            onSelect={setDate}
-            className="rounded-md border"
-        />
-    )
+	return (
+		<Calendar
+			mode="single"
+			selected={date}
+			onSelect={setDate}
+			className="rounded-md border"
+		/>
+	)
 }
-export default CalendarAppointmentScheduling;
+export default CalendarAppointmentScheduling

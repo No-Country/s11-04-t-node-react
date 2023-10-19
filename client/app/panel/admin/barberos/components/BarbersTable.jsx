@@ -10,31 +10,31 @@ export const BarbersTable = ({
 	return (
 		<div className="border rounded-lg">
 			<table className="w-full divide-y divide-white bg-white bg-opacity-10">
-				<thead>
-					<tr className="h-16 border-white">
-						<th>Nombre</th>
-						<th>Servicios</th>
-						<th></th>
-						<th></th>
+				<thead className="bg-slate-100 h-10">
+					<tr className="border-white">
+						<th className="w-4/12 text-sm sm:text-base">Nombre</th>
+						<th className=" w-6/12 text-sm sm:text-base">Servicios</th>
+						<th className="w-1/12"></th>
+						<th className="w-1/12"></th>
 					</tr>
 				</thead>
 				<tbody className="divide-y divide-white">
 					{barbers.map((barber) => {
 						return (
 							<tr
-								className="h-16 even:bg-gray-100"
+								className="even:bg-gray-100"
 								key={barber._id}
 							>
-								<td className="text-center">{barber.fullName}</td>
+								<td className="text-center text-xs sm:text-sm">{barber.fullName}</td>
 								<td>
-									<div className="flex flex-wrap justify-center gap-3">
+									<div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
 										{barber.services.map((service) => {
 											return (
 												<div
-													className="border rounded-lg bg-slate-950 text-slate-200 px-2"
-													key={service}
+													className="text-center border rounded-lg bg-slate-950 text-slate-200 text-xs"
+													key={service._id}
 												>
-													{service}
+													{service.name}
 												</div>
 											)
 										})}
@@ -43,7 +43,7 @@ export const BarbersTable = ({
 								<td>
 									<button onClick={() => handleDetailsClick(barber)}>
 										<Image
-											width={32}
+											width={28}
 											src={iconInfo}
 											alt="info_icon"
 										/>
@@ -52,7 +52,7 @@ export const BarbersTable = ({
 								<td>
 									<button onClick={() => handleDeleteClick(barber)}>
 										<Image
-											width={28}
+											width={24}
 											src={iconDel}
 											alt="info_icon"
 										/>

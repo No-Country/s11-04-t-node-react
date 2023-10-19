@@ -11,10 +11,10 @@ export const jwtForApp = async (barberId: string): Promise<string> => {
         expiresIn = '30d'
         break
       case 'development':
-        expiresIn = '1d'
+        expiresIn = '1h'
         break
       default:
-        expiresIn = '1d'
+        expiresIn = '1h'
         break
     }
     jwt.sign(payload, SECRET_KEY_APP_USE_JWT, { expiresIn }, (error, token) => {

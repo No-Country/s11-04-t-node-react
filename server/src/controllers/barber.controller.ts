@@ -3,9 +3,12 @@ import {
   createBarberService,
   deleteBarberService,
   getBarberByIdService,
+  getBarberInSessionService,
   getBarbersService,
+  getBarbersWithTheirServicesService,
   loginService,
-  modifyBarberService
+  modifyBarberService,
+  modifyBerberInSessionService
 } from '../services/barber.service'
 import { verifyEmailService } from '../services/verifyEmail.service'
 
@@ -29,7 +32,7 @@ export const verifyEmail = async (
 ): Promise<void> => {
   const tokenOTP = req.token
   const { body } = req
-  const { success, statusCode, msg, token, fullName, role, tokenExpired } =
+  const { success, statusCode, msg, token, fullName, role, tokenExpired, _id } =
     await verifyEmailService(body, tokenOTP)
 
   res.status(statusCode).json({
@@ -38,7 +41,8 @@ export const verifyEmail = async (
     token,
     fullName,
     role,
-    tokenExpired
+    tokenExpired,
+    _id
   })
 }
 
@@ -106,5 +110,51 @@ export const modifyBarber = async (
   res.status(statusCode).json({
     success,
     msg
+  })
+}
+
+export const getBarbersWithTheirServices = async (
+  _: Request,
+  res: Response
+): Promise<void> => {
+  const { success, statusCode, msg, barbers } =
+    await getBarbersWithTheirServicesService()
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    barbers
+  })
+}
+
+export const modifyBerberInSession = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { userInSessionId, body } = req
+
+  const { msg, statusCode, success } = await modifyBerberInSessionService(
+    id,
+    body,
+    userInSessionId
+  )
+
+  res.status(statusCode).json({
+    success,
+    msg
+  })
+}
+
+export const getBarberInSession = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { userInSessionId } = req
+
+  const { msg, statusCode, success, barber } = await getBarberInSessionService(
+    id,
+    userInSessionId
+  )
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    barber
   })
 }

@@ -3,7 +3,7 @@ export enum ERROR_MSGS {
   USER_NOT_FOUND = 'El usuario no se ha encontrado.',
   JWT_OTP_HASH_ERROR_1 = 'Error al generar el token para el OTP.',
   JWT_OTP_HASH_ERROR_2 = 'El token del OTP Hash es undefined.',
-  EMAIL_INVALID = 'El correo electrónico tiene formato inválido.',
+  EMAIL_INVALID = 'El correo electrónico tiene un formato inválido.',
   LOGIN_ERROR = 'Error al intentar hacer login del usuario.',
   VERIFY_OTP_INVALID_REQUEST = 'La solicitud para verificar el OTP es inválida.',
   VERIFY_OTP_INVALID_USER_ID = 'El ID del usuario es inválido.',
@@ -26,14 +26,16 @@ export enum ERROR_MSGS {
   SERVICE_NAME_MIN_LENGTH = 'El nombre del servicio debe tener almenos 4 caracteres.',
   SERVICE_NAME_MAX_LENGTH = 'El nombre del servicio debe tener máximo 50 caracteres.',
   SERVICE_PRICE_REQUIRED = 'El precio del servicio es requerido.',
-  SERVICE_PRICE_INVALID = 'El precio del servicio debe contener solo números.',
   SERVICE_DURATION_REQUIRED = 'La duración del servicio es requerida.',
-  SERVICE_DURATION_INVALID = 'La duración del servicio debe contener solo 2 números.',
+  SERVICE_DURATION_INVALID = 'La duración del servicio debe contener 2 números.',
   TOKEN_APP_EXPIRED = 'El token para usar la app ha expirado. Inicie sesión nuevamente.',
   SERVICE_EXISTS = 'El servicio ya existe.',
   VERIFY_OTP_USER_NOT_FOUND = 'Usuario de autenticación no encontrado.',
   SERVICEID_INVALID = 'El id del servicio es inválido',
   TOKEN_APP_NOT_FOUND = 'El token para usar la app no se ha encontrado.',
   INVALID_NUMERIC_VALUES = 'Se deben recibir valores numéricos válidos.',
-  SERVICE_CREATION_ERROR = 'Error al intentar crear el servicio.'
+  SERVICE_CREATION_ERROR = 'Error al intentar crear el servicio.',
+  CLIENTID_INVALID = 'EL id del client es inválido.',
+  CLIENT_ALREADY_EXISTS = 'El cliente ya existe.',
+  CLIENT_CREATION_ERROR = 'Error al intentar crear el cliente.'
 }

@@ -7,11 +7,7 @@ import {
   mongooseValidatonErrorHandler
 } from '../handlers/mongooseErrors.handler'
 import ServiceModel from '../models/service.model'
-import type {
-  BodyService,
-  Service,
-  ServicesResponse
-} from '../types/service.type'
+import type { BodyService, ServicesResponse } from '../types/service.type'
 
 export const createServicesService = async (
   body: BodyService
@@ -134,7 +130,7 @@ export const getServiceService = async (
   }
 }
 
-export const modifyServiceService = async (id: string, body: Service) => {
+export const modifyServiceService = async (id: string, body: BodyService) => {
   try {
     const service = await ServiceModel.findById(id)
     if (!service) {
@@ -142,6 +138,29 @@ export const modifyServiceService = async (id: string, body: Service) => {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
         msg: ERROR_MSGS.SERVICEID_INVALID
+      }
+    }
+
+    const { price, duration } = body
+
+    // Verificar que price y duration sean números
+    if (price) {
+      if (!validator.isNumeric(price)) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.INVALID_NUMERIC_VALUES
+        }
+      }
+    }
+
+    if (duration) {
+      if (!validator.isNumeric(duration)) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.INVALID_NUMERIC_VALUES
+        }
       }
     }
 
@@ -155,12 +174,26 @@ export const modifyServiceService = async (id: string, body: Service) => {
       statusCode: HttpStatusCode.OK,
       msg: SUCCESS_MSGS.MODIFIED_SERVICE_SUCCESS
     }
-  } catch (err) {
+  } catch (err: any) {
+    if (err.name === 'ValidationError') {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: mongooseValidatonErrorHandler(err)
+      }
+    }
+    if (err.code === 11000) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: duplicateKeyErrorHandler(err)
+      }
+    }
     console.log(err)
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.SERVER_ERROR
+      msg: ERROR_MSGS.SERVICE_CREATION_ERROR
     }
   }
 }

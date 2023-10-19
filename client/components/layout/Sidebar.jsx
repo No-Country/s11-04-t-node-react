@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import dynamic from "next/dynamic";
+import React from "react";
 import Link from "next/link";
 import { BsArrowDownUp } from "react-icons/bs";
 import { FaPowerOff } from "react-icons/fa";
@@ -11,9 +12,13 @@ import {
   RiNotification3Line,
   RiArrowUpSLine,
 } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import { atom, useAtom, useSetAtom } from "jotai";
+
+const sidebarOpenAtom = atom(false);
 
 export const Sidebar = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useAtom(sidebarOpenAtom);
 
   const toggleMobileMenu = () => {
     setSidebarOpen(!sidebarOpen);
@@ -39,74 +44,44 @@ export const Sidebar = () => {
 
       <div
         className={clsx(
-          `fixed sm:sticky left-0 z-20 flex flex-col h-screen transition-all duration-500 bg-[#292D33] rounded-t-2xl`,
+          `fixed sm:sticky left-0 z-20 flex flex-col h-full transition-all duration-500 bg-[#292D33] rounded-t-2xl`,
           "w-full sm:w-auto",
           sidebarOpen ? "top-0" : "-top-full"
         )}
       >
-        <aside className="bg-[#292D33] flex flex-col min-h-screen overflow-auto sm:rounded-t-2xl sm:border-2 sm:border-black">
-          {/* Administrador */}
-          <>
-            <Link
-              href="/panel/admin/barberos"
-              className="sm:border-b-2 sm:border-black"
-            >
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
-                <div
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex items-center justify-between sm:justify-start text-left text-xl w-full font-bold"
-                >
-                  <p>Barberos</p>
-                  <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
-                </div>
+        <aside className="bg-[#292D33] flex flex-col min-h-full overflow-auto sm:rounded-t-2xl sm:border-2 sm:border-black">
+          {/* Global || Barbero */}
+          <Link
+            href="/panel/admin/clientes"
+            className="sm:border-b-2 sm:border-black"
+          >
+            <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+              <div
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center justify-between sm:justify-start text-xl w-full font-bold"
+              >
+                <p>Clientes</p>
               </div>
-            </Link>
+              <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+            </div>
+          </Link>
 
-            <Link
-              href="/panel/admin/agenda"
-              className="sm:border-b-2 sm:border-black"
-            >
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
-                <div
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex items-center justify-between sm:justify-start text-left text-xl w-full font-bold"
-                >
-                  <p>Agenda</p>
-                </div>
-                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+          <Link
+            href="/panel/admin/agenda"
+            className="sm:border-b-2 sm:border-black"
+          >
+            <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+              <div
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center justify-between sm:justify-start text-left text-xl w-full font-bold"
+              >
+                <p>Agenda</p>
               </div>
-            </Link>
+              <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+            </div>
+          </Link>
 
-            <Link
-              href="/panel/admin/cronograma"
-              className="sm:border-b-2 sm:border-black"
-            >
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
-                <div
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex items-center justify-between sm:justify-start text-xl w-full font-bold"
-                >
-                  <p>Cronograma</p>
-                </div>
-                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
-              </div>
-            </Link>
-
-            <Link
-              href="/panel/admin/servicios"
-              className="sm:border-b-2 sm:border-black"
-            >
-              <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
-                <div
-                  onClick={() => setSidebarOpen(false)}
-                  className="flex items-center justify-between sm:justify-start text-xl w-full font-bold"
-                >
-                  <p>Servicios</p>
-                </div>
-                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
-              </div>
-            </Link>
-          </>
+          <DynamicRoleLinks />
 
           {/* Barbero */}
           {/* <>
@@ -204,6 +179,54 @@ export const Sidebar = () => {
           </div>
         </aside>
       </div>
+    </>
+  );
+};
+
+const DynamicRoleLinks = dynamic(() => Promise.resolve(RoleLinks), {
+  ssr: false,
+});
+
+const RoleLinks = () => {
+  const setSidebarOpen = useSetAtom(sidebarOpenAtom);
+  const user = useSelector((s) => s.user.value);
+  // console.log(user);
+
+  return (
+    <>
+      {user.role === "admin" && (
+        <>
+          <Link
+            href="/panel/admin/barberos"
+            className="sm:border-b-2 sm:border-black"
+          >
+            <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+              <div
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center justify-between sm:justify-start text-left text-xl w-full font-bold"
+              >
+                <p>Barberos</p>
+                <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
+            </div>
+          </Link>
+
+          <Link
+            href="/panel/admin/servicios"
+            className="sm:border-b-2 sm:border-black"
+          >
+            <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
+              <div
+                onClick={() => setSidebarOpen(false)}
+                className="flex items-center justify-between sm:justify-start text-xl w-full font-bold"
+              >
+                <p>Servicios</p>
+              </div>
+              <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+            </div>
+          </Link>
+        </>
+      )}
     </>
   );
 };

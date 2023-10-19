@@ -9,8 +9,8 @@ import {
 import BarberModel from '../models/barber.model'
 import type {
   Barber,
+  BarberResponse,
   CreateBarberProps,
-  ICreateBarber,
   ILoginUser
 } from '../types/barber.type'
 import { generateOTP } from '../utils/generateOTP.util'
@@ -63,7 +63,7 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
 
 export const createBarberService = async (
   body: CreateBarberProps
-): Promise<ICreateBarber> => {
+): Promise<BarberResponse> => {
   try {
     const { fullName, phone, email, services, role } = body
 
@@ -76,7 +76,7 @@ export const createBarberService = async (
       }
     }
 
-    // Revisar que el usuario exista en la base de datos
+    // Revisar si el barbero existe en la base de datos
     const barber = await BarberModel.findOne({ email })
     if (barber) {
       return {
@@ -137,7 +137,7 @@ export const getBarbersService = async () => {
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.DB_CONNECTION_ERROR
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }
@@ -194,6 +194,90 @@ export const getBarberByIdService = async (id: string) => {
   }
 }
 
+export const getBarberInSessionService = async (
+  id: string,
+  userInSessionId: string
+): Promise<BarberResponse> => {
+  try {
+    // Revisar que el id del params sea igual al id del barbero en sesión
+    if (id !== userInSessionId) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.BARBERID_INVALID
+      }
+    }
+
+    // Revisar si el barbero existe en la base de datos
+    const barber = await BarberModel.findById({ _id: id })
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.USER_NOT_FOUND
+      }
+    }
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.GET_BARBER_SUCCESS,
+      barber
+    }
+  } catch (error) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const modifyBerberInSessionService = async (
+  id: string,
+  body: Barber,
+  userInSessionId: string
+): Promise<BarberResponse> => {
+  try {
+    // Revisar que el id del params sea igual al id del barbero en sesión
+    if (id !== userInSessionId) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.BARBERID_INVALID
+      }
+    }
+
+    // Revisar si el barbero existe en la base de datos
+    const barber = await BarberModel.findById({ _id: id })
+    if (!barber) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.USER_NOT_FOUND
+      }
+    }
+
+    // Actualizar el barbero
+    await BarberModel.findByIdAndUpdate({ _id: id }, body, {
+      new: true,
+      runValidators: true
+    })
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.MODIFIED_BARBER_SUCCESS
+    }
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
 export const modifyBarberService = async (id: string, body: Barber) => {
   try {
     const barber = await BarberModel.findById(id)
@@ -216,10 +300,30 @@ export const modifyBarberService = async (id: string, body: Barber) => {
       msg: SUCCESS_MSGS.MODIFIED_BARBER_SUCCESS
     }
   } catch (err) {
+    console.log(err)
+
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
       msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const getBarbersWithTheirServicesService = async () => {
+  try {
+    const barbers = await BarberModel.find().populate('services')
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.GET_BARBERS_WITH_THEIR_SERVICES_SUCCESS,
+      statusCode: HttpStatusCode.OK,
+      barbers
+    }
+  } catch (err) {
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.DB_CONNECTION_ERROR
     }
   }
 }

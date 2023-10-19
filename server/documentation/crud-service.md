@@ -17,7 +17,7 @@ A continuación se detallan las rutas relacionadas con la gestión de servicios 
   ```
 
 - **Autenticación**: Bearer Token (`{{token-production-general}}`)
-- **Respuestas**:
+- **Validaciones**: El nombre debe tener mínimo 4 caracteres y máximo 50 caracteres. La duración y el precio deben ser strings de números, sin espacios y sin letras. La duración debe ser solo de 2 dígitos.
 
 ## Eliminar un Servicio
 

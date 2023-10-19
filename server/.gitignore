@@ -4,3 +4,6 @@ node_modules
 dist
 vercel.json
 .vercel
+fly.toml
+Dockerfile
+.dockerignore

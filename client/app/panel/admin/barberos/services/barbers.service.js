@@ -1,16 +1,18 @@
-const url = ''
+const baseUrl = 'https://barberbuddy.fly.dev/api/v1/barber'
 
 //GET
 export const getBarbers = async (token) => {
 	try {
-		const response = await fetch(url, {
+		const response = await fetch(`${baseUrl}/barbers-with-services`, {
 			method: 'GET',
 			headers: {
-				Authorization: `bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 		})
+
 		const data = await response.json()
-		return data.results
+
+		return data
 	} catch (error) {
 		console.log(error)
 	}
@@ -18,14 +20,14 @@ export const getBarbers = async (token) => {
 
 export const getBarber = async (token, id) => {
 	try {
-		const response = await fetch(`url/${id}`, {
+		const response = await fetch(`${baseUrl}/get-barber/${id}`, {
 			method: 'GET',
 			headers: {
-				Authorization: `bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 		})
 		const data = await response.json()
-		return data.results
+		return data
 	} catch (error) {
 		console.log(error)
 	}
@@ -34,33 +36,35 @@ export const getBarber = async (token, id) => {
 //POST
 export const createBarber = async (token, newBarber) => {
 	try {
-		const response = await fetch(url, {
+		const response = await fetch(`${baseUrl}/create`, {
 			method: 'POST',
 			headers: {
-				Authorization: `bearer ${token}`,
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
-			body: newBarber,
+			body: JSON.stringify(newBarber),
 		})
 		const data = await response.json()
-		return data.results
+		return data
 	} catch (error) {
 		console.log(error)
 	}
 }
 
 //PUT
-export const updateBarber = async (token, id, barberToModify) => {
+export const updateBarber = async (token, barberToModify) => {
 	try {
-		const response = await fetch(`url/${id}`, {
+		const response = await fetch(`${baseUrl}/modify/${barberToModify._id}`, {
 			method: 'PUT',
 			headers: {
-				Authorization: `bearer ${token}`,
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${token}`,
 			},
-			body: barberToModify,
+			body: JSON.stringify(barberToModify),
 		})
 		// Solicitar barbero modificado al server
 		const data = await response.json()
-		return data.results
+		return data
 	} catch (error) {
 		console.log(error)
 	}
@@ -69,13 +73,14 @@ export const updateBarber = async (token, id, barberToModify) => {
 //DELETE
 export const deleteBarber = async (token, id) => {
 	try {
-		await fetch(`url/${id}`, {
+		const response = await fetch(`${baseUrl}/delete/${id}`, {
 			method: 'DELETE',
 			headers: {
-				Authorization: `bearer ${token}`,
+				Authorization: `Bearer ${token}`,
 			},
 		})
-		return
+		const data = await response.json()
+		return data
 	} catch (error) {
 		console.log(error)
 	}
