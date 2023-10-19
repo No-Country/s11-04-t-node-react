@@ -18,14 +18,26 @@ export const getBarbers = async (token) => {
 	}
 }
 
-export const getBarber = async (token, id) => {
+export const getBarber = async (token, id, role) => {
 	try {
-		const response = await fetch(`${baseUrl}/get-barber/${id}`, {
-			method: 'GET',
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
+		let response
+		if (role === 'barber') {
+			console.log(typeof id)
+			response = await fetch(`${baseUrl}/get-me/${id}`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+		} else {
+			response = await fetch(`${baseUrl}/get-barber/${id}`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+		}
+
 		const data = await response.json()
 		return data
 	} catch (error) {
@@ -52,16 +64,29 @@ export const createBarber = async (token, newBarber) => {
 }
 
 //PUT
-export const updateBarber = async (token, barberToModify) => {
+export const updateBarber = async (token, barberToModify, role) => {
 	try {
-		const response = await fetch(`${baseUrl}/modify/${barberToModify._id}`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(barberToModify),
-		})
+		let response
+		if (role === 'barber') {
+			response = await fetch(`${baseUrl}/modify-me/${barberToModify._id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(barberToModify),
+			})
+		} else {
+			response = await fetch(`${baseUrl}/modify/${barberToModify._id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(barberToModify),
+			})
+		}
+
 		// Solicitar barbero modificado al server
 		const data = await response.json()
 		return data
