@@ -9,13 +9,17 @@ const appointmentSchedulingObject = {
   celPhone: '',
   email: '',
   date: '',
-  serviceType: ''
+  serviceType: '',
+  hour: ''
 }
 
 export const AppointmentSchedulingProvider = ({ children }) => {
 
   const [formDataAppointmentScheduling, setFormDataAppointmentScheduling] = useState(appointmentSchedulingObject)
   const [errors, setErrors] = useState("")
+  const [date, setDate] = useState(new Date())
+
+  const [hiddenPopUp, setHiddenPopUp] = useState(false)
 
   const handleChange = (e) => {
     setFormDataAppointmentScheduling({
@@ -36,7 +40,11 @@ export const AppointmentSchedulingProvider = ({ children }) => {
         formDataAppointmentScheduling, 
         setFormDataAppointmentScheduling,
         handleChange,
-        errors
+        errors,
+        hiddenPopUp, 
+        setHiddenPopUp,
+        date, 
+        setDate
       }}>
       {children}
     </AppointmentSchedulingContext.Provider>

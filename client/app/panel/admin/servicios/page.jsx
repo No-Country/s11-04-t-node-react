@@ -23,7 +23,7 @@ export default function ServiceRegistrationPage() {
   return (
     <>
       <div className="bg-[#D9D9D9] sm:bg-white">
-        <div className="flex flex-col min-h-screen p-4 md:p-14 bg-[#D9D9D9] rounded-t-2xl">
+        <div className="flex flex-col min-h-screen px-4 pt-4 pb-20 md:p-14 bg-[#D9D9D9] rounded-t-2xl">
           <div
             inert={showModal ? "" : undefined}
             className={showModal ? "blur-sm" : ""}
@@ -67,12 +67,13 @@ export default function ServiceRegistrationPage() {
                         {service.name}
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
-                        <span>$</span>
+                        <span>$ </span>
                         {service.price}
+                        <span>.00</span>
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         {service.duration}
-                        <span>min</span>
+                        <span> minutos</span>
                       </td>
 
                       <td className="px-6 py-1 text-gray-700 whitespace-nowrap">
@@ -102,11 +103,12 @@ export default function ServiceRegistrationPage() {
       {/* Boton Editar */}
       <Modal
         isVisible={showModal}
-        onClose={() => setShowModal(false)}
         onDone={(() => setShowModal(false), mutate())}
+        onClose={() => setShowModal(false)}
       >
         <ServiceForm
           onDone={() => setShowModal(false)}
+          onCancel={() => setShowModal(false)}
           key={selectedService}
           service={selectedService}
         />
@@ -116,7 +118,9 @@ export default function ServiceRegistrationPage() {
 }
 
 const ServiceForm = ({ service, onDone, onCancel }) => {
-  const methods = useForm({ defaultValues: service || { duration: "15 min" } });
+  const methods = useForm({
+    defaultValues: service || { duration: "Ingrese los" },
+  });
   const {
     register,
     handleSubmit,
@@ -156,14 +160,29 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
             <label className="flex flex-col gap-2 pb-1">
               <span className="sm:text-2xl">Servicio</span>
               <input
-                {...register("name", { required: true })}
                 className="py-1.5 px-3 rounded-md shadow-lg outline-none ring-1 ring-gray-300 focus:ring-2 focus:ring-orange-300 text-black"
                 type="text"
                 placeholder="Ingrese nombre del servicio"
+                {...register("name", {
+                  required: {
+                    value: true,
+                    message: "El nombre del servicio es requerido.",
+                  },
+                  minLength: {
+                    value: 4,
+                    message:
+                      "El nombre del servicio debe tener almenos 4 caracteres.",
+                  },
+                  maxLength: {
+                    value: 50,
+                    message:
+                      "El nombre del servicio debe tener máximo 50 caracteres.",
+                  },
+                })}
               />
             </label>
             {errors.name && (
-              <span className="text-red-600">Este campo es requerido</span>
+              <span className="text-red-600">{errors.name.message}</span>
             )}
           </div>
 
@@ -172,16 +191,19 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
               <span className="sm:text-2xl">Precio</span>
               <input
                 {...register("price", {
-                  required: true,
+                  required: {
+                    value: true,
+                    message: "El precio del servicio es requerido.",
+                  },
                   setValueAs: (v) => v + "",
                 })}
                 className="py-1.5 px-3 rounded-md shadow-lg outline-none ring-1 ring-gray-300 focus:ring-2 focus:ring-orange-300 text-black"
-                type="text"
+                type="number"
                 placeholder="Ingrese el precio"
               />
             </label>
             {errors.price && (
-              <span className="text-red-600">Este campo es requerido</span>
+              <span className="text-red-600">{errors.price.message}</span>
             )}
           </div>
 
@@ -192,7 +214,7 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
         </div>
 
         <div className="flex justify-end gap-4 pb-8">
-          <div className="p-0.5 bg-white rounded-md flex items-center self-end">
+          <div className="p-0.5 bg-white rounded-md flex items-center">
             <button
               type="submit"
               className="w-full flex items-center justify-center py-0.5 px-6 rounded-md text-xl text-black hover:text-black bg-[#96B593] border-[#96B593] hover:bg-white hover:border-[#96B593] border-2 transition duration-300"
@@ -201,7 +223,7 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
             </button>
           </div>
           {service && (
-            <div className="p-0.5 bg-white rounded-md flex items-center self-end">
+            <div className="p-0.5 bg-white rounded-md flex items-center">
               <button
                 onClick={() => onCancel?.()}
                 type="button"
@@ -239,7 +261,7 @@ const ServiceFormDeleted = ({ service }) => {
               ¿Desea eliminar el servicio?
             </h2>
             <div className="flex justify-end gap-4 py-9">
-              <div className="p-0.5 bg-white rounded-md flex items-center self-end">
+              <div className="p-0.5 bg-white rounded-md flex items-center">
                 <button
                   className="w-full flex items-center justify-center py-0.5 px-6 rounded-md text-xl text-black hover:text-black bg-[#BC8F86] border-[#BC8F86] hover:bg-white hover:border-[#BC8F86] border-2 transition duration-300"
                   onClick={async () => {
@@ -252,7 +274,7 @@ const ServiceFormDeleted = ({ service }) => {
                   Eliminar
                 </button>
               </div>
-              <div className="p-0.5 bg-white rounded-md flex items-center self-end">
+              <div className="p-0.5 bg-white rounded-md flex items-center">
                 <button
                   onClick={() => setDeletedModal(false)}
                   type="button"

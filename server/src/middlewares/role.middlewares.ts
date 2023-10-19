@@ -16,3 +16,15 @@ export const isBarber = (req: Request, res: Response, next: NextFunction) => {
   }
   next()
 }
+
+export const isBarberOrAdmin = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const role = req.role
+  if (role === 'client') {
+    return unauthorized(res)
+  }
+  next()
+}

@@ -70,7 +70,8 @@ export const verifyEmailService = async (
       msg: SUCCESS_MSGS.VERIFY_OTP_SUCCESS,
       token: appToken,
       fullName: barber?.fullName,
-      role: barber?.role
+      role: barber?.role,
+      _id: barber?._id
     }
   } catch (err: any) {
     if (err.name === 'TokenExpiredError') {
@@ -89,7 +90,6 @@ export const verifyEmailService = async (
         msg: `${err.message} 😭😭😭}`
       }
     }
-
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,

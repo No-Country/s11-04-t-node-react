@@ -37,7 +37,9 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
       return notFound(res)
     }
 
-    if (barber?.role) req.role = barber?.role
+    req.role = barber?.role
+    req.userInSessionId = barber?._id.toString()
+
     next()
   } catch (error: any) {
     console.log(error)
