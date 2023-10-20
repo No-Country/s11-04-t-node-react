@@ -23,7 +23,7 @@ export default function ServiceRegistrationPage() {
   return (
     <>
       <div className="bg-[#D9D9D9] sm:bg-white">
-        <div className="flex flex-col min-h-screen px-4 pt-4 pb-20 md:p-14 bg-[#D9D9D9] rounded-t-2xl">
+        <div className="flex flex-col min-h-screen px-4 pt-28 pb-20 md:p-14 bg-[#D9D9D9] rounded-t-2xl">
           <div
             inert={showModal ? "" : undefined}
             className={showModal ? "blur-sm" : ""}
@@ -48,9 +48,9 @@ export default function ServiceRegistrationPage() {
                     <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                       Precio
                     </th>
-                    <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
+                    {/* <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                       Tiempo
-                    </th>
+                    </th> */}
                     <th className="p-3 text-sm font-semibold tracking-wide text-left uppercase">
                       Editar
                     </th>
@@ -71,10 +71,10 @@ export default function ServiceRegistrationPage() {
                         {service.price}
                         <span>.00</span>
                       </td>
-                      <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                      {/* <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         {service.duration}
                         <span> minutos</span>
-                      </td>
+                      </td> */}
 
                       <td className="px-6 py-1 text-gray-700 whitespace-nowrap">
                         <button
@@ -199,7 +199,7 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
                 })}
                 className="py-1.5 px-3 rounded-md shadow-lg outline-none ring-1 ring-gray-300 focus:ring-2 focus:ring-orange-300 text-black"
                 type="number"
-                placeholder="Ingrese el precio"
+                placeholder="Ingrese precio del servicio"
               />
             </label>
             {errors.price && (
@@ -207,10 +207,10 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
             )}
           </div>
 
-          <label className="flex flex-col gap-2">
+          {/* <label className="flex flex-col gap-2">
             <span className="sm:text-2xl">Tiempo</span>
             <ServiceTimeList />
-          </label>
+          </label> */}
         </div>
 
         <div className="flex justify-end gap-4 pb-8">
