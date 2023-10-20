@@ -43,5 +43,8 @@ export enum ERROR_MSGS {
   TOTAL_PRICE_REQUIRED = 'El precio total es requerido.',
   START_TIME_REQUIRED = 'La hora de inicio es requerida.',
   END_TIME_REQUIRED = 'La hora de finalización es requerida.',
-  DATE_REQUIRED = 'La fecha del servicio es requerida.'
+  DATE_REQUIRED = 'La fecha del servicio es requerida.',
+  DATE_INVALID = 'La fecha del servicio no puede ser menor a la actual.',
+  TIME_FORMAT_INVALID = 'El formato de la hora es inválido.',
+  DATE_INVALID_FORMAT = 'El formato de la fecha es inválido.'
 }

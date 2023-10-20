@@ -1,8 +1,8 @@
 import type { Document, ObjectId } from 'mongoose'
 
 export interface Appointment extends Document {
-  client: ObjectId
-  barber: ObjectId
+  clientId: ObjectId
+  barberId: ObjectId
   services: [ObjectId]
   totalPrice: number
   status: string
@@ -14,4 +14,20 @@ export interface Appointment extends Document {
 export enum AppointmentStatus {
   PENDING = 'pending',
   COMPLETED = 'completed'
+}
+
+export interface AppointmentResponse {
+  success: boolean
+  statusCode: number
+  msg: string
+  appointment?: Appointment
+}
+
+export interface AppointmentBody {
+  clientId: ObjectId
+  barberId: ObjectId
+  services: [ObjectId]
+  startTime: string
+  endTime: string
+  date: Date
 }

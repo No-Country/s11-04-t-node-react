@@ -3,12 +3,12 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { AppointmentStatus, type Appointment } from '../types/appointment.type'
 
 const AppointmentSchema = new Schema<Appointment>({
-  client: {
+  clientId: {
     type: Schema.Types.ObjectId,
     ref: 'Client',
     required: [true, ERROR_MSGS.CLIENT_ID_REQUIRED]
   },
-  barber: {
+  barberId: {
     type: Schema.Types.ObjectId,
     ref: 'Barber',
     required: [true, ERROR_MSGS.BARBER_ID_REQUIRED]
