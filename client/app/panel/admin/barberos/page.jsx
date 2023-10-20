@@ -42,6 +42,12 @@ export default function Barbers() {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
+
+		if (!user) {
+			router.push('/')
+			return
+		}
+
 		const { token } = user
 		setToken(token)
 

@@ -1,8 +1,14 @@
+'use client'
 // import { Banner } from "@/components/home/Banner";
 // import { Whatssap } from "@/components/shared/Whatssap";
 import Link from 'next/link'
+import { useEffect } from 'react'
 
 export default function HomePage() {
+	useEffect(() => {
+		localStorage.clear()
+	}, [])
+
 	return (
 		<div>
 			<div className="w-screen h-screen bg-[#292D33] text-white flex flex-col items-center justify-center gap-4">
