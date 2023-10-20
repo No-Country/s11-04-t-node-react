@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Input from './Input'
 import { useRouter } from 'next/navigation'
 import { backend, getAuthorization } from '@/utils/backend'
-import AWN from 'awesome-notifications'
+// import AWN from 'awesome-notifications'
 import { useDispatch } from 'react-redux'
 import { login } from '@/redux/slices/userSlice'
 
@@ -56,7 +56,7 @@ const ErrorMesaje = ({ codeCounter, setCodeCounter, setIsPopupOpen }) => {
 const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 	const [code, setcode] = useState(['', '', '', ''])
 	const [codeCounter, setCodeCounter] = useState(3)
-	const notifier = new AWN()
+	// const notifier = new AWN()
 	const router = useRouter()
 	const dispatch = useDispatch()
 
@@ -69,35 +69,60 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 		setcode(newCode)
 	}
 
-	const hanldeAuthorizedUser = () => {
+	const hanldeAuthorizedUser = async () => {
 		const data = {
 			otp: code.join(''),
 		}
-		notifier.asyncBlock(
-			backend.post(`verify-email`, data, {
+
+		//---
+
+		try {
+			const res = await backend.post(`verify-email`, data, {
 				headers: getAuthorization(OTPCode),
-			}),
-			(res) => {
-				if (res.data.success === true) {
-					router.push('/panel')
-					return dispatch(
-						login({
-							_id: res.data._id,
-							fullName: res.data.fullName,
-							token: res.data.token,
-							role: res.data.role,
-						})
-					)
-				}
-				setCodeCounter((prev) => prev - 1)
-				setcode(['', '', '', ''])
-			},
-			(err) => {
-				notifier.alert('codigo errado, intentalo otra vez')
-				setcode(['', '', '', ''])
-				console.log(err)
-			}
-		)
+			})
+
+			router.push('/panel')
+			return dispatch(
+				login({
+					_id: res.data._id,
+					fullName: res.data.fullName,
+					token: res.data.token,
+					role: res.data.role,
+				})
+			)
+		} catch (error) {
+			// notifier.alert('codigo errado, intentalo otra vez')
+			setcode(['', '', '', ''])
+			console.log(error)
+		}
+
+		//---
+
+		// notifier.asyncBlock(
+		// 	backend.post(`verify-email`, data, {
+		// 		headers: getAuthorization(OTPCode),
+		// 	}),
+		// 	(res) => {
+		// 		if (res.data.success === true) {
+		// 			router.push('/panel')
+		// 			return dispatch(
+		// 				login({
+		// 					_id: res.data._id,
+		// 					fullName: res.data.fullName,
+		// 					token: res.data.token,
+		// 					role: res.data.role,
+		// 				})
+		// 			)
+		// 		}
+		// 		setCodeCounter((prev) => prev - 1)
+		// 		setcode(['', '', '', ''])
+		// 	},
+		// 	(err) => {
+		// 		notifier.alert('codigo errado, intentalo otra vez')
+		// 		setcode(['', '', '', ''])
+		// 		console.log(err)
+		// 	}
+		// )
 	}
 
 	return (

@@ -23,6 +23,7 @@ export default function LoginPage() {
 								width="0"
 								height="0"
 								className="w-full h-auto mb-0"
+								priority
 							/>
 							<Image
 								src="/images/mostacheLogoWhite.svg"

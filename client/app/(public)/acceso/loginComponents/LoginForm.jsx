@@ -1,6 +1,6 @@
 'use client'
 import { backend } from '@/utils/backend'
-import AWN from 'awesome-notifications'
+// import AWN from 'awesome-notifications'
 import 'awesome-notifications/dist/style.css'
 import { useState } from 'react'
 import Input from './Input'
@@ -13,7 +13,7 @@ const LoginForm = () => {
 	const [OTPCode, setOTPCode] = useState()
 	const [inputError, setInputError] = useState()
 	const [isPopupOpen, setIsPopupOpen] = useState(false)
-	const notifier = new AWN()
+	// const notifier = new AWN()
 
 	const hanldeChangeInput = (e) => {
 		setInputError()
@@ -26,7 +26,7 @@ const LoginForm = () => {
 		return validEmail.test(email)
 	}
 
-	const handleRequestCode = (e) => {
+	const handleRequestCode = async (e) => {
 		e.preventDefault()
 
 		if (!validateType(loginData.email)) {
@@ -34,21 +34,35 @@ const LoginForm = () => {
 			setLoginData({ email: '' })
 			return
 		}
-		notifier.asyncBlock(
-			backend.post(`login/`, loginData),
-			(res) => {
-				null
-				//guardar token recibido
-				setOTPCode(res.data.token)
-				setIsPopupOpen(true)
-				setLoginData({ email: '' })
-			},
-			(err) => {
-				notifier.alert('Ah ocurrido un error inesperado, intentalo nuevamente')
-				console.log(err)
-				setLoginData({ email: '' })
-			}
-		)
+
+		// ----
+
+		try {
+			const res = await backend.post(`login/`, loginData)
+			setOTPCode(res.data.token)
+			setIsPopupOpen(true)
+			setLoginData({ email: '' })
+		} catch (error) {
+			// notifier.alert(error.response.data.msg)
+			setLoginData({ email: '' })
+		}
+
+		// ---
+
+		// notifier.asyncBlock(
+		// 	backend.post(`login/`, loginData),
+		// 	(res) => {
+		// 		null
+		// 		//guardar token recibido
+		// 		setOTPCode(res.data.token)
+		// 		setIsPopupOpen(true)
+		// 		setLoginData({ email: '' })
+		// 	},
+		// 	(err) => {
+		// 		notifier.alert(err.response.data.msg)
+		// 		setLoginData({ email: '' })
+		// 	}
+		// )
 	}
 
 	return (
