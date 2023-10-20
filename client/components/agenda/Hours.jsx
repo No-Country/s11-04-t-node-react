@@ -155,7 +155,7 @@ const Hours = () => {
                     {
                         hours.map(hour => {
                             return (
-                                <div className={`${!hour.cita ? '' : ''} w-full flex items-center border`}>
+                                <div key={hour.time} className={`${!hour.cita ? '' : ''} w-full flex items-center border`}>
                                     <div className='p-4 text-center border-r boder-r-black'>{hour.time}</div>
                                     {
                                         !hour.cita ?
@@ -177,7 +177,7 @@ const Hours = () => {
                     {
                         lastHours.map(hour => {
                             return (
-                                <div className='w-full flex items-center border'>
+                                <div key={hour.time} className='w-full flex items-center border'>
                                     <div className='p-4 text-center border-r boder-r-black'>{hour.time}</div>
                                     <div className='px-4 flex flex-col gap-y-1'><span>{hour.cita.client}</span><span>{hour.cita.service}</span></div>
                                 </div>

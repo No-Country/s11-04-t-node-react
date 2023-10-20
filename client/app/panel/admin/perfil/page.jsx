@@ -21,12 +21,18 @@ const Profile = () => {
 		message: '',
 	})
 	const [disabled, setDisabled] = useState(true)
-	const [user, setUser] = useState({})
+	const [user, setUser] = useState()
 
 	const router = useRouter()
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
+
+		if (!user) {
+			router.push('/')
+			return
+		}
+
 		setUser(user)
 
 		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
@@ -103,6 +109,8 @@ const Profile = () => {
 		// const modifiedBarber = await updateBarber(barberToModify)
 		const data = await updateBarber(user.token, barberToModify, user.role)
 
+		window.scrollTo(0, 0)
+
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
 			if (data.tokenExpired) router.push('/acceso')
@@ -116,8 +124,13 @@ const Profile = () => {
 		setDisabled(false)
 	}
 
+	if (!user) {
+		// router.push('/')
+		return
+	}
+
 	return (
-		<div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
+		<div className="py-28 sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl px-7 bg-[#D9D9D9]">
 			<h2 className="text-3xl sm:text-4xl">Mi Perfil</h2>
 			<Notification notification={notification} />
 			<Image

@@ -13,7 +13,7 @@ export const createServicesService = async (
   body: BodyService
 ): Promise<ServicesResponse> => {
   try {
-    const { name, price, duration } = body
+    const { name, price } = body
 
     // Revisar que el servicio no exista en la base de datos
     const service = await ServiceModel.findOne({ name })
@@ -25,8 +25,8 @@ export const createServicesService = async (
       }
     }
 
-    // Verificar que price y duration sean números
-    if (!validator.isNumeric(price) || !validator.isNumeric(duration)) {
+    // Verificar que price sea un número
+    if (!validator.isNumeric(price)) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -36,8 +36,7 @@ export const createServicesService = async (
 
     const newService = await ServiceModel.create({
       name,
-      price,
-      duration
+      price
     })
 
     return {
@@ -141,21 +140,11 @@ export const modifyServiceService = async (id: string, body: BodyService) => {
       }
     }
 
-    const { price, duration } = body
+    const { price } = body
 
-    // Verificar que price y duration sean números
+    // Verificar que price sean un número
     if (price) {
       if (!validator.isNumeric(price)) {
-        return {
-          success: false,
-          statusCode: HttpStatusCode.BAD_REQUEST,
-          msg: ERROR_MSGS.INVALID_NUMERIC_VALUES
-        }
-      }
-    }
-
-    if (duration) {
-      if (!validator.isNumeric(duration)) {
         return {
           success: false,
           statusCode: HttpStatusCode.BAD_REQUEST,
