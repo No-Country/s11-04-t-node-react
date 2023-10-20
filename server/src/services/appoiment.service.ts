@@ -83,7 +83,7 @@ export const createAppointmentService = async (
     }
 
     // Revisar que la fecha tenga un formato válida
-    if (!dayjs(date).isValid()) {
+    if (!dayjs(date, 'DD-MM-YYYY', true).isValid()) {
       return {
         success: false,
         statusCode: HttpStatusCode.BadRequest,

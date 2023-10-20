@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  createAppointment,
   deleteAppointment,
   modifyAppointment
 } from '../controllers/appointment.controller'
@@ -22,4 +23,11 @@ appoimentRouter.put(
   auth,
   isBarberOrAdmin,
   modifyAppointment
+)
+appoimentRouter.post(
+  '/create',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  createAppointment
 )
