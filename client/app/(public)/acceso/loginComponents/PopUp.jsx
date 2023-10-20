@@ -102,7 +102,7 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 
 	return (
 		<section
-			className={`fixed top-0 min-h-screen w-screen z-50 left-0 flex justify-center items-center bg-black/70 p-3 text-black tracking-widest ${
+			className={`fixed top-0 min-h-screen w-full z-50 left-0 flex justify-center items-center bg-black/70 p-3 text-black tracking-widest ${
 				isPopupOpen ? 'visible' : 'invisible'
 			}`}
 		>
@@ -130,7 +130,9 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 								key={index}
 								type="number"
 								placeholder={'x'}
-								style={'text-3xl w-full text-black py-6 shadow-2xl shadow-black/70'}
+								style={
+									'text-center text-3xl w-full text-black py-6 shadow-2xl shadow-black/70'
+								}
 								value={code[index]}
 								event={(e) => changeCodeValue(e, index)}
 							/>
@@ -143,7 +145,6 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 					>
 						verificar
 					</button>
-					;
 				</article>
 			)}
 		</section>
