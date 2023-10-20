@@ -7,7 +7,13 @@ import { Menu, Transition } from '@headlessui/react'
 import Image from 'next/image'
 
 export const UserMenu = () => {
-	const user = JSON.parse(localStorage.getItem('user'))
+	const [user, setUser] = useState()
+
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('user'))
+		setUser(user)
+	}, [])
+
 	if (!user) {
 		return
 	}
