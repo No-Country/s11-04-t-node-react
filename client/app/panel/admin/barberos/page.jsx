@@ -8,7 +8,7 @@ import {
 	getBarbers,
 	updateBarber,
 } from './services/barbers.service'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import BarberForm from './components/BarberForm'

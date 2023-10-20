@@ -2,19 +2,22 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function PanelPage() {
 	// const user = useSelector((s) => s.user.value)
+	const [user, setUser] = useState()
 	const router = useRouter()
 
-	const user = JSON.parse(localStorage.getItem('user'))
-
 	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('user'))
+
 		if (!user) {
 			router.push('/')
 			return
 		}
+
+		setUser(user)
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
