@@ -24,6 +24,7 @@ export const Header = ({ fluid }) => {
 							width="0"
 							height="0"
 							className="w-[208px] h-auto mb-0 hidden sm:flex"
+							priority
 						/>
 						<Image
 							src="/images/mostacheLogoWhite.svg"

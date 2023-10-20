@@ -39,6 +39,7 @@ export default function PanelPage() {
 							width="0"
 							height="0"
 							className="w-[208px] h-auto"
+							priority
 						/>
 						<Image
 							src="/images/mostacheLogo.svg"
@@ -46,6 +47,7 @@ export default function PanelPage() {
 							width="0"
 							height="0"
 							className="w-[59px] h-auto"
+							priority
 						/>
 					</div>
 				</div>
