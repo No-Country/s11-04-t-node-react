@@ -1,10 +1,26 @@
 'use client'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export default function PanelPage() {
-	const user = useSelector((s) => s.user.value)
+	// const user = useSelector((s) => s.user.value)
+	const router = useRouter()
+
+	const user = JSON.parse(localStorage.getItem('user'))
+
+	useEffect(() => {
+		if (!user) {
+			router.push('/')
+			return
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
+	if (!user) {
+		return
+	}
 
 	return (
 		<div className="sm:py-0.5">

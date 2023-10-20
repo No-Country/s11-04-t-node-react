@@ -21,12 +21,18 @@ const Profile = () => {
 		message: '',
 	})
 	const [disabled, setDisabled] = useState(true)
-	const [user, setUser] = useState({})
+	const [user, setUser] = useState()
 
 	const router = useRouter()
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
+
+		if (!user) {
+			router.push('/')
+			return
+		}
+
 		setUser(user)
 
 		// OBTENER LISTA DE SERVICIOS DEL STORE CUANDO ESTÉ LISTO
@@ -116,6 +122,11 @@ const Profile = () => {
 
 	const editClickHandle = () => {
 		setDisabled(false)
+	}
+
+	if (!user) {
+		// router.push('/')
+		return
 	}
 
 	return (

@@ -1,17 +1,16 @@
 'use client'
 
 import avatarPlaceholder from '@/public/images/barber_avatar.jpeg'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { PiUserCircleLight } from 'react-icons/pi'
 import { Menu, Transition } from '@headlessui/react'
 import Image from 'next/image'
 
 export const UserMenu = () => {
 	const user = JSON.parse(localStorage.getItem('user'))
-	const { role, fullName, img } = user
-
-	// <PiUserCircleLight className="text-4xl max-sm:pt-1" />
+	if (!user) {
+		return
+	}
 
 	return (
 		<Menu
@@ -22,13 +21,13 @@ export const UserMenu = () => {
 				<Image
 					width={32}
 					height={32}
-					src={img ? img : avatarPlaceholder}
+					src={user.img ? user.img : avatarPlaceholder}
 					alt="profile"
 					className="border rounded-full mb-1"
 				/>
 				<div>
-					<p>{fullName}</p>
-					<p>Rol: {role}</p>
+					<p>{user.fullName}</p>
+					<p>Rol: {user.role}</p>
 				</div>
 			</Menu.Button>
 

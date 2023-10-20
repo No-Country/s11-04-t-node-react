@@ -31,6 +31,7 @@ export const Header = ({ fluid }) => {
 							width="0"
 							height="0"
 							className="w-[48px] h-auto"
+							priority
 						/>
 					</Link>
 					<UserMenu />

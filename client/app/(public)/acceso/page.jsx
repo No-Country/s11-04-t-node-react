@@ -1,9 +1,13 @@
+'use client'
 // import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 import LoginForm from './loginComponents/LoginForm'
 import Image from 'next/image'
 
 export default function LoginPage() {
+	useEffect(() => {
+		localStorage.clear()
+	}, [])
 	return (
 		<div className="bg-[#292D33] w-screen min-h-screen text-white grid content-center justify-center">
 			<section className="">
