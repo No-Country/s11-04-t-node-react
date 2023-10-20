@@ -1,8 +1,8 @@
-
 import React from "react";
 import Image from "next/image";
 import editLogo from "@/public/images/Edit.png";
 import historiaLogo from "@/public/images/historial.png";
+import agendaIcon from "@/public/images/agenda-icon.svg"
 
 export default function ClientsTable({ setShowHistory,setShowClient }) {
 
@@ -25,6 +25,7 @@ const showClientHandler = () =>{
             <th className="w-1/12">Email</th>
             <th className="w-1/12">Historial</th>
             <th className="w-1/12">Editar</th>
+            <th className="w-1/12">Agendar</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white">
@@ -49,6 +50,16 @@ const showClientHandler = () =>{
                 <Image
                   className=""
                   src={editLogo}
+                  width={30}
+                  height={30}
+                ></Image>
+              </button>
+            </td>
+            <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
+              <button onClick={() => showClientHandler()}>
+                <Image
+                  className=""
+                  src={agendaIcon}
                   width={30}
                   height={30}
                 ></Image>
