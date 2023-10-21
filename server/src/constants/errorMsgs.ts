@@ -47,6 +47,7 @@ export enum ERROR_MSGS {
   DATE_INVALID = 'La fecha del servicio no puede ser menor a la actual.',
   TIME_FORMAT_INVALID = 'El formato de la hora es inválido.',
   DATE_INVALID_FORMAT = 'El formato de la fecha es inválido.',
-  APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME = "Existe ya una cita en este lapso de tiempo para esta barbero.",
-  TIME_INVALID = "Los tiempos de inicio y finalización de la cita son inválidos."
+  APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME = 'Existe ya una cita en este lapso de tiempo para esta barbero.',
+  TIME_INVALID = 'Los tiempos de inicio y finalización de la cita son inválidos.',
+  APPOINTMENT_NOT_PENDING = "La cita no esta pendiente."
 }

@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  completeAppointment,
   createAppointment,
   deleteAppointment,
   modifyAppointment
@@ -30,4 +31,12 @@ appoimentRouter.post(
   auth,
   isBarberOrAdmin,
   createAppointment
+)
+
+appoimentRouter.post(
+  '/complete/:id',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  completeAppointment
 )

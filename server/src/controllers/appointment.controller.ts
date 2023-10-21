@@ -1,5 +1,6 @@
 import { type Request, type Response } from 'express'
 import {
+  completeAppointmentService,
   createAppointmentService,
   deleteAppoimentService,
   modifyAppointmentService
@@ -43,5 +44,17 @@ export const createAppointment = async (
     msg,
     appointment,
     durationInMinutes
+  })
+}
+
+export const completeAppointment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { success, msg, statusCode } = await completeAppointmentService(id)
+  res.status(statusCode).json({
+    success,
+    msg
   })
 }
