@@ -3,12 +3,12 @@ import type { Document, ObjectId } from 'mongoose'
 export interface Appointment extends Document {
   clientId: ObjectId
   barberId: ObjectId
-  services: [ObjectId]
+  services: ObjectId[]
   totalPrice: number
   status: string
   startTime: string
   endTime: string
-  date: Date
+  date: string
 }
 
 export enum AppointmentStatus {
@@ -25,10 +25,10 @@ export interface AppointmentResponse {
 }
 
 export interface AppointmentBody {
-  clientId: ObjectId
-  barberId: ObjectId
-  services: [ObjectId]
+  clientId: string
+  barberId: string
+  services: string[]
   startTime: string
   endTime: string
-  date: Date
+  date: string
 }

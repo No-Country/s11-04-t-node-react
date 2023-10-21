@@ -1,18 +1,8 @@
-import type { ObjectId } from 'mongoose'
-import BarberModel from '../models/barber.model'
+import { Types } from 'mongoose'
 import ClientModel from '../models/client.model'
 import ServiceModel from '../models/service.model'
 
-export const isServiceValid = async (serviceId: ObjectId) => {
-  try {
-    const service = await ServiceModel.findById(serviceId)
-    return service !== null
-  } catch (error) {
-    return false
-  }
-}
-
-export const isClientValid = async (clientId: ObjectId) => {
+export const isClientValid = async (clientId: string) => {
   try {
     const client = await ClientModel.findById(clientId)
     return client !== null
@@ -21,25 +11,33 @@ export const isClientValid = async (clientId: ObjectId) => {
   }
 }
 
-export const isBarberValid = async (barberId: ObjectId) => {
+export const calculateServicesTotalPrice = async (servicesIds: string[]) => {
+  const servicesIdsAsObjectIds = servicesIds.map((id) => new Types.ObjectId(id))
   try {
-    const barber = await BarberModel.findById(barberId)
-    return barber !== null
-  } catch (error) {
-    return false
-  }
-}
+    /**
+     * Construye un pipeline de agregación de MongoDB para calcular el precio total de un conjunto de servicios.
+     * @param servicesIdsAsObjectIds Un arreglo de ObjectIds que representan los servicios a incluir en el cálculo.
+     * @returns Un arreglo que representa el pipeline de agregación de MongoDB con el que se calcula el precio total de los servicios.
+     */
+    const pipeline = [
+      {
+        $match: {
+          _id: { $in: servicesIdsAsObjectIds }
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          totalPrice: {
+            $sum: '$price'
+          }
+        }
+      }
+    ]
 
-export const getServicePrice = async (serviceId: ObjectId) => {
-  try {
-    // Buscar el servicio en la base de datos
-    const service = await ServiceModel.findById(serviceId)
-
-    if (!service) {
-      return 0 // Si no se encontró el servicio, devolvemos 0 como precio
-    }
-    return service.price
+    const result = await ServiceModel.aggregate(pipeline)
+    return result[0]?.totalPrice || 0
   } catch (error) {
-    return 0
+    return undefined
   }
 }

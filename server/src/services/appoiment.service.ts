@@ -1,20 +1,21 @@
-import { HttpStatusCode } from '../constants/http'
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import validator from 'validator'
 import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
-import type {
-  Appointment,
-  AppointmentBody,
-  AppointmentResponse
+import {
+  AppointmentStatus,
+  type Appointment,
+  type AppointmentBody,
+  type AppointmentResponse
 } from '../types/appointment.type'
 import {
-  getServicePrice,
-  isBarberValid,
-  isClientValid,
-  isServiceValid
+  calculateServicesTotalPrice,
+  isClientValid
 } from './dbValidations.services'
+dayjs.extend(customParseFormat)
 
 export const deleteAppoimentService = async (id: string) => {
   try {
@@ -87,13 +88,6 @@ export const createAppointmentService = async (
         msg: ERROR_MSGS.CLIENTID_INVALID
       }
     }
-    if (!(await isBarberValid(barberId))) {
-      return {
-        success: false,
-        statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.BARBERID_INVALID
-      }
-    }
 
     // Revisar que el startTime y el endTime tengan el formato HH:mm, formato de 24 horas
     if (!validator.isTime(startTime) || !validator.isTime(endTime)) {
@@ -104,13 +98,12 @@ export const createAppointmentService = async (
       }
     }
 
-    // El endTime sea mayor al startTime:
-
+    // Revisar que el endTime sea mayor al startTime:
     // Divido las cadenas de tiempo en horas y minutos
     const startTimeParts = startTime.split(':')
     const endTimeParts = endTime.split(':')
 
-    // Paso a numeros
+    // Paso a números
     const startHour = parseInt(startTimeParts[0], 10)
     const startMinute = parseInt(startTimeParts[1], 10)
     const endHour = parseInt(endTimeParts[0], 10)
@@ -127,8 +120,7 @@ export const createAppointmentService = async (
       }
     }
 
-    // Duracion de la cita:
-
+    // Duración de la cita:
     // Diferencia en minutos
     const hoursDifference = endHour - startHour
     const minutesDifference = endMinute - startMinute
@@ -157,11 +149,10 @@ export const createAppointmentService = async (
     }
 
     // Validar solapeo
-
     const existingAppointments = await AppointmentModel.find({
       barberId,
       date,
-      status: "pending"
+      status: AppointmentStatus.PENDING
     })
 
     let hasOverlap = false // Variable para rastrear si se ha encontrado una superposición
@@ -183,23 +174,20 @@ export const createAppointmentService = async (
       }
     }
 
-    // Validar los servicios
-    const areAllServicesValid = await Promise.all(
-      services.map(async (serviceId) => await isServiceValid(serviceId))
-    )
-    let totalPrice = 0
-    // Verificar si todos los servicios son válidos
-    if (areAllServicesValid.every((isValid) => isValid)) {
-      // Calculo el totalPrice acumulando los precios de los servicios
-      totalPrice = await services.reduce(async (accumulator, serviceId) => {
-        const servicePrice = await getServicePrice(serviceId)
-        return (await accumulator) + servicePrice
-      }, Promise.resolve(0))
-    } else {
+    if (services.length === 0) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.SERVICEID_INVALID
+        msg: ERROR_MSGS.SERVICES_IDS_REQUIRED
+      }
+    }
+
+    const totalPrice = await calculateServicesTotalPrice(services)
+    if (totalPrice === 0 || totalPrice === undefined) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.CALCULATE_SERVICES_TOTAL_PRICE_ERROR
       }
     }
 
@@ -209,7 +197,6 @@ export const createAppointmentService = async (
       date,
       clientId,
       barberId,
-      status: 'pending',
       totalPrice,
       services
     })
@@ -243,7 +230,7 @@ export const completeAppointmentService = async (id: string) => {
       }
     }
 
-    if (appointment.status !== 'pending') {
+    if (appointment.status !== AppointmentStatus.PENDING) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -251,7 +238,7 @@ export const completeAppointmentService = async (id: string) => {
       }
     }
 
-    appointment.status = 'completed'
+    appointment.status = AppointmentStatus.COMPLETED
     await appointment.save()
 
     return {
@@ -259,7 +246,6 @@ export const completeAppointmentService = async (id: string) => {
       statusCode: HttpStatusCode.OK,
       msg: SUCCESS_MSGS.APPOINTMENT_COMPLETED
     }
-
   } catch (error) {
     console.log(error)
     return {

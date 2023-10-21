@@ -11,8 +11,9 @@ export const jwtForApp = async (barberId: string): Promise<string> => {
         expiresIn = '30d'
         break
       case 'development':
-        expiresIn = '1h'
+        expiresIn = '2d'
         break
+
       default:
         expiresIn = '1h'
         break
