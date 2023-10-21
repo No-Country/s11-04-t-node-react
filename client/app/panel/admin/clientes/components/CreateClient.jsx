@@ -15,7 +15,7 @@ export default function CreateClient({ createClient, setCreateClient }) {
             name="clientName"
             //value={barber.phone}
             //onChange={(e) => setBarber({ ...barber, phone: e.target.value })}
-            //required
+            required
             //disabled={disabled}
           />
         </div>
@@ -31,7 +31,7 @@ export default function CreateClient({ createClient, setCreateClient }) {
             name="clientSurname"
             //value={barber.email}
             //onChange={(e) => setBarber({ ...barber, email: e.target.value })}
-            //required
+            required
             //disabled={disabled}
           />
         </div>
@@ -48,7 +48,7 @@ export default function CreateClient({ createClient, setCreateClient }) {
             name="clientPhone"
             //value={barber.phone}
             //onChange={(e) => setBarber({ ...barber, phone: e.target.value })}
-            //required
+            required
             //disabled={disabled}
           />
         </div>
@@ -64,7 +64,7 @@ export default function CreateClient({ createClient, setCreateClient }) {
             name="ClientEmail"
             // value={barber.email}
             // onChange={(e) => setBarber({ ...barber, email: e.target.value })}
-            // required
+            required
           />
         </div>
       </div>

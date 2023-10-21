@@ -4,7 +4,9 @@ import editLogo from "@/public/images/Edit.png";
 import historiaLogo from "@/public/images/historial.png";
 import agendaIcon from "@/public/images/agenda-icon.svg"
 
-export default function ClientsTable({ setShowHistory,setShowClient }) {
+export default function ClientsTable({ setShowHistory,setShowClient,clients}) {
+
+  console.log("clients", clients);
 
 const showModalHandler = () =>{
   console.log("click");
@@ -19,8 +21,7 @@ const showClientHandler = () =>{
       <table className="w-full divide-y divide-white bg-white bg-opacity-10">
         <thead className="bg-slate-100 h-10">
           <tr className="border-white">
-            <th className="w-1/12 text-sm sm:text-base">Nombre</th>
-            <th className=" w-1/12 text-sm sm:text-base">Apellido</th>
+            <th className="w-1/12 text-sm sm:text-base">Nombre y Apellido</th>
             <th className="w-1/12">Telefono</th>
             <th className="w-1/12">Email</th>
             <th className="w-1/12">Historial</th>
@@ -29,16 +30,14 @@ const showClientHandler = () =>{
           </tr>
         </thead>
         <tbody className="divide-y divide-white">
+        {clients.map((client) => {
           <tr className="even:bg-gray-100" key="id">
-            <td className="text-center text-xs sm:text-sm pt-3 pb-3">nombre</td>
+            <td className="text-center text-xs sm:text-sm pt-3 pb-3">{client.fullName}</td>
             <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-              apellido
+              {client.phone}
             </td>
             <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-              telfono
-            </td>
-            <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-              email@email
+              {client.email}
             </td>
             <td className="text-center text-xs sm:text-sm pt-3 pb-3">
               <button onClick={() => showModalHandler()}>
@@ -66,6 +65,7 @@ const showClientHandler = () =>{
               </button>
             </td>
           </tr>
+					})}
         </tbody>
       </table>
     </div>
