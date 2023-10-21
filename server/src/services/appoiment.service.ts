@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+// import 'dayjs/locale/es'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import validator from 'validator'
 import { ERROR_MSGS } from '../constants/errorMsgs'
@@ -16,6 +17,7 @@ import {
   isClientValid
 } from './dbValidations.services'
 dayjs.extend(customParseFormat)
+// dayjs.locale('es')
 
 export const deleteAppoimentService = async (id: string) => {
   try {
@@ -138,9 +140,11 @@ export const createAppointmentService = async (
     }
 
     // Revisar que la fecha de la cita no sea menor a la actual
-    const currentDateFormated = dayjs().format('YYYY-MM-DD')
-    const dateformated = dayjs(date).format('YYYY-MM-DD')
-    if (validator.isBefore(dateformated, currentDateFormated)) {
+    const now = dayjs()
+    const formattedDate = dayjs(date, 'DD-MM-YYYY', 'es')
+    const differenceInDays = formattedDate.diff(now, 'day')
+
+    if (differenceInDays < 0) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,

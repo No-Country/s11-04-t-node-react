@@ -12,7 +12,7 @@ const app: Express = express()
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'https://barberbuddyapp.vercel.app/ ']
+    origin: ['http://localhost:3000', 'https://barberbuddyapp.vercel.app']
   })
 )
 app.use(express.json())
