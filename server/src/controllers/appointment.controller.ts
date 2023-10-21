@@ -36,11 +36,12 @@ export const createAppointment = async (
   res: Response
 ): Promise<void> => {
   const { body } = req
-  const { success, statusCode, msg, appointment } =
+  const { success, statusCode, msg, appointment, durationInMinutes } =
     await createAppointmentService(body)
   res.status(statusCode).json({
     success,
     msg,
-    appointment
+    appointment,
+    durationInMinutes
   })
 }

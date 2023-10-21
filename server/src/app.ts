@@ -19,6 +19,6 @@ app.use('/api/v1', loginRouter)
 app.use('/api/v1/barber', barberRouter)
 app.use('/api/v1/services', servicesRouter)
 app.use('/api/v1/client', clientRouter)
-app.use('/api/v1/appoiment', appoimentRouter)
+app.use('/api/v1/appointment', appoimentRouter)
 
 export default app

@@ -20,7 +20,8 @@ export interface AppointmentResponse {
   success: boolean
   statusCode: number
   msg: string
-  appointment?: Appointment
+  appointment?: Appointment,
+  durationInMinutes?: number
 }
 
 export interface AppointmentBody {
