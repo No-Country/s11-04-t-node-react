@@ -8,7 +8,7 @@ import {
 	getBarbers,
 	updateBarber,
 } from './services/barbers.service'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import BarberForm from './components/BarberForm'
@@ -42,6 +42,12 @@ export default function Barbers() {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
+
+		if (!user) {
+			router.push('/')
+			return
+		}
+
 		const { token } = user
 		setToken(token)
 
@@ -127,6 +133,8 @@ export default function Barbers() {
 		const newBarberToCreate = { ...newBarber, services: selectedServices }
 		const data = await createBarber(token, newBarberToCreate)
 
+		scrollToTop()
+
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
 			if (data.tokenExpired) router.push('/acceso')
@@ -155,6 +163,8 @@ export default function Barbers() {
 
 		setShowModal(false)
 
+		scrollToTop()
+
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
 			if (data.tokenExpired) router.push('/acceso')
@@ -179,6 +189,8 @@ export default function Barbers() {
 	const onDelete = async () => {
 		const data = await deleteBarber(token, toDeleteBarber._id)
 		setShowModal(false)
+
+		scrollToTop()
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
@@ -222,8 +234,13 @@ export default function Barbers() {
 		setShowModal(true)
 	}
 
+	const scrollToTop = () => {
+		window.scrollTo(0, 0)
+		return
+	}
+
 	return (
-		<div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
+		<div className="py-28 sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl px-7 bg-[#D9D9D9] scroll-smooth">
 			<div
 				inert={showModal ? '' : undefined}
 				className={showModal ? 'blur-sm' : ''}

@@ -17,15 +17,6 @@ const ServiceSchema = new Schema<Service>(
       type: Number,
       required: [true, ERROR_MSGS.SERVICE_PRICE_REQUIRED],
       trim: true
-    },
-    duration: {
-      type: Number,
-      required: [true, ERROR_MSGS.SERVICE_DURATION_REQUIRED],
-      trim: true,
-      validate: {
-        validator: (value: number) => /^\d{2}$/.test(value.toString()),
-        message: ERROR_MSGS.SERVICE_DURATION_INVALID
-      }
     }
   },
   { timestamps: true }

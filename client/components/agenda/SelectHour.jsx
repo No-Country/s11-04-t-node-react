@@ -27,7 +27,7 @@ const SelectHour = () => {
                 {
                     hours.map(category => {
                         return (
-                            <option key={`a${category.name}`} value={category.name}>{category.text}</option>
+                            <option key={`${category.name}`} value={category.name}>{category.text}</option>
                         )
                     })
                 }

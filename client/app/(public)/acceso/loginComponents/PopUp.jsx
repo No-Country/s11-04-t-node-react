@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Input from './Input'
 import { useRouter } from 'next/navigation'
 import { backend, getAuthorization } from '@/utils/backend'
-import AWN from 'awesome-notifications'
+import { Notify } from 'notiflix/build/notiflix-notify-aio'
 import { useDispatch } from 'react-redux'
 import { login } from '@/redux/slices/userSlice'
 
@@ -56,7 +56,6 @@ const ErrorMesaje = ({ codeCounter, setCodeCounter, setIsPopupOpen }) => {
 const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 	const [code, setcode] = useState(['', '', '', ''])
 	const [codeCounter, setCodeCounter] = useState(3)
-	const notifier = new AWN()
 	const router = useRouter()
 	const dispatch = useDispatch()
 
@@ -69,40 +68,41 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 		setcode(newCode)
 	}
 
-	const hanldeAuthorizedUser = () => {
+	const hanldeAuthorizedUser = async () => {
 		const data = {
 			otp: code.join(''),
 		}
-		notifier.asyncBlock(
-			backend.post(`verify-email`, data, {
+
+		//---
+
+		try {
+			const res = await backend.post(`verify-email`, data, {
 				headers: getAuthorization(OTPCode),
-			}),
-			(res) => {
-				if (res.data.success === true) {
-					router.push('/panel')
-					return dispatch(
-						login({
-							_id: res.data._id,
-							fullName: res.data.fullName,
-							token: res.data.token,
-							role: res.data.role,
-						})
-					)
-				}
-				setCodeCounter((prev) => prev - 1)
-				setcode(['', '', '', ''])
-			},
-			(err) => {
-				notifier.alert('codigo errado, intentalo otra vez')
-				setcode(['', '', '', ''])
-				console.log(err)
-			}
-		)
+			})
+
+			router.push('/panel')
+			return dispatch(
+				login({
+					_id: res.data._id,
+					fullName: res.data.fullName,
+					token: res.data.token,
+					role: res.data.role,
+				})
+			)
+		} catch (error) {
+			Notify.failure(error.response.data.msg, {
+				position: 'center-top',
+			})
+			setcode(['', '', '', ''])
+			console.log(error)
+		}
+
+		//---
 	}
 
 	return (
 		<section
-			className={`fixed top-0 min-h-screen w-screen z-50 left-0 flex justify-center items-center bg-black/70 p-3 text-black tracking-widest ${
+			className={`fixed top-0 min-h-screen w-full z-50 left-0 flex justify-center items-center bg-black/70 p-3 text-black tracking-widest ${
 				isPopupOpen ? 'visible' : 'invisible'
 			}`}
 		>
@@ -130,7 +130,9 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 								key={index}
 								type="number"
 								placeholder={'x'}
-								style={'text-3xl w-full text-black py-6 shadow-2xl shadow-black/70'}
+								style={
+									'text-center text-3xl w-full text-black py-6 shadow-2xl shadow-black/70'
+								}
 								value={code[index]}
 								event={(e) => changeCodeValue(e, index)}
 							/>
@@ -143,7 +145,6 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 					>
 						verificar
 					</button>
-					;
 				</article>
 			)}
 		</section>

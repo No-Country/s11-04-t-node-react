@@ -1,6 +1,6 @@
 export const DeleteBarber = ({ barber, onClickCancel, onClickDelete }) => {
 	return (
-		<div className="p-4">
+		<div className="">
 			<p>Desea eliminar el registro del barbero {barber.fullName}?</p>
 			<div className="flex justify-end gap-6 mt-12">
 				<button
