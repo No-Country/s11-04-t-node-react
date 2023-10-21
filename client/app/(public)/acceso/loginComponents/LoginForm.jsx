@@ -1,7 +1,6 @@
 'use client'
 import { backend } from '@/utils/backend'
-// import AWN from 'awesome-notifications'
-import 'awesome-notifications/dist/style.css'
+import { Notify } from 'notiflix/build/notiflix-notify-aio'
 import { useState } from 'react'
 import Input from './Input'
 import PopUp from './PopUp'
@@ -13,7 +12,6 @@ const LoginForm = () => {
 	const [OTPCode, setOTPCode] = useState()
 	const [inputError, setInputError] = useState()
 	const [isPopupOpen, setIsPopupOpen] = useState(false)
-	// const notifier = new AWN()
 
 	const hanldeChangeInput = (e) => {
 		setInputError()
@@ -39,30 +37,21 @@ const LoginForm = () => {
 
 		try {
 			const res = await backend.post(`login/`, loginData)
+			Notify.success(`${res.data.msg}, por favor revisa tu email`, {
+				position: 'center-top',
+				timeout: 10000,
+			})
 			setOTPCode(res.data.token)
 			setIsPopupOpen(true)
 			setLoginData({ email: '' })
 		} catch (error) {
-			// notifier.alert(error.response.data.msg)
+			Notify.failure(error.response.data.msg, {
+				position: 'center-top',
+			})
 			setLoginData({ email: '' })
 		}
 
 		// ---
-
-		// notifier.asyncBlock(
-		// 	backend.post(`login/`, loginData),
-		// 	(res) => {
-		// 		null
-		// 		//guardar token recibido
-		// 		setOTPCode(res.data.token)
-		// 		setIsPopupOpen(true)
-		// 		setLoginData({ email: '' })
-		// 	},
-		// 	(err) => {
-		// 		notifier.alert(err.response.data.msg)
-		// 		setLoginData({ email: '' })
-		// 	}
-		// )
 	}
 
 	return (
