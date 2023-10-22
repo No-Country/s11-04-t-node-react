@@ -42,6 +42,7 @@ export enum ERROR_MSGS {
   CLIENT_ID_REQUIRED = 'El id del cliente es requerido.',
   TOTAL_PRICE_REQUIRED = 'El precio total es requerido.',
   START_TIME_REQUIRED = 'La hora de inicio es requerida.',
+  STAR_TIME_AND_END_TIME_REQUIRED = 'La hora de inicio y finalización son requeridas.',
   END_TIME_REQUIRED = 'La hora de finalización es requerida.',
   DATE_REQUIRED = 'La fecha del servicio es requerida.',
   DATE_INVALID = 'La fecha del servicio no puede ser menor a la actual.',
@@ -50,5 +51,6 @@ export enum ERROR_MSGS {
   APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME = 'Existe ya una cita en este lapso de tiempo para este barbero.',
   TIME_INVALID = 'Los tiempos de inicio y finalización de la cita son inválidos.',
   APPOINTMENT_NOT_PENDING = 'La cita no está pendiente.',
-  CALCULATE_SERVICES_TOTAL_PRICE_ERROR = 'Los servicios no se encontraron o no tienen precio.'
+  CALCULATE_SERVICES_TOTAL_PRICE_ERROR = 'Los servicios no se encontraron o no tienen precio.',
+  DATE_TOO_FAR = 'La fecha de la cita no puede ser mayor a 30 días de la actual.'
 }

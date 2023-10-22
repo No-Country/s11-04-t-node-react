@@ -11,7 +11,9 @@ export const isClientValid = async (clientId: string) => {
   }
 }
 
-export const calculateServicesTotalPrice = async (servicesIds: string[]) => {
+export const calculateServicesTotalPrice = async (
+  servicesIds: string[]
+): Promise<number | undefined> => {
   const servicesIdsAsObjectIds = servicesIds.map((id) => new Types.ObjectId(id))
   try {
     /**

@@ -3,6 +3,7 @@ import {
   completeAppointmentService,
   createAppointmentService,
   deleteAppoimentService,
+  getAppointmentsService,
   modifyAppointmentService
 } from '../services/appoiment.service'
 
@@ -10,7 +11,7 @@ export const deleteAppointment = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { id } = req.body
+  const { id } = req.params
   const { success, statusCode, msg } = await deleteAppoimentService(id)
   res.status(statusCode).json({
     success,
@@ -22,13 +23,16 @@ export const modifyAppointment = async (
   req: Request,
   res: Response
 ): Promise<void> => {
-  const { id } = req.body
+  const { id, clientId } = req.params
   const { body } = req
 
-  const { success, statusCode, msg } = await modifyAppointmentService(id, body)
+  const { success, statusCode, msg, appointment, durationInMinutes } =
+    await modifyAppointmentService(id, clientId, body)
   res.status(statusCode).json({
     success,
-    msg
+    msg,
+    appointment,
+    durationInMinutes
   })
 }
 
@@ -56,5 +60,20 @@ export const completeAppointment = async (
   res.status(statusCode).json({
     success,
     msg
+  })
+}
+
+export const getAppointments = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const barberId = req.userInSessionId
+
+  const { success, msg, statusCode, appointments } =
+    await getAppointmentsService(barberId)
+  res.status(statusCode).json({
+    success,
+    msg,
+    appointments
   })
 }
