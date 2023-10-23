@@ -2,7 +2,6 @@ import { Router } from 'express'
 import {
   completeAppointment,
   createAppointment,
-  deleteAppointment,
   getAppointments,
   modifyAppointment
 } from '../controllers/appointment.controller'
@@ -12,13 +11,6 @@ import { isBarberOrAdmin } from '../middlewares/role.middlewares'
 
 export const appoimentRouter = Router()
 
-appoimentRouter.delete(
-  '/delete/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  deleteAppointment
-)
 appoimentRouter.put(
   '/modify/:id/:clientId',
   extractToken,

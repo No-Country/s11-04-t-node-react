@@ -37,13 +37,6 @@
 - **Restriccones**: ruta protegida solo para administradores y barberos.
 - **Info importante**: si va a modificar la hora de la cita, tiene que pasar en el body, el startTime y el endTime.
 
-### Eliminar una cita
-
-- **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/delete/:id`
-- **Método HTTP**: DELETE
-- **Descripción**: elimina una cita de la base de datos según su ID.
-- **Restriccones**: ruta protegida solo para administradores y barberos.
-
 ### Completar una cita
 
 - **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/complete/:id`

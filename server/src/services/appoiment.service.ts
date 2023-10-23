@@ -18,32 +18,6 @@ import { sendEmail } from '../utils/mail.util'
 import { generateNewAppointmentTemplate } from '../utils/sendOTPEmailTemplate'
 dayjs.extend(customParseFormat)
 
-export const deleteAppoimentService = async (id: string) => {
-  try {
-    const appointment = await AppointmentModel.findById(id)
-    if (!appointment) {
-      return {
-        success: false,
-        statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.APPOIMENTID_INVALID
-      }
-    }
-    await appointment.deleteOne()
-    return {
-      success: true,
-      statusCode: HttpStatusCode.OK,
-      msg: SUCCESS_MSGS.DELETED_APPOINTMENT_SUCCESS
-    }
-  } catch (error) {
-    console.log(error)
-    return {
-      success: false,
-      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.SERVER_ERROR
-    }
-  }
-}
-
 export const modifyAppointmentService = async (
   id: string,
   clientId: string,
