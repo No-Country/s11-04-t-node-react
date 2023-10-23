@@ -27,9 +27,3 @@
 - **Ruta**: `https://barberbuddy.fly.dev/api/v1/client/modify/:id`
 - **Método HTTP**: PUT
 - **Descripción**: Actualiza los datos de un cliente existente según su ID. Debe proporcionar los nuevos datos en el cuerpo de la solicitud.
-
-### Eliminar un cliente
-
-- **Ruta**: `https://barberbuddy.fly.dev/api/v1/client/delete/:id`
-- **Método HTTP**: DELETE
-- **Descripción**: Elimina un cliente de la base de datos según su ID.

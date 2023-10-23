@@ -74,7 +74,7 @@ export const cancelAppointment = async (
   const { success, msg, statusCode } = await cancelAppointmentService(id)
 
   res.status(statusCode).json({
-    success: success,
-    msg: msg
+    success,
+    msg
   })
 }

@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import {
   createClient,
-  deleteClient,
   getClients,
   modifyClient
 } from '../controllers/client.controller'
@@ -17,13 +16,6 @@ clientRouter.put(
   auth,
   isBarberOrAdmin,
   modifyClient
-)
-clientRouter.delete(
-  '/delete/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  deleteClient
 )
 clientRouter.get('/get-all', extractToken, auth, isBarberOrAdmin, getClients)
 clientRouter.post('/create', extractToken, auth, isBarberOrAdmin, createClient)
