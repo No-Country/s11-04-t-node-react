@@ -1,15 +1,20 @@
 import cors from 'cors'
 import express, { type Express } from 'express'
 import morgan from 'morgan'
-import { barberRouter, loginRouter } from './routes/barber.route'
-import { servicesRouter } from './routes/services.route'
-import { clientRouter } from './routes/client.route'
 import { appoimentRouter } from './routes/appointment.route'
+import { barberRouter, loginRouter } from './routes/barber.route'
+import { clientRouter } from './routes/client.route'
+import { servicesRouter } from './routes/services.route'
 
 const app: Express = express()
 
 /* MIDDLEWARES */
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000', 'https://barberbuddyapp.vercel.app']
+  })
+)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(morgan('dev'))

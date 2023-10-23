@@ -1,50 +1,30 @@
-import { HttpStatusCode } from '../constants/http'
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
 import validator from 'validator'
 import { ERROR_MSGS } from '../constants/errorMsgs'
+import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
-import type {
-  Appointment,
-  AppointmentBody,
-  AppointmentResponse
-} from '../types/appointment.type'
 import {
-  getServicePrice,
-  isBarberValid,
-  isClientValid,
-  isServiceValid
-} from './dbValidations.services'
-
-export const deleteAppoimentService = async (id: string) => {
-  try {
-    const appointment = await AppointmentModel.findById(id)
-    if (!appointment) {
-      return {
-        success: false,
-        statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.APPOIMENTID_INVALID
-      }
-    }
-    await appointment.deleteOne()
-    return {
-      success: true,
-      statusCode: HttpStatusCode.OK,
-      msg: SUCCESS_MSGS.DELETED_APPOINTMENT_SUCCESS
-    }
-  } catch {
-    return {
-      success: false,
-      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
-      msg: ERROR_MSGS.SERVER_ERROR
-    }
-  }
-}
+  AppointmentStatus,
+  type Appointment,
+  type AppointmentBody,
+  type AppointmentResponse,
+  type AppointmentsResponse
+} from '../types/appointment.type'
+import { calculateServicesTotalPrice } from './dbValidations.services'
+import ClientModel from '../models/client.model'
+import { sendEmail } from '../utils/mail.util'
+import { generateNewAppointmentTemplate } from '../utils/sendOTPEmailTemplate'
+dayjs.extend(customParseFormat)
 
 export const modifyAppointmentService = async (
   id: string,
-  body: Appointment
-) => {
+  clientId: string,
+  body: AppointmentBody
+): Promise<AppointmentResponse> => {
+  let durationInMinutes: number | undefined
+
   try {
     const appointment = await AppointmentModel.findById(id)
     if (!appointment) {
@@ -54,17 +34,164 @@ export const modifyAppointmentService = async (
         msg: ERROR_MSGS.APPOIMENTID_INVALID
       }
     }
-    await AppointmentModel.findByIdAndUpdate({ _id: id }, body, {
-      new: true,
-      runValidators: true
+
+    const { barberId } = appointment
+    const { date, startTime, endTime, services } = body
+
+    if (appointment.status !== AppointmentStatus.PENDING) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.APPOINTMENT_NOT_PENDING
+      }
+    }
+
+    if ((startTime && !endTime) || (!startTime && endTime)) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.STAR_TIME_AND_END_TIME_REQUIRED
+      }
+    }
+
+    // Revisar que el startTime y el endTime tengan el formato HH:mm, formato de 24 horas
+    if (startTime && endTime) {
+      if (!validator.isTime(startTime) || !validator.isTime(endTime)) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.TIME_FORMAT_INVALID
+        }
+      }
+
+      // Revisar que el endTime sea mayor al startTime:
+      // Divido las cadenas de tiempo en horas y minutos
+      const startTimeParts = startTime.split(':')
+      const endTimeParts = endTime.split(':')
+
+      // Paso a números
+      const startHour = parseInt(startTimeParts[0], 10)
+      const startMinute = parseInt(startTimeParts[1], 10)
+      const endHour = parseInt(endTimeParts[0], 10)
+      const endMinute = parseInt(endTimeParts[1], 10)
+
+      if (
+        startHour > endHour ||
+        (startHour === endHour && startMinute >= endMinute)
+      ) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.TIME_INVALID
+        }
+      }
+
+      // Duración de la cita:
+      // Diferencia en minutos
+      const hoursDifference = endHour - startHour
+      const minutesDifference = endMinute - startMinute
+
+      // Duración en minutos
+      durationInMinutes = hoursDifference * 60 + minutesDifference
+    }
+
+    // Revisar que la fecha tenga un formato válida
+    if (date) {
+      if (!dayjs(date, 'DD-MM-YYYY', true).isValid()) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.DATE_INVALID_FORMAT
+        }
+      }
+    }
+
+    // Revisar que la fecha de la cita no sea menor a la actual
+    const now = dayjs()
+    const formattedDate = dayjs(date, 'DD-MM-YYYY', 'es')
+    const differenceInDays = formattedDate.diff(now, 'day')
+
+    if (differenceInDays < 0) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.DATE_INVALID
+      }
+    }
+
+    // Revisar que la fecha de la cita no sea mayor a 30 días de la actual
+    if (differenceInDays > 30) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.DATE_TOO_FAR
+      }
+    }
+
+    if (services) {
+      if (services.length === 0) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.SERVICES_IDS_REQUIRED
+        }
+      }
+
+      const totalPrice = await calculateServicesTotalPrice(services)
+      if (totalPrice === 0 || totalPrice === undefined) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.CALCULATE_SERVICES_TOTAL_PRICE_ERROR
+        }
+      }
+    }
+
+    // Validar solapeo
+    const existingAppointments = await AppointmentModel.find({
+      barberId,
+      date,
+      status: AppointmentStatus.PENDING
     })
+
+    let hasOverlap = false // Variable para rastrear si se ha encontrado una superposición
+
+    existingAppointments.forEach((existingAppointment) => {
+      // Si ya existe una cita con el mismo barbero en la misma fecha, verifica si hay superposición en el tiempo
+      if (
+        endTime > existingAppointment.startTime &&
+        startTime < existingAppointment.endTime &&
+        existingAppointment.clientId.toString() !== clientId
+      ) {
+        hasOverlap = true
+      }
+    })
+    if (hasOverlap) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME
+      }
+    }
+
+    const modifiedAppointment = (await AppointmentModel.findByIdAndUpdate(
+      { _id: id },
+      body,
+      {
+        new: true,
+        runValidators: true
+      }
+    )) as Appointment
 
     return {
       success: true,
       statusCode: HttpStatusCode.OK,
-      msg: SUCCESS_MSGS.MODIFIED_APPOINTMENT_SUCCESS
+      msg: SUCCESS_MSGS.MODIFIED_APPOINTMENT_SUCCESS,
+      appointment: modifiedAppointment,
+      durationInMinutes
     }
-  } catch {
+  } catch (error) {
+    console.log(error)
     return {
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
@@ -79,19 +206,13 @@ export const createAppointmentService = async (
   try {
     const { date, startTime, endTime, barberId, clientId, services } = body
 
-    // Validacion de la existencia del cliente y el barbero:
-    if (!(await isClientValid(clientId))) {
+    // Validacion de la existencia del cliente
+    const client = await ClientModel.findById(clientId)
+    if (!client) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
         msg: ERROR_MSGS.CLIENTID_INVALID
-      }
-    }
-    if (!(await isBarberValid(barberId))) {
-      return {
-        success: false,
-        statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.BARBERID_INVALID
       }
     }
 
@@ -104,13 +225,12 @@ export const createAppointmentService = async (
       }
     }
 
-    // El endTime sea mayor al startTime:
-
+    // Revisar que el endTime sea mayor al startTime:
     // Divido las cadenas de tiempo en horas y minutos
     const startTimeParts = startTime.split(':')
     const endTimeParts = endTime.split(':')
 
-    // Paso a numeros
+    // Paso a números
     const startHour = parseInt(startTimeParts[0], 10)
     const startMinute = parseInt(startTimeParts[1], 10)
     const endHour = parseInt(endTimeParts[0], 10)
@@ -127,8 +247,7 @@ export const createAppointmentService = async (
       }
     }
 
-    // Duracion de la cita:
-
+    // Duración de la cita:
     // Diferencia en minutos
     const hoursDifference = endHour - startHour
     const minutesDifference = endMinute - startMinute
@@ -146,9 +265,11 @@ export const createAppointmentService = async (
     }
 
     // Revisar que la fecha de la cita no sea menor a la actual
-    const currentDateFormated = dayjs().format('YYYY-MM-DD')
-    const dateformated = dayjs(date).format('YYYY-MM-DD')
-    if (validator.isBefore(dateformated, currentDateFormated)) {
+    const now = dayjs()
+    const formattedDate = dayjs(date, 'DD-MM-YYYY', 'es')
+    const differenceInDays = formattedDate.diff(now, 'day')
+
+    if (differenceInDays < 0) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -156,12 +277,20 @@ export const createAppointmentService = async (
       }
     }
 
-    // Validar solapeo
+    // Revisar que la fecha de la cita no sea mayor a 30 días de la actual
+    if (differenceInDays > 30) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.DATE_TOO_FAR
+      }
+    }
 
+    // Validar solapeo
     const existingAppointments = await AppointmentModel.find({
       barberId,
       date,
-      status: "pending"
+      status: AppointmentStatus.PENDING
     })
 
     let hasOverlap = false // Variable para rastrear si se ha encontrado una superposición
@@ -183,23 +312,20 @@ export const createAppointmentService = async (
       }
     }
 
-    // Validar los servicios
-    const areAllServicesValid = await Promise.all(
-      services.map(async (serviceId) => await isServiceValid(serviceId))
-    )
-    let totalPrice = 0
-    // Verificar si todos los servicios son válidos
-    if (areAllServicesValid.every((isValid) => isValid)) {
-      // Calculo el totalPrice acumulando los precios de los servicios
-      totalPrice = await services.reduce(async (accumulator, serviceId) => {
-        const servicePrice = await getServicePrice(serviceId)
-        return (await accumulator) + servicePrice
-      }, Promise.resolve(0))
-    } else {
+    if (services.length === 0) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.SERVICEID_INVALID
+        msg: ERROR_MSGS.SERVICES_IDS_REQUIRED
+      }
+    }
+
+    const totalPrice = await calculateServicesTotalPrice(services)
+    if (totalPrice === 0 || totalPrice === undefined) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.CALCULATE_SERVICES_TOTAL_PRICE_ERROR
       }
     }
 
@@ -209,10 +335,15 @@ export const createAppointmentService = async (
       date,
       clientId,
       barberId,
-      status: 'pending',
       totalPrice,
       services
     })
+
+    await sendEmail(
+      client.email,
+      generateNewAppointmentTemplate(appointment.date, appointment.startTime),
+      'Se agendo su nuevo turno en BurberBuddy'
+    )
 
     return {
       success: true,
@@ -243,7 +374,7 @@ export const completeAppointmentService = async (id: string) => {
       }
     }
 
-    if (appointment.status !== 'pending') {
+    if (appointment.status !== AppointmentStatus.PENDING) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -251,7 +382,19 @@ export const completeAppointmentService = async (id: string) => {
       }
     }
 
-    appointment.status = 'completed'
+    // Calcular de nuevo el precio total de los servicios
+    const newTotalPrice = await calculateServicesTotalPrice(
+      appointment.services
+    )
+    if (newTotalPrice !== appointment.totalPrice) {
+      await AppointmentModel.findByIdAndUpdate(
+        id,
+        { status: AppointmentStatus.COMPLETED, totalPrice: newTotalPrice },
+        { new: true, runValidators: true }
+      )
+    }
+
+    appointment.status = AppointmentStatus.COMPLETED
     await appointment.save()
 
     return {
@@ -259,7 +402,31 @@ export const completeAppointmentService = async (id: string) => {
       statusCode: HttpStatusCode.OK,
       msg: SUCCESS_MSGS.APPOINTMENT_COMPLETED
     }
+  } catch (error) {
+    console.log(error)
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
 
+export const getAppointmentsService = async (
+  barberId: string
+): Promise<AppointmentsResponse> => {
+  try {
+    const appointments = await AppointmentModel.find({
+      barberId
+    })
+      .populate('clientId')
+      .populate('services')
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.GET_APPOINTMENTS_SUCCESS,
+      appointments
+    }
   } catch (error) {
     console.log(error)
     return {

@@ -30,15 +30,15 @@ const AppointmentSchema = new Schema<Appointment>({
     default: AppointmentStatus.PENDING
   },
   date: {
-    type: Date, // Campo para la fecha de la cita
+    type: String,
     required: [true, ERROR_MSGS.DATE_REQUIRED]
   },
   startTime: {
-    type: String, // Podemos guardar la hora de inicio en el formato "HH:mm"
+    type: String,
     required: [true, ERROR_MSGS.START_TIME_REQUIRED]
   },
   endTime: {
-    type: String, // Podemos guardar la hora de fin en el formato "HH:mm"
+    type: String,
     required: [true, ERROR_MSGS.END_TIME_REQUIRED]
   }
 })

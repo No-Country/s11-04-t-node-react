@@ -1,8 +1,11 @@
 import nodemailer from 'nodemailer'
 import { EMAIL_ADDRESS, EMAIL_PASSWORD } from '../config'
-import { generateSendOTPTemplate } from './sendOTPEmailTemplate'
 
-export const sendEmail = async (receiverMail: string, otpcode: string) => {
+export const sendEmail = async (
+  receiverMail: string,
+  content: string,
+  emailSubject: string
+) => {
   const sender = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -14,8 +17,8 @@ export const sendEmail = async (receiverMail: string, otpcode: string) => {
   const mail = {
     from: EMAIL_ADDRESS,
     to: receiverMail,
-    subject: 'Usar este codigo para iniciar sesion en BarberBuddy',
-    html: generateSendOTPTemplate(otpcode)
+    subject: emailSubject,
+    html: content
   }
 
   try {

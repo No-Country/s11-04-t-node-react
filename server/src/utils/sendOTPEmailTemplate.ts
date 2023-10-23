@@ -283,3 +283,25 @@ export const generateSendOTPTemplate = (code: string): string => {
 </html>
   `
 }
+
+export const generateNewAppointmentTemplate = (
+  fecha: string,
+  hora: string
+): string => {
+  return `
+  <!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmación de turno en BurberBuddy</title>
+</head>
+<body>
+    <h1>¡Se agendó tu turno en BurberBuddy!</h1>
+    <p>Tu turno ha sido agendado con éxito para la siguiente fecha y hora:</p>
+    <p><strong>Fecha:</strong> ${fecha}</p>
+    <p><strong>Hora:</strong> ${hora}</p>
+    <p>Gracias por confiar en BurberBuddy. Esperamos verte pronto.</p>
+</body>
+</html>
+
+  `
+}

@@ -20,5 +20,6 @@ export enum SUCCESS_MSGS {
   DELETED_APPOINTMENT_SUCCESS = 'Cita borrada correctamente',
   MODIFIED_APPOINTMENT_SUCCESS = 'Cita modificada correctamente',
   CREATED_APPOINTMENT_SUCCESS = 'Cita creada correctamente',
-  APPOINTMENT_COMPLETED = "Cita finalizada."
+  APPOINTMENT_COMPLETED = 'Cita finalizada.',
+  GET_APPOINTMENTS_SUCCESS = 'Citas obtenidas correctamente'
 }
