@@ -1,6 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ClientDelete from "./ClientDelete";
 
-export default function ClientsModal({ showClient, setShowClient }) {
+export default function ClientsModal({
+  showClient,
+  setShowClient,
+  clients,
+  clientId,
+  deleteSelectedClient,
+  clientToUpdate,
+  setClientToUpdate,
+  updateClientHandler,
+}) {
+  const [cancelUpdate, setCancelUpdate] = useState(false);
+  const [modalDeleteClient, setModalDeleteClient] = useState(false);
+
+  const originalClientState = {
+    fullName: clientId.fullName,
+    phone: clientId.phone,
+    email: clientId.email,
+  };
+
+  useEffect(() => {
+    if (cancelUpdate) {
+      setClientToUpdate(originalClientState);
+      setCancelUpdate(false);
+    }
+  }, [cancelUpdate, setClientToUpdate, originalClientState]);
   return showClient ? (
     <div
       id="modal-clients-container"
@@ -10,35 +35,24 @@ export default function ClientsModal({ showClient, setShowClient }) {
         <button onClick={() => setShowClient(false)}>X</button>
       </div>
       <div>
-        <form /*onSubmit={submitHandler}*/>
+        <form /*onSubmit={updateClientHandler}*/>
           <div className="flex flex-col sm:flex-row mb-4">
             <div className="flex flex-col w-full sm:w-1/2 mr-10">
               <label className="text-lg sm:text-xl my-2" htmlFor="barberPhone">
-                Nombre
+                Nombre y Apellido
               </label>
               <input
                 className="text-slate-950 border rounded-lg p-1"
                 type="name"
                 id="clientName"
                 name="clientName"
-                //value={barber.phone}
-                //onChange={(e) => setBarber({ ...barber, phone: e.target.value })}
-                //required
-                //disabled={disabled}
-              />
-            </div>
-
-            <div className=" flex flex-col w-full sm:w-1/2  mr-auto">
-              <label className="text-lg sm:text-xl my-2" htmlFor="barberEmail">
-                Apellido
-              </label>
-              <input
-                className="text-slate-950 border rounded-lg p-1"
-                type="surname"
-                id="clientSurname"
-                name="clientSurname"
-                //value={barber.email}
-                //onChange={(e) => setBarber({ ...barber, email: e.target.value })}
+                placeholder={clientId.fullName}
+                onChange={(e) =>
+                  setClientToUpdate({
+                    ...clientToUpdate,
+                    fullName: e.target.value,
+                  })
+                }
                 //required
                 //disabled={disabled}
               />
@@ -54,25 +68,31 @@ export default function ClientsModal({ showClient, setShowClient }) {
                 type="phone"
                 id="clientPhone"
                 name="clientPhone"
-                //value={barber.phone}
-                //onChange={(e) => setBarber({ ...barber, phone: e.target.value })}
-                //required
-                //disabled={disabled}
+                placeholder={clientId.phone}
+                onChange={(e) =>
+                  setClientToUpdate({
+                    ...clientToUpdate,
+                    phone: e.target.value,
+                  })
+                }
               />
             </div>
-
             <div className="flex flex-col w-full sm:w-1/2 mr-auto">
-              <label className="text-lg sm:text-xl my-2" htmlFor="barberEmail">
+              <label className="text-lg sm:text-xl my-2" htmlFor="clientEmail">
                 Email
               </label>
               <input
                 className={`text-slate-950 border rounded-lg p-1 `}
                 type="email"
                 id="clientEmail"
-                name="ClientEmail"
-                // value={barber.email}
-                // onChange={(e) => setBarber({ ...barber, email: e.target.value })}
-                // required
+                name="clientEmail"
+                placeholder={clientId.email} // Usa el valor del estado clientToUpdate.email
+                onChange={(e) =>
+                  setClientToUpdate({
+                    ...clientToUpdate,
+                    email: e.target.value, // Actualiza solo la propiedad email
+                  })
+                }
               />
             </div>
           </div>
@@ -81,14 +101,22 @@ export default function ClientsModal({ showClient, setShowClient }) {
               <button
                 className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
                 type="submit"
-                // disabled={disabled}
               >
-                Guardar
+                Modificar
+              </button>
+              <button
+                className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#C65F5F] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
+                type="button"
+                onClick={() => {setModalDeleteClient(true)}}
+              >
+                Eliminar
               </button>
               <button
                 className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
                 type="button"
-                onClick={() => setCreateClient(false)}
+                onClick={() => {
+                  setShowClient(false), setCancelUpdate(true);
+                }}
               >
                 Cancelar
               </button>
@@ -96,6 +124,7 @@ export default function ClientsModal({ showClient, setShowClient }) {
           </div>
         </form>
       </div>
+      <ClientDelete deleteSelectedClient={deleteSelectedClient} modalDeleteClient={modalDeleteClient} setModalDeleteClient={setModalDeleteClient}/>
     </div>
   ) : (
     <></>

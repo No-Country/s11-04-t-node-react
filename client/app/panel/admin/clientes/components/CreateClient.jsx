@@ -3,6 +3,7 @@ import React from "react";
 export default function CreateClient({ createClient, setCreateClient, submitHandler, newClient, setNewClient, clients,manageNotifications,
   notifications }) {
   return createClient ? (
+    
     <form onSubmit={submitHandler}>
       <div className="flex flex-col sm:flex-row mb-4">
         <div className="flex flex-col w-full sm:w-1/2 mr-10">

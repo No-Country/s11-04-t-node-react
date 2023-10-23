@@ -37,13 +37,13 @@ export const createNewClient = async (token, newClient) => {
     return data;
   } catch (error) {
     console.error('Error in getClients:', error);
-    throw error; // Rethrow the error for the calling function to handle
+    throw error;
   }
 }; 
 
 
 
-//PUT
+///PUT
 export const updateClient = async (token, clientToUpdate) => {
 	try {
 			response = await fetch(`https://barberbuddy.fly.dev/api/v1/client/modify/${clientToUpdate._id}`, {
@@ -54,6 +54,22 @@ export const updateClient = async (token, clientToUpdate) => {
 				},
 				body: JSON.stringify(clientToUpdate),
 			})
+		const data = await response.json()
+		return data
+	} catch (error) {
+		console.log(error)
+	}
+}
+
+////DELETE
+export const deleteClient = async (token, id) => {
+	try {
+		const response = await fetch(`https://barberbuddy.fly.dev/api/v1/client/delete/${id}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 		const data = await response.json()
 		return data
 	} catch (error) {

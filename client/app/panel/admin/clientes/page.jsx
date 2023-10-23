@@ -4,77 +4,117 @@ import { useState, useEffect } from "react";
 import ClientsHeader from "./components/ClientsHeader";
 import ClientsTable from "./components/ClientsTable";
 import HistoryModal from "./components/HistoryModal";
-import ClientsModal from "./components/ClientsModal";
 import CreateClient from "./components/CreateClient";
-import { getClients } from "./services/client.services.js";
-import { createNewClient } from "./services/client.services.js";
+import {
+  getClients,
+  createNewClient,
+  deleteClient,
+} from "./services/client.services.js";
 
 export default function page() {
   const [showHistory, setShowHistory] = useState(false);
   const [showClient, setShowClient] = useState(false);
   const [createClient, setCreateClient] = useState(false);
   const [clients, setClients] = useState([]);
+  const [clientId, setClientId] = useState({});
   const [newClient, setNewClient] = useState({
     fullName: "",
     phone: "",
     email: "",
   });
+  const [clientToUpdate, setClientToUpdate] = useState([]);
+  const [selectClientForDel, setSelectClientForDel] = useState()
   const [notifications, setNotificatons] = useState({
     successNotification: "Cliente creado correctamente",
-    errorNotification: "Error al crear cliente"
-  })
+    errorNotification: "Error al crear cliente",
+  });
   const [message, setMessage] = useState();
   const [token, setToken] = useState("");
 
   useEffect(() => {
-		const user = JSON.parse(localStorage.getItem('user'))
+    const user = JSON.parse(localStorage.getItem("user"));
 
-		if (!user) {
-			router.push('/')
-			return
-		}
+    if (!user) {
+      router.push("/");
+      return;
+    }
 
-		const { token } = user
-		setToken(token)
+    const { token } = user;
+    setToken(token);
 
-		const getAllClients = async () => {
-			const data = await getClients(token)
-			if (!data.success) {
-				console.log('error', data.msg, 5000)
-				if (data.tokenExpired) router.push('/acceso')
-				return
-			}
-			const allClients = data.clients
-			setClients(allClients)
-			console.log('success', data.msg, 3000)
-      console.log(clients);
-		}
+    const getAllClients = async () => {
+      const data = await getClients(token);
+      if (!data.success) {
+        console.log("error", data.msg, 5000);
+        if (data.tokenExpired) router.push("/acceso");
+        return;
+      }
+      const allClients = data.clients;
+      setClients(allClients);
+    };
 
-		getAllClients()
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [])
+    getAllClients();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newClient, selectClientForDel]);
 
   const submitHandler = async (e) => {
-    e.preventDefault()
-    const newClientToCreate = { ...newClient}
-		const data = await createNewClient(token, newClientToCreate)
+    e.preventDefault();
+    const newClientToCreate = { ...newClient };
+    const data = await createNewClient(token, newClientToCreate);
     if (!data.success) {
-			console.log('error', data.msg, 5000)
-			if (data.tokenExpired) router.push('/acceso')
-			return
-		}
+      console.log("error", data.msg, 5000);
+      if (data.tokenExpired) router.push("/acceso");
+      return;
+    }
 
-		const createdClient = data
+    const createdClient = data;
     console.log(createdClient);
-		setClients(createdClient)
+    setClients(createdClient);
 
-		console.log('success', data.msg, 3000)
-  }
+    console.log("success", data.msg, 3000);
+    resetCreateClient()
+    setCreateClient(false)
+  };
+
+  const resetCreateClient = () => {
+		setNewClient({
+			fullName: "",
+			phone: "",
+			email: ""
+		})
+	}
 
   const manageNotifications = () => {
-    clients.success ? (setMessage(notifications.successNotification)) : (setMessage(notifications.errorNotification)) 
-  }
-  
+    clients.success
+      ? setMessage(notifications.successNotification)
+      : setMessage(notifications.errorNotification);
+  };
+
+  const deleteSelectedClient = async () => {
+    const selectedClienteForDelete = clientId._id
+    const data = await deleteClient(token, selectedClienteForDelete);
+    setShowClient(false);
+    if (!data.success) {
+      console.log("error", data.msg, 5000);
+      if (data.tokenExpired) router.push("/acceso");
+      return;
+    }
+    setSelectClientForDel(selectedClienteForDelete);
+    console.log("success", data.msg, 3000);
+    return;
+  };
+
+  const showClientHandler = (id) => {
+    setShowClient(true);
+    const findClient = clients.find((client) => client._id === id);
+    setClientId(findClient);
+    console.log("Showing client with ID:", clientId);
+  };
+
+/*   const updateClientHandler = async(id) => {
+
+  } */
+
   return (
     <div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
       <CreateClient
@@ -97,9 +137,14 @@ export default function page() {
         setShowHistory={setShowHistory}
         showClient={showClient}
         setShowClient={setShowClient}
+        deleteSelectedClient={deleteSelectedClient}
+        clientId={clientId}
+        showClientHandler={showClientHandler}
+        clientToUpdate={clientToUpdate}
+        setClientToUpdate={setClientToUpdate}
+        //updateClientHandler={updateClientHandler}
       />
       <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
-      <ClientsModal showClient={showClient} setShowClient={setShowClient} />
     </div>
   );
 }
