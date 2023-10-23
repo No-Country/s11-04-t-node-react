@@ -12,10 +12,10 @@ import {
   type AppointmentResponse,
   type AppointmentsResponse
 } from '../types/appointment.type'
-import {
-  calculateServicesTotalPrice,
-  isClientValid
-} from './dbValidations.services'
+import { calculateServicesTotalPrice } from './dbValidations.services'
+import ClientModel from '../models/client.model'
+import { sendEmail } from '../utils/mail.util'
+import { generateNewAppointmentTemplate } from '../utils/sendOTPEmailTemplate'
 dayjs.extend(customParseFormat)
 
 export const deleteAppoimentService = async (id: string) => {
@@ -233,7 +233,8 @@ export const createAppointmentService = async (
     const { date, startTime, endTime, barberId, clientId, services } = body
 
     // Validacion de la existencia del cliente
-    if (!(await isClientValid(clientId))) {
+    const client = await ClientModel.findById(clientId)
+    if (!client) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -363,6 +364,12 @@ export const createAppointmentService = async (
       totalPrice,
       services
     })
+
+    await sendEmail(
+      client.email,
+      generateNewAppointmentTemplate(appointment.date, appointment.startTime),
+      'Se agendo su nuevo turno en BurberBuddy'
+    )
 
     return {
       success: true,

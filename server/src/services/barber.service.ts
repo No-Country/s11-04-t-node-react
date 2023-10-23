@@ -17,6 +17,7 @@ import { generateOTP } from '../utils/generateOTP.util'
 import { generateHashOTP } from '../utils/hashOTP.util'
 import { jwtOTPHash } from '../utils/jwtOTPHash.util'
 import { sendEmail } from '../utils/mail.util'
+import { generateSendOTPTemplate } from '../utils/sendOTPEmailTemplate'
 
 export const loginService = async (email: string): Promise<ILoginUser> => {
   try {
@@ -44,7 +45,11 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
     const tokenOTP = await jwtOTPHash(hashOTP, barber._id)
 
     // enviar el OTP al usuario que quiere hacer login
-    await sendEmail(barber.email, OTP)
+    await sendEmail(
+      barber.email,
+      generateSendOTPTemplate(OTP),
+      'Usar este codigo para iniciar sesion en BarberBuddy'
+    )
 
     return {
       success: true,
