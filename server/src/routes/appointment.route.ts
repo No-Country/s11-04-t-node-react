@@ -1,7 +1,9 @@
 import { Router } from 'express'
 import {
+  completeAppointment,
   createAppointment,
   deleteAppointment,
+  getAppointments,
   modifyAppointment
 } from '../controllers/appointment.controller'
 import { auth } from '../middlewares/auth.middleware'
@@ -18,7 +20,7 @@ appoimentRouter.delete(
   deleteAppointment
 )
 appoimentRouter.put(
-  '/modify/:id',
+  '/modify/:id/:clientId',
   extractToken,
   auth,
   isBarberOrAdmin,
@@ -30,4 +32,18 @@ appoimentRouter.post(
   auth,
   isBarberOrAdmin,
   createAppointment
+)
+appoimentRouter.put(
+  '/complete/:id',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  completeAppointment
+)
+appoimentRouter.get(
+  '/get-all',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  getAppointments
 )
