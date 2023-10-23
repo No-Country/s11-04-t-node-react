@@ -26,7 +26,11 @@ const AppointmentSchema = new Schema<Appointment>({
   },
   status: {
     type: String,
-    enum: [AppointmentStatus.PENDING, AppointmentStatus.COMPLETED],
+    enum: [
+      AppointmentStatus.PENDING,
+      AppointmentStatus.COMPLETED,
+      AppointmentStatus.CANCELED
+    ],
     default: AppointmentStatus.PENDING
   },
   date: {

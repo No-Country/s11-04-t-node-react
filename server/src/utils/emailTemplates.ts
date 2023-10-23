@@ -305,3 +305,23 @@ export const generateNewAppointmentTemplate = (
 
   `
 }
+
+export const generateCancelAppointmentTemplate = (
+  fecha: string,
+  hora: string
+): string => {
+  return `
+  <!DOCTYPE html>
+<html>
+<head>
+    <title>Confirmación de turno en BurberBuddy</title>
+</head>
+<body>
+    <h1>¡Se canceló tu turno en BurberBuddy!</h1>
+    <p>Tu turno con fecha ${fecha} a las ${hora} ha sido cancelado.</p>
+    <p>Gracias por confiar en BurberBuddy. Esperamos verte pronto.</p>
+</body>
+</html>
+
+  `
+}

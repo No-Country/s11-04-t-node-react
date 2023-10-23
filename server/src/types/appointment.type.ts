@@ -13,7 +13,8 @@ export interface Appointment extends Document {
 
 export enum AppointmentStatus {
   PENDING = 'pending',
-  COMPLETED = 'completed'
+  COMPLETED = 'completed',
+  CANCELED = 'canceled'
 }
 
 export interface AppointmentResponse {

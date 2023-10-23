@@ -17,7 +17,7 @@ import { generateOTP } from '../utils/generateOTP.util'
 import { generateHashOTP } from '../utils/hashOTP.util'
 import { jwtOTPHash } from '../utils/jwtOTPHash.util'
 import { sendEmail } from '../utils/mail.util'
-import { generateSendOTPTemplate } from '../utils/sendOTPEmailTemplate'
+import { generateSendOTPTemplate } from '../utils/emailTemplates'
 
 export const loginService = async (email: string): Promise<ILoginUser> => {
   try {

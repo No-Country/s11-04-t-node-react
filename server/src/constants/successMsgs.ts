@@ -21,5 +21,7 @@ export enum SUCCESS_MSGS {
   MODIFIED_APPOINTMENT_SUCCESS = 'Cita modificada correctamente',
   CREATED_APPOINTMENT_SUCCESS = 'Cita creada correctamente',
   APPOINTMENT_COMPLETED = 'Cita finalizada.',
-  GET_APPOINTMENTS_SUCCESS = 'Citas obtenidas correctamente'
+  GET_APPOINTMENTS_SUCCESS = 'Citas obtenidas correctamente',
+  APPOINTMENT_CANCELED = 'Cita cancelada correctamente',
+  APPOINTMENT_CANCELED_CLIENT_NOT_FOUND = 'La cita fue cancelada pero el cliente asociado a esta ya no existe, el correo no se enviara'
 }
