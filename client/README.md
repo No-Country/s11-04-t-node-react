@@ -29,7 +29,13 @@ Puedes acceder al proyecto en vivo [aquí](https://barberbuddyapp.vercel.app/).
 
 ## Capturas de Pantalla
 
-<span>![</span><span>Pantalla de Login</span><span>]</span><span>(</span><span>https://raw.githubusercontent.com/No-Country/s11-04-t-node-react/main/client/public/images/iPad-1698080430781.jpeg</span><span>)</span>
+<img src="https://github.com/No-Country/s11-04-t-node-react/blob/frontend/hotfix/client/public/images/iPad-1698080430781.jpeg" alt="Pantalla de Login" width="150px"/>
+
+<img src="https://github.com/No-Country/s11-04-t-node-react/blob/frontend/hotfix/client/public/images/MacbookPro-1698080493974.jpeg" alt="Password de un solo uso" width="250px"/>
+
+<img src="https://github.com/No-Country/s11-04-t-node-react/blob/frontend/hotfix/client/public/images/MacbookPro-1698080582891.jpeg" alt="Pantalla principal" width="250px"/>
+
+<img src="https://github.com/No-Country/s11-04-t-node-react/blob/frontend/hotfix/client/public/images/MacbookPro-1698080602020.jpeg" alt="Listado de barberos" width="250px"/>
 
 ## Contacto
 
