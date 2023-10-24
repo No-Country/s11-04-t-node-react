@@ -1,23 +1,11 @@
 import { type Request, type Response } from 'express'
 import {
+  cancelAppointmentService,
   completeAppointmentService,
   createAppointmentService,
-  deleteAppoimentService,
   getAppointmentsService,
   modifyAppointmentService
 } from '../services/appoiment.service'
-
-export const deleteAppointment = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { id } = req.params
-  const { success, statusCode, msg } = await deleteAppoimentService(id)
-  res.status(statusCode).json({
-    success,
-    msg
-  })
-}
 
 export const modifyAppointment = async (
   req: Request,
@@ -75,5 +63,18 @@ export const getAppointments = async (
     success,
     msg,
     appointments
+  })
+}
+
+export const cancelAppointment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const { success, msg, statusCode } = await cancelAppointmentService(id)
+
+  res.status(statusCode).json({
+    success,
+    msg
   })
 }

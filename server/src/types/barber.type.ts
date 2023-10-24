@@ -1,4 +1,5 @@
 import type { Document, ObjectId } from 'mongoose'
+import { Client } from './client.type'
 
 /* MODELS TYPES */
 export interface Barber extends Document {
@@ -51,4 +52,5 @@ export interface BarberResponse {
   msg: string
   statusCode: number
   barber?: Barber
+  clients?: Client[]
 }

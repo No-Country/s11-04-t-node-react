@@ -1,4 +1,5 @@
 import type { Document } from 'mongoose'
+import type { Appointment } from './appointment.type'
 
 /* MODELS TYPES */
 export interface Client extends Document {
@@ -13,6 +14,7 @@ export interface ClientResponse {
   msg: string
   statusCode: number
   client?: Client
+  appointments?: Appointment[]
 }
 
 export interface ClientsResponse {
