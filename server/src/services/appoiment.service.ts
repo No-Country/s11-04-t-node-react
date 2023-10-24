@@ -6,6 +6,7 @@ import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
 import ClientModel from '../models/client.model'
+import ServiceModel from '../models/service.model'
 import {
   AppointmentStatus,
   type Appointment,
@@ -13,13 +14,13 @@ import {
   type AppointmentResponse,
   type AppointmentsResponse
 } from '../types/appointment.type'
+import { type Service } from '../types/service.type'
 import {
   generateCancelAppointmentTemplate,
   generateNewAppointmentTemplate
 } from '../utils/emailTemplates'
 import { sendEmail } from '../utils/mail.util'
 import { calculateServicesTotalPrice } from './dbValidations.services'
-import ServiceModel from '../models/service.model'
 dayjs.extend(customParseFormat)
 
 export const modifyAppointmentService = async (
@@ -344,16 +345,17 @@ export const createAppointmentService = async (
     })
 
     // Obtener todos los nombres de servicios para el mail
-    const servicios = await ServiceModel.find({ _id: { $in: services } })
-    const nombreServicios = servicios.map((serv) => serv.name)
-    const serviciosConcatenados = nombreServicios.join(' + ') // Puedes usar un separador adecuado
+    const servicesToEmail = await ServiceModel.find({ _id: { $in: services } })
+    const servicesNames = servicesToEmail
+      .map((serv: Service) => serv.name)
+      .join(' + ')
 
     await sendEmail(
       client.email,
       generateNewAppointmentTemplate(
         appointment.date,
         appointment.startTime,
-        serviciosConcatenados,
+        servicesNames,
         appointment.totalPrice
       ),
       'Se agendo su nuevo turno en BurberBuddy'
