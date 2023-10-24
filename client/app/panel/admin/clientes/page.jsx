@@ -9,9 +9,11 @@ import {
   getClients,
   createNewClient,
   deleteClient,
+  updateClient
 } from "./services/client.services.js";
 
 export default function page() {
+  const [searchClient, setSearchClient] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showClient, setShowClient] = useState(false);
   const [createClient, setCreateClient] = useState(false);
@@ -23,7 +25,8 @@ export default function page() {
     email: "",
   });
   const [clientToUpdate, setClientToUpdate] = useState([]);
-  const [selectClientForDel, setSelectClientForDel] = useState()
+  const [slectedClientForUpdate, setSelectedClientForUpdate] = useState()
+  const [selectClientForDel, setSelectClientForDel] = useState();
   const [notifications, setNotificatons] = useState({
     successNotification: "Cliente creado correctamente",
     errorNotification: "Error al crear cliente",
@@ -72,17 +75,17 @@ export default function page() {
     setClients(createdClient);
 
     console.log("success", data.msg, 3000);
-    resetCreateClient()
-    setCreateClient(false)
+    resetCreateClient();
+    setCreateClient(false);
   };
 
   const resetCreateClient = () => {
-		setNewClient({
-			fullName: "",
-			phone: "",
-			email: ""
-		})
-	}
+    setNewClient({
+      fullName: "",
+      phone: "",
+      email: "",
+    });
+  };
 
   const manageNotifications = () => {
     clients.success
@@ -91,7 +94,7 @@ export default function page() {
   };
 
   const deleteSelectedClient = async () => {
-    const selectedClienteForDelete = clientId._id
+    const selectedClienteForDelete = clientId._id;
     const data = await deleteClient(token, selectedClienteForDelete);
     setShowClient(false);
     if (!data.success) {
@@ -111,9 +114,19 @@ export default function page() {
     console.log("Showing client with ID:", clientId);
   };
 
-/*   const updateClientHandler = async(id) => {
-
-  } */
+  const updateClientHandler = async () => {
+    const selectClientForUpdate = clientId._id;
+    const data = await updateClient(token, selectClientForUpdate,clientId);
+    setShowClient(false);
+    if (!data.success) {
+      console.log("error", data.msg, 5000);
+      if (data.tokenExpired) router.push("/acceso");
+      return;
+    }
+    setSelectedClientForUpdate(selectClientForUpdate);
+    console.log("success", data.msg, 3000);
+    return;
+  };
 
   return (
     <div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
@@ -130,10 +143,12 @@ export default function page() {
       <ClientsHeader
         createClient={createClient}
         setCreateClient={setCreateClient}
+        setSearchClient={setSearchClient}
       />
       <ClientsTable
         clients={clients}
         showHistory={showHistory}
+        searchClient={searchClient}
         setShowHistory={setShowHistory}
         showClient={showClient}
         setShowClient={setShowClient}
@@ -142,7 +157,7 @@ export default function page() {
         showClientHandler={showClientHandler}
         clientToUpdate={clientToUpdate}
         setClientToUpdate={setClientToUpdate}
-        //updateClientHandler={updateClientHandler}
+        updateClientHandler={updateClientHandler}
       />
       <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
     </div>

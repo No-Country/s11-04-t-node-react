@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ClientDelete from "./ClientDelete";
+import ClientModify from "./ClientModify";
 
 export default function ClientsModal({
   showClient,
@@ -13,6 +14,7 @@ export default function ClientsModal({
 }) {
   const [cancelUpdate, setCancelUpdate] = useState(false);
   const [modalDeleteClient, setModalDeleteClient] = useState(false);
+  const [modalModifyClient, setModalModifyClient] = useState(false);
 
   const originalClientState = {
     fullName: clientId.fullName,
@@ -26,16 +28,22 @@ export default function ClientsModal({
       setCancelUpdate(false);
     }
   }, [cancelUpdate, setClientToUpdate, originalClientState]);
+
+  const handleModifyClick = (e) => {
+    e.preventDefault();
+    setModalModifyClient(true);
+  };
+
   return showClient ? (
     <div
       id="modal-clients-container"
-      className="bg-[#292D33] text-white border rounded-lg p-5 absolute top-[12vh] sm:top-1/2 h-[75vh] sm:h-fit overflow-hidden overflow-y-scroll left-1/2 -translate-x-1/2 sm:-translate-x-1/4 sm:-translate-y-1/2"
+      className="bg-[#292D33] text-white border rounded-lg p-5 absolute top-[12vh] sm:top-1/3 h-[75vh] sm:h-fit overflow-hidden overflow-y-scroll left-1/3 -translate-x-1/2 sm:-translate-x-1/4 sm:-translate-y-1/3"
     >
-      <div>
+      <div className="flex justify-end">
         <button onClick={() => setShowClient(false)}>X</button>
       </div>
       <div>
-        <form /*onSubmit={updateClientHandler}*/>
+        <form>
           <div className="flex flex-col sm:flex-row mb-4">
             <div className="flex flex-col w-full sm:w-1/2 mr-10">
               <label className="text-lg sm:text-xl my-2" htmlFor="barberPhone">
@@ -100,14 +108,16 @@ export default function ClientsModal({
             <>
               <button
                 className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
-                type="submit"
+                onClick={(e) => handleModifyClick(e)}
               >
                 Modificar
               </button>
               <button
                 className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#C65F5F] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
                 type="button"
-                onClick={() => {setModalDeleteClient(true)}}
+                onClick={() => {
+                  setModalDeleteClient(true);
+                }}
               >
                 Eliminar
               </button>
@@ -124,7 +134,16 @@ export default function ClientsModal({
           </div>
         </form>
       </div>
-      <ClientDelete deleteSelectedClient={deleteSelectedClient} modalDeleteClient={modalDeleteClient} setModalDeleteClient={setModalDeleteClient}/>
+      <ClientDelete
+        deleteSelectedClient={deleteSelectedClient}
+        modalDeleteClient={modalDeleteClient}
+        setModalDeleteClient={setModalDeleteClient}
+      />
+      <ClientModify
+        modalModifyClient={modalModifyClient}
+        setModalModifyClient={setModalModifyClient}
+        updateClientHandler={updateClientHandler}
+      />
     </div>
   ) : (
     <></>

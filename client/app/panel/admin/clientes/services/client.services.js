@@ -44,15 +44,15 @@ export const createNewClient = async (token, newClient) => {
 
 
 ///PUT
-export const updateClient = async (token, clientToUpdate) => {
+export const updateClient = async (token, clientToUpdate, client) => {
 	try {
-			response = await fetch(`https://barberbuddy.fly.dev/api/v1/client/modify/${clientToUpdate._id}`, {
+			response = await fetch(`https://barberbuddy.fly.dev/api/v1/client/modify/${clientToUpdate}`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify(clientToUpdate),
+				body: JSON.stringify(client),
 			})
 		const data = await response.json()
 		return data

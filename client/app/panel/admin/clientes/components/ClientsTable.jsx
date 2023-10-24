@@ -15,6 +15,8 @@ export default function ClientsTable({
   showClientHandler,
   clientToUpdate,
   setClientToUpdate,
+  updateClientHandler,
+  searchClient,
 }) {
   const showModalHandler = () => {
     console.log("click");
@@ -36,44 +38,51 @@ export default function ClientsTable({
           </tr>
         </thead>
         <tbody className="divide-y divide-white">
-          {clients.map((client) => (
-            <tr className="even:bg-gray-100" key={client._id}>
-              <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-                {client.fullName}
-              </td>
-              <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-                {client.phone}
-              </td>
-              <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-                {client.email}
-              </td>
-              <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-                <button onClick={() => showModalHandler()}>
-                  <Image src={historiaLogo} width={30} height={30}></Image>
-                </button>
-              </td>
-              <td className="text-center text-xs sm:text-sm flex justify-center pt-3 pb-3">
-                <button onClick={() => showClientHandler(client._id)}>
-                  <Image
-                    className=""
-                    src={editLogo}
-                    width={30}
-                    height={30}
-                  ></Image>
-                </button>
-              </td>
-              <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
-                <button onClick={() => showClientHandler()}>
-                  <Image
-                    className=""
-                    src={agendaIcon}
-                    width={30}
-                    height={30}
-                  ></Image>
-                </button>
-              </td>
-            </tr>
-          ))}
+          {clients
+            .filter((client) =>
+              client.fullName
+                .toLowerCase()
+                .slice(0, searchClient.length)
+                .includes(searchClient.toLocaleLowerCase())
+            )
+            .map((client) => (
+              <tr className="even:bg-gray-100" key={client._id}>
+                <td className="text-center text-xs sm:text-sm pt-3 pb-3">
+                  {client.fullName}
+                </td>
+                <td className="text-center text-xs sm:text-sm pt-3 pb-3">
+                  {client.phone}
+                </td>
+                <td className="text-center text-xs sm:text-sm pt-3 pb-3">
+                  {client.email}
+                </td>
+                <td className="text-center text-xs sm:text-sm pt-3 pb-3">
+                  <button onClick={() => showModalHandler()}>
+                    <Image src={historiaLogo} width={30} height={30}></Image>
+                  </button>
+                </td>
+                <td className="text-center text-xs sm:text-sm flex justify-center pt-3 pb-3">
+                  <button onClick={() => showClientHandler(client._id)}>
+                    <Image
+                      className=""
+                      src={editLogo}
+                      width={30}
+                      height={30}
+                    ></Image>
+                  </button>
+                </td>
+                <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
+                  <button onClick={() => showClientHandler()}>
+                    <Image
+                      className=""
+                      src={agendaIcon}
+                      width={30}
+                      height={30}
+                    ></Image>
+                  </button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <ClientsModal
@@ -84,7 +93,7 @@ export default function ClientsTable({
         deleteSelectedClient={deleteSelectedClient}
         clientToUpdate={clientToUpdate}
         setClientToUpdate={setClientToUpdate}
-        //updateClientHandler={updateClientHandler}
+        updateClientHandler={updateClientHandler}
       />
     </div>
   ) : (

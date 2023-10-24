@@ -1,20 +1,23 @@
 import React from "react";
 import "./ClientsHeader.css";
 
-export default function ClientsHeader({createClient,setCreateClient}) {
+export default function ClientsHeader({
+  createClient,
+  setCreateClient,
+  setSearchClient,
+}) {
   return (
     <div className="flex justify-between">
       <div id="clients-title-container" className="flex pt-10 px-10">
         <h1 className="text-3xl sm:text-4xl">Clientes</h1>
         <button
-            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-2 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white ml-10 mt-1"
-            onClick={() => setCreateClient(true)}
-          >
-            Crear Cliente
-          </button>
+          className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-2 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white ml-10 mt-1"
+          onClick={() => setCreateClient(true)}
+        >
+          Crear Cliente
+        </button>
       </div>
       <div id="form-search-container" className="pt-10 px-10">
-          
         <form class="form">
           <button>
             <svg
@@ -39,6 +42,7 @@ export default function ClientsHeader({createClient,setCreateClient}) {
             placeholder="Buscar Cliente"
             required=""
             type="text"
+            onChange={(e) => setSearchClient(e.target.value)}
           />
           <button class="reset" type="reset">
             <svg
