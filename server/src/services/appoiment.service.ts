@@ -5,6 +5,7 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
+import ClientModel from '../models/client.model'
 import {
   AppointmentStatus,
   type Appointment,
@@ -12,13 +13,12 @@ import {
   type AppointmentResponse,
   type AppointmentsResponse
 } from '../types/appointment.type'
-import { calculateServicesTotalPrice } from './dbValidations.services'
-import ClientModel from '../models/client.model'
-import { sendEmail } from '../utils/mail.util'
 import {
   generateCancelAppointmentTemplate,
   generateNewAppointmentTemplate
 } from '../utils/emailTemplates'
+import { sendEmail } from '../utils/mail.util'
+import { calculateServicesTotalPrice } from './dbValidations.services'
 dayjs.extend(customParseFormat)
 
 export const modifyAppointmentService = async (
@@ -345,7 +345,7 @@ export const createAppointmentService = async (
     await sendEmail(
       client.email,
       generateNewAppointmentTemplate(appointment.date, appointment.startTime),
-      'Se agendo su nuevo turno en BurberBuddy'
+      'Se agendó su nuevo turno en BurberBuddy'
     )
 
     return {
@@ -461,16 +461,16 @@ export const cancelAppointmentService = async (
       }
     }
 
-    appointment.status = AppointmentStatus.CANCELED
+    appointment.status = AppointmentStatus.CANCELLED
     await appointment.save()
 
-    // Enviar el correo de aviso de cancelacion:
+    // Enviar el correo de aviso de cancelación:
     const client = await ClientModel.findById(appointment.clientId)
     if (!client) {
       return {
         success: true,
         statusCode: HttpStatusCode.OK,
-        msg: SUCCESS_MSGS.APPOINTMENT_CANCELED_CLIENT_NOT_FOUND
+        msg: ERROR_MSGS.CLIENT_NOT_FOUND
       }
     }
 
