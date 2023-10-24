@@ -6,14 +6,25 @@ import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulin
 import { Calendar } from '@/components/ui/calendar'
 
 const CalendarAppointmentScheduling = () => {
-    const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate } = useAppointmentSchedulingContext()
+	const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate } = useAppointmentSchedulingContext()
 
-    useEffect(() => {
-        setFormDataAppointmentScheduling({
-            ...formDataAppointmentScheduling,
-            date,
-        })
-    }, [date])						
+	function formatDate(inputDate) {
+		const date = new Date(inputDate);
+		const day = String(date.getDate()).padStart(2, '0');
+		const month = String(date.getMonth() + 1).padStart(2, '0');
+		const year = date.getFullYear();
+
+		return `${day}-${month}-${year}`;
+	}
+
+	useEffect(() => {
+		const formatingDate = formatDate(date)
+
+		setFormDataAppointmentScheduling({
+			...formDataAppointmentScheduling,
+			formatingDate
+		})
+	}, [date])
 
 	return (
 		<Calendar
