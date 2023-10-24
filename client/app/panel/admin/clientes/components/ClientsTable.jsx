@@ -4,6 +4,7 @@ import editLogo from "@/public/images/Edit.png";
 import historiaLogo from "@/public/images/historial.png";
 import agendaIcon from "@/public/images/agenda-icon.svg";
 import ClientsModal from "./ClientsModal";
+import Link from "next/link";
 
 export default function ClientsTable({
   setShowHistory,
@@ -72,14 +73,20 @@ export default function ClientsTable({
                   </button>
                 </td>
                 <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
-                  <button onClick={() => showClientHandler()}>
-                    <Image
-                      className=""
-                      src={agendaIcon}
-                      width={30}
-                      height={30}
-                    ></Image>
-                  </button>
+                  <Link
+                    key={client._id}
+                    href="/agenda/[id]"
+                    as={`/agenda/${client._id}`}
+                  >
+                    <button>
+                      <Image
+                        className=""
+                        src={agendaIcon}
+                        width={30}
+                        height={30}
+                      ></Image>
+                    </button>
+                  </Link>
                 </td>
               </tr>
             ))}
