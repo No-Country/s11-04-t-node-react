@@ -138,9 +138,7 @@ export const createClientService = async (
 }
 
 export const getClientsAppointmentsService = async (id: string) => {
-
   try {
-
     const client = await ClientModel.findById(id)
     if (!client) {
       return {
@@ -150,7 +148,7 @@ export const getClientsAppointmentsService = async (id: string) => {
       }
     }
 
-    const appointments = await AppointmentModel.find({ clientId: id });
+    const appointments = await AppointmentModel.find({ clientId: id })
     if (appointments.length === 0) {
       return {
         success: true,
@@ -165,7 +163,6 @@ export const getClientsAppointmentsService = async (id: string) => {
       statusCode: HttpStatusCode.OK,
       appointments
     }
-
   } catch (error) {
     console.log(error)
     return {

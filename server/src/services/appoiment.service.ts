@@ -19,6 +19,7 @@ import {
   generateCancelAppointmentTemplate,
   generateNewAppointmentTemplate
 } from '../utils/emailTemplates'
+import ServiceModel from '../models/service.model'
 dayjs.extend(customParseFormat)
 
 export const modifyAppointmentService = async (
@@ -342,9 +343,19 @@ export const createAppointmentService = async (
       services
     })
 
+    // Obtener todos los nombres de servicios para el mail
+    const servicios = await ServiceModel.find({ _id: { $in: services } })
+    const nombreServicios = servicios.map((serv) => serv.name)
+    const serviciosConcatenados = nombreServicios.join(' + ') // Puedes usar un separador adecuado
+
     await sendEmail(
       client.email,
-      generateNewAppointmentTemplate(appointment.date, appointment.startTime),
+      generateNewAppointmentTemplate(
+        appointment.date,
+        appointment.startTime,
+        serviciosConcatenados,
+        appointment.totalPrice
+      ),
       'Se agendo su nuevo turno en BurberBuddy'
     )
 
