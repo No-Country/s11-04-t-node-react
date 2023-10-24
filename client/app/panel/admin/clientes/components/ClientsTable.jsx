@@ -18,6 +18,9 @@ export default function ClientsTable({
   setClientToUpdate,
   updateClientHandler,
   searchClient,
+  clientServices,
+  setClientAppointmentId,
+  clientAppointmentId
 }) {
   const showModalHandler = () => {
     console.log("click");
@@ -25,6 +28,7 @@ export default function ClientsTable({
   };
 
   console.log(clientId);
+  console.log("appoint",clientAppointmentId);
   return clients.length >= 1 ? (
     <div className="border rounded-lg mt-12">
       <table className="w-full divide-y divide-white bg-white bg-opacity-10">
@@ -58,7 +62,12 @@ export default function ClientsTable({
                   {client.email}
                 </td>
                 <td className="text-center text-xs sm:text-sm pt-3 pb-3">
-                  <button onClick={() => showModalHandler()}>
+                  <button
+                    onClick={() => {
+                      setClientAppointmentId(client._id);
+                        showModalHandler();
+                    }}
+                  >
                     <Image src={historiaLogo} width={30} height={30}></Image>
                   </button>
                 </td>

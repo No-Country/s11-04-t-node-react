@@ -9,7 +9,8 @@ import {
   getClients,
   createNewClient,
   deleteClient,
-  updateClient
+  updateClient,
+  getAppointments,
 } from "./services/client.services.js";
 
 export default function page() {
@@ -24,9 +25,11 @@ export default function page() {
     phone: "",
     email: "",
   });
-  const [clientToUpdate, setClientToUpdate] = useState([]);
-  const [slectedClientForUpdate, setSelectedClientForUpdate] = useState()
+  const [clientToUpdate, setClientToUpdate] = useState({});
+  const [selectedClientForUpdate, setSelectedClientForUpdate] = useState();
   const [selectClientForDel, setSelectClientForDel] = useState();
+  const [clientServices, setClientServices] = useState([]);
+  const [clientAppointmentId, setClientAppointmentId] = useState("");
   const [notifications, setNotificatons] = useState({
     successNotification: "Cliente creado correctamente",
     errorNotification: "Error al crear cliente",
@@ -58,7 +61,7 @@ export default function page() {
 
     getAllClients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newClient, selectClientForDel]);
+  }, [newClient, selectClientForDel, selectedClientForUpdate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -115,17 +118,44 @@ export default function page() {
   };
 
   const updateClientHandler = async () => {
-    const selectClientForUpdate = clientId._id;
-    const data = await updateClient(token, selectClientForUpdate,clientId);
-    setShowClient(false);
-    if (!data.success) {
-      console.log("error", data.msg, 5000);
-      if (data.tokenExpired) router.push("/acceso");
-      return;
+    try {
+      const selectClientForUpdate = clientId._id;
+      const data = await updateClient(
+        token,
+        selectClientForUpdate,
+        clientToUpdate
+      );
+
+
+      setSelectedClientForUpdate(selectClientForUpdate);
+      setShowClient(false);
+
+      if (!data.success) {
+        console.log("error", data.msg, 5000);
+        if (data.tokenExpired) router.push("/acceso");
+        return;
+      }
+      console.log("success", data.msg, 3000);
+    } catch (error) {
+      console.error("Error en updateClientHandler:", error);
     }
-    setSelectedClientForUpdate(selectClientForUpdate);
-    console.log("success", data.msg, 3000);
-    return;
+  };
+
+  const showAppointments = async () => {
+    try {
+      const clientIdForAppointment = clientAppointmentId;
+      const data = await getAppointments(token, clientIdForAppointment);
+      if (!data.success) {
+        console.log("error", data.msg, 5000);
+        if (data.tokenExpired) router.push("/acceso");
+        return;
+      }
+      const appointments = data;
+      setClientServices(appointments);
+      console.log(clientServices);
+    } catch (error) {
+      console.error("Error en showAppointments:", error);
+    }
   };
 
   return (
@@ -158,8 +188,17 @@ export default function page() {
         clientToUpdate={clientToUpdate}
         setClientToUpdate={setClientToUpdate}
         updateClientHandler={updateClientHandler}
+        showAppointments={showAppointments}
+        clientServices={clientServices}
+        setClientAppointmentId={setClientAppointmentId}
+        clientAppointmentId={clientAppointmentId}
       />
-      <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
+      <HistoryModal
+        showHistory={showHistory}
+        setShowHistory={setShowHistory}
+        showAppointments={showAppointments}
+        clientAppointmentId={clientAppointmentId}
+      />
     </div>
   );
 }

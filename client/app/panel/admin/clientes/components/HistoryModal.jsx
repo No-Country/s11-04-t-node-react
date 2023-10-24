@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-export default function HistoryModal({ showHistory, setShowHistory }) {
+export default function HistoryModal({
+  showHistory,
+  setShowHistory,
+  showAppointments,
+  clientAppointmentId,
+}) {
+  useEffect(() => {
+    showAppointments();
+  }, [clientAppointmentId]);
   return showHistory ? (
     <div
       id="modal-container"
