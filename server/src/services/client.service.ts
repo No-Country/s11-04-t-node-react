@@ -12,6 +12,7 @@ import type {
   ClientResponse,
   ClientsResponse
 } from '../types/client.type'
+import AppointmentModel from '../models/appointment.model'
 
 export const modifyClientService = async (
   id: string,
@@ -132,6 +133,45 @@ export const createClientService = async (
       success: false,
       statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
       msg: ERROR_MSGS.CLIENT_CREATION_ERROR
+    }
+  }
+}
+
+export const getClientsAppointmentsService = async (id: string) => {
+
+  try {
+
+    const client = await ClientModel.findById(id)
+    if (!client) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.CLIENT_ALREADY_EXISTS
+      }
+    }
+
+    const appointments = await AppointmentModel.find({ clientId: id });
+    if (appointments.length === 0) {
+      return {
+        success: true,
+        msg: ERROR_MSGS.CLIENT_WITHOUT_APPOINTMENTS,
+        statusCode: HttpStatusCode.NOT_FOUND
+      }
+    }
+
+    return {
+      success: true,
+      msg: SUCCESS_MSGS.GET_APPOINTMENTS_SUCCESS,
+      statusCode: HttpStatusCode.OK,
+      appointments
+    }
+
+  } catch (error) {
+    console.log(error)
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
     }
   }
 }

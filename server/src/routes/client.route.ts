@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   createClient,
+  getClientAppointments,
   getClients,
   modifyClient
 } from '../controllers/client.controller'
@@ -19,3 +20,10 @@ clientRouter.put(
 )
 clientRouter.get('/get-all', extractToken, auth, isBarberOrAdmin, getClients)
 clientRouter.post('/create', extractToken, auth, isBarberOrAdmin, createClient)
+clientRouter.get(
+  '/get-appointments/:id',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  getClientAppointments
+)
