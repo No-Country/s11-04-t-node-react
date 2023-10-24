@@ -3,6 +3,7 @@ import {
   createBarber,
   deleteBarber,
   getBarberById,
+  getBarberClients,
   getBarberInSession,
   getBarbers,
   getBarbersWithTheirServices,
@@ -13,7 +14,11 @@ import {
 } from '../controllers/barber.controller'
 import { auth } from '../middlewares/auth.middleware'
 import { extractToken } from '../middlewares/extractToken.middleware'
-import { isAdmin, isBarber } from '../middlewares/role.middlewares'
+import {
+  isAdmin,
+  isBarber,
+  isBarberOrAdmin
+} from '../middlewares/role.middlewares'
 
 export const loginRouter = Router()
 export const barberRouter = Router()
@@ -46,4 +51,11 @@ barberRouter.get(
   auth,
   isBarber,
   getBarberInSession
+)
+barberRouter.get(
+  '/get-clients/:id',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  getBarberClients
 )

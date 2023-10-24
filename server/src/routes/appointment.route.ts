@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import {
+  cancelAppointment,
   completeAppointment,
   createAppointment,
   getAppointments,
@@ -38,4 +39,11 @@ appoimentRouter.get(
   auth,
   isBarberOrAdmin,
   getAppointments
+)
+appoimentRouter.post(
+  '/cancel/:id',
+  extractToken,
+  auth,
+  isBarberOrAdmin,
+  cancelAppointment
 )

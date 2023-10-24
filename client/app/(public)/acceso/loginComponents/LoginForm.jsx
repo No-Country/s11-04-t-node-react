@@ -28,7 +28,7 @@ const LoginForm = () => {
 		e.preventDefault()
 
 		if (!validateType(loginData.email)) {
-			setInputError('el email ingresado no es valido')
+			setInputError('dirección de email inválida')
 			setLoginData({ email: '' })
 			return
 		}
@@ -66,13 +66,13 @@ const LoginForm = () => {
 						value={loginData.email}
 						event={hanldeChangeInput}
 						name={'email'}
-						style={'flex-grow w-full rounded-lg h-[44px]'}
+						style={'flex-grow w-full p-2 bg-[#D9D9D9]'}
 						label={'Email'}
-						placeholder={'Ingresa tu correo'}
+						placeholder={'Ingresa tu dirección de email'}
 					/>
 				</section>
 				<span className="h-9 text-red-600 w-full text-center">{inputError}</span>
-				<button className="bg-[#B5AF93] p-3 rounded-lg w-60 mx-auto mt-2">
+				<button className="bg-[#B5AF93] p-2 font-medium rounded-xl w-44 sm:w-60 mx-auto mt-2">
 					Ingresar
 				</button>
 			</form>

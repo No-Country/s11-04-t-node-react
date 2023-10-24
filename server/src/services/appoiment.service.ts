@@ -5,6 +5,7 @@ import { ERROR_MSGS } from '../constants/errorMsgs'
 import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
+import ClientModel from '../models/client.model'
 import {
   AppointmentStatus,
   type Appointment,
@@ -12,10 +13,12 @@ import {
   type AppointmentResponse,
   type AppointmentsResponse
 } from '../types/appointment.type'
-import { calculateServicesTotalPrice } from './dbValidations.services'
-import ClientModel from '../models/client.model'
+import {
+  generateCancelAppointmentTemplate,
+  generateNewAppointmentTemplate
+} from '../utils/emailTemplates'
 import { sendEmail } from '../utils/mail.util'
-import { generateNewAppointmentTemplate } from '../utils/sendOTPEmailTemplate'
+import { calculateServicesTotalPrice } from './dbValidations.services'
 dayjs.extend(customParseFormat)
 
 export const modifyAppointmentService = async (
@@ -342,7 +345,7 @@ export const createAppointmentService = async (
     await sendEmail(
       client.email,
       generateNewAppointmentTemplate(appointment.date, appointment.startTime),
-      'Se agendo su nuevo turno en BurberBuddy'
+      'Se agendó su nuevo turno en BurberBuddy'
     )
 
     return {
@@ -426,6 +429,64 @@ export const getAppointmentsService = async (
       statusCode: HttpStatusCode.OK,
       msg: SUCCESS_MSGS.GET_APPOINTMENTS_SUCCESS,
       appointments
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const cancelAppointmentService = async (
+  id: string
+): Promise<AppointmentsResponse> => {
+  try {
+    const appointment = await AppointmentModel.findById(id)
+    if (!appointment) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.APPOIMENTID_INVALID
+      }
+    }
+
+    if (appointment.status !== AppointmentStatus.PENDING) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.APPOINTMENT_NOT_PENDING
+      }
+    }
+
+    appointment.status = AppointmentStatus.CANCELLED
+    await appointment.save()
+
+    // Enviar el correo de aviso de cancelación:
+    const client = await ClientModel.findById(appointment.clientId)
+    if (!client) {
+      return {
+        success: true,
+        statusCode: HttpStatusCode.OK,
+        msg: ERROR_MSGS.CLIENT_NOT_FOUND
+      }
+    }
+
+    await sendEmail(
+      client.email,
+      generateCancelAppointmentTemplate(
+        appointment.date,
+        appointment.startTime
+      ),
+      'Tu turno en BurberBuddy fue cancelado'
+    )
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.APPOINTMENT_CANCELED
     }
   } catch (error) {
     console.log(error)

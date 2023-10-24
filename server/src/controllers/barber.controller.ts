@@ -3,6 +3,7 @@ import {
   createBarberService,
   deleteBarberService,
   getBarberByIdService,
+  getBarberClientsService,
   getBarberInSessionService,
   getBarbersService,
   getBarbersWithTheirServicesService,
@@ -156,5 +157,17 @@ export const getBarberInSession = async (req: Request, res: Response) => {
     success,
     msg,
     barber
+  })
+}
+
+export const getBarberClients = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { msg, statusCode, success, clients } =
+    await getBarberClientsService(id)
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    clients
   })
 }

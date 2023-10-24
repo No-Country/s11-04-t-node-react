@@ -12,13 +12,6 @@ const ErrorMesaje = ({ codeCounter, setCodeCounter, setIsPopupOpen }) => {
 	useEffect(() => {
 		if (codeCounter === 0) {
 			const intervalo = setInterval(() => {
-				// if (segundos > 0) {
-				//   setSegundos((prev) => prev - 1);
-				// } else {
-				//   clearInterval(intervalo);
-				//   setSegundos(60);
-				//   console.log("Cuenta regresiva finalizada.");
-				// }
 				if (segundos <= 0) {
 					clearInterval(intervalo)
 					setSegundos(60)
@@ -113,37 +106,40 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 					setIsPopupOpen={setIsPopupOpen}
 				/>
 			) : (
-				<article className="grid w-full max-w-lg bg-[#B5AF93] p-3 h-[360px] rounded-2xl shadow-xl grid-rows-[1fr,auto,1fr,1fr]">
+				<article className="grid w-full max-w-lg bg-white p-8 h-[360px] rounded-xl">
 					<p
-						className="text-4xl uppercase py-10 text-center font-semibold"
+						className="text-lg font-semibold"
 						title="verifica tu email o telefono"
 					>
-						ingresa el codigo
+						Código de verificación
 					</p>
-					<div className="h-[20px] text-lg">
+					<p className="text-sm text-slate-400">
+						Hemos enviado el código de verificación a tu dirección de email
+					</p>
+					{/* <div className="h-[20px] text-lg">
 						intentos restantes:{' '}
 						<span className="text-red-600 font-semibold">{codeCounter}</span>
-					</div>
-					<div className="grid grid-cols-4 w-full gap-2">
+					</div> */}
+					<div className="flex justify-around gap-2">
 						{[0, 1, 2, 3].map((index) => (
-							<Input
+							<div
 								key={index}
-								type="number"
-								placeholder={'x'}
-								style={
-									'text-center text-3xl w-full text-black py-6 shadow-2xl shadow-black/70'
-								}
-								value={code[index]}
-								event={(e) => changeCodeValue(e, index)}
-							/>
+								className="flex justify-center"
+							>
+								<Input
+									type="number"
+									style={'text-center text-4xl w-full py-1 text-slate-950 mb-6 pl-0'}
+									value={code[index]}
+									event={(e) => changeCodeValue(e, index)}
+								/>
+							</div>
 						))}
 					</div>
 					<button
 						onClick={hanldeAuthorizedUser}
-						className="bg-black px-3 text-white w-60 mx-auto mt-2 tracking-widest text-lg
-          hover:text-black hover:bg-white  transition-colors mb-4 shadow-2xl shadow-black/70"
+						className=" bg-orange-400 px-3 text-white w-60 mx-auto mt-2 tracking-widest text-lg font-medium mb-4 rounded-3xl"
 					>
-						verificar
+						Confirmar
 					</button>
 				</article>
 			)}
