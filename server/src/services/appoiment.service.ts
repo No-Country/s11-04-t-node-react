@@ -419,11 +419,23 @@ export const getAppointmentsService = async (
   barberId: string
 ): Promise<AppointmentsResponse> => {
   try {
-    const appointments = await AppointmentModel.find({
-      barberId
-    })
-      .populate('clientId')
-      .populate('services')
+    const appointments = await AppointmentModel.find(
+      {
+        barberId
+      },
+      { __v: 0 }
+    )
+      .populate({ path: 'clientId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'barberId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'services', select: ['_id', 'name', 'price'] })
+
+    if (appointments.length === 0) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.APPOINTMENTS_NOT_FOUND
+      }
+    }
     return {
       success: true,
       statusCode: HttpStatusCode.OK,
