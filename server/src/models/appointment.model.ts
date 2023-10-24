@@ -29,7 +29,7 @@ const AppointmentSchema = new Schema<Appointment>({
     enum: [
       AppointmentStatus.PENDING,
       AppointmentStatus.COMPLETED,
-      AppointmentStatus.CANCELED
+      AppointmentStatus.CANCELLED
     ],
     default: AppointmentStatus.PENDING
   },
