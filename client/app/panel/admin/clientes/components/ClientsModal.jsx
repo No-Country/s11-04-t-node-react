@@ -61,8 +61,6 @@ export default function ClientsModal({
                     fullName: e.target.value,
                   })
                 }
-                //required
-                //disabled={disabled}
               />
             </div>
           </div>
@@ -94,11 +92,11 @@ export default function ClientsModal({
                 type="email"
                 id="clientEmail"
                 name="clientEmail"
-                placeholder={clientId.email} // Usa el valor del estado clientToUpdate.email
+                placeholder={clientId.email}
                 onChange={(e) =>
                   setClientToUpdate({
                     ...clientToUpdate,
-                    email: e.target.value, // Actualiza solo la propiedad email
+                    email: e.target.value,
                   })
                 }
               />
@@ -111,15 +109,6 @@ export default function ClientsModal({
                 onClick={(e) => handleModifyClick(e)}
               >
                 Modificar
-              </button>
-              <button
-                className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#C65F5F] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
-                type="button"
-                onClick={() => {
-                  setModalDeleteClient(true);
-                }}
-              >
-                Eliminar
               </button>
               <button
                 className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
