@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulingProvider";
 import axios from 'axios';
+import SelectHour from './SelectHour';
 
 const FormAgenda = () => {
 
@@ -61,11 +62,11 @@ const FormAgenda = () => {
       <div className='flex items-center'>
         <div>
           <label className='font-thin text-stone-700 text-sm'>Elija un horario de inicio</label>
-          <input type="date" />
+          <SelectHour horario={"de inicio"} param={"startTime"}/>
         </div>
         <div>
           <label className='font-thin text-stone-700 text-sm'>Elija un horario de final</label>
-          <input type="date" />
+          <SelectHour horario={"de fin"} param={"endTime"}/>
         </div>
       </div>
       {/* <div className="w-72">
