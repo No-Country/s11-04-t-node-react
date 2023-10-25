@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function HistoryModal({
   showHistory,
@@ -6,14 +6,15 @@ export default function HistoryModal({
   showAppointments,
   clientAppointmentId,
   clientServices,
-  allClients
+  allClients,
 }) {
   useEffect(() => {
     showAppointments();
   }, [clientAppointmentId]);
 
-
-  const foundClient = allClients.find((client) => client._id === clientAppointmentId)
+  const foundClient = allClients.find(
+    (client) => client._id === clientAppointmentId
+  );
 
   return showHistory ? (
     <div
@@ -32,6 +33,7 @@ export default function HistoryModal({
             <tr className="border-white">
               <th className="w-1/12 text-sm sm:text-base">Fecha</th>
               <th className="w-1/12 text-sm sm:text-base">Servicio</th>
+              <th className="w-1/12 text-sm sm:text-base">Barbero</th>
             </tr>
           </thead>
           {clientServices.length > 0 ? (
@@ -41,8 +43,13 @@ export default function HistoryModal({
                   <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">
                     {services.date}
                   </td>
-                  <td className="text-center border rounded-lg bg-slate-950 text-slate-200 text-xs">
-                    {services.serviceName}
+                  {services.services.map((service) => (
+                    <td className="text-center border rounded-lg bg-slate-950 text-slate-200 text-xs">
+                      {service.name}
+                    </td>
+                  ))}
+                  <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">
+                    {services.barberId.fullName}
                   </td>
                 </tr>
               ))}
