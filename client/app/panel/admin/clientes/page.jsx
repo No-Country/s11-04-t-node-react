@@ -14,6 +14,10 @@ import {
 } from "./services/client.services.js";
 
 export default function page() {
+  const [notification, setNotification] = useState({
+    messageType: "success",
+    message: "",
+  });
   const [searchClient, setSearchClient] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showClient, setShowClient] = useState(false);
@@ -51,7 +55,7 @@ export default function page() {
     const getAllClients = async () => {
       const data = await getClients(token);
       if (!data.success) {
-        console.log("error", data.msg, 5000);
+        displayNotification("error", data.msg, 5000);
         if (data.tokenExpired) router.push("/acceso");
         return;
       }
@@ -68,7 +72,7 @@ export default function page() {
     const newClientToCreate = { ...newClient };
     const data = await createNewClient(token, newClientToCreate);
     if (!data.success) {
-      console.log("error", data.msg, 5000);
+      displayNotification("error", data.msg, 5000);
       if (data.tokenExpired) router.push("/acceso");
       return;
     }
@@ -101,12 +105,12 @@ export default function page() {
     const data = await deleteClient(token, selectedClienteForDelete);
     setShowClient(false);
     if (!data.success) {
-      console.log("error", data.msg, 5000);
+      displayNotification("error", data.msg, 5000);
       if (data.tokenExpired) router.push("/acceso");
       return;
     }
     setSelectClientForDel(selectedClienteForDelete);
-    console.log("success", data.msg, 3000);
+    displayNotification("success", data.msg, 3000);
     return;
   };
 
@@ -126,16 +130,15 @@ export default function page() {
         clientToUpdate
       );
 
-
       setSelectedClientForUpdate(selectClientForUpdate);
       setShowClient(false);
 
       if (!data.success) {
-        console.log("error", data.msg, 5000);
+        displayNotification("error", data.msg, 5000);
         if (data.tokenExpired) router.push("/acceso");
         return;
       }
-      console.log("success", data.msg, 3000);
+      displayNotification("success", data.msg, 3000);
     } catch (error) {
       console.error("Error en updateClientHandler:", error);
     }
@@ -146,7 +149,7 @@ export default function page() {
       const clientIdForAppointment = clientAppointmentId;
       const data = await getAppointments(token, clientIdForAppointment);
       if (!data.success) {
-        console.log("error", data.msg, 5000);
+        displayNotification("error", data.msg, 5000);
         if (data.tokenExpired) router.push("/acceso");
         return;
       }
@@ -156,6 +159,13 @@ export default function page() {
     } catch (error) {
       console.error("Error en showAppointments:", error);
     }
+  };
+
+  const displayNotification = (messageType, message, time) => {
+    setNotification({ messageType: messageType, message: message });
+    setTimeout(() => {
+      setNotification({ message: "" });
+    }, time);
   };
 
   return (
@@ -192,6 +202,7 @@ export default function page() {
         clientServices={clientServices}
         setClientAppointmentId={setClientAppointmentId}
         clientAppointmentId={clientAppointmentId}
+        notification={notification}
       />
       <HistoryModal
         showHistory={showHistory}
