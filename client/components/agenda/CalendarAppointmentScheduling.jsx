@@ -22,7 +22,7 @@ const CalendarAppointmentScheduling = () => {
 
 		setFormDataAppointmentScheduling({
 			...formDataAppointmentScheduling,
-			formatingDate
+			date: formatingDate
 		})
 	}, [date])
 
