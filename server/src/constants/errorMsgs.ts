@@ -55,5 +55,6 @@ export enum ERROR_MSGS {
   DATE_TOO_FAR = 'La fecha de la cita no puede ser mayor a 30 días de la actual.',
   BARBER_WITHOUT_CLIENTS = 'El barbero no tiene citas completadas con ningun cliente',
   CLIENT_WITHOUT_APPOINTMENTS = 'Cliente sin citas',
-  CLIENT_NOT_FOUND = 'Cliente no encontrado'
+  CLIENT_NOT_FOUND = 'Cliente no encontrado',
+  APPOINTMENTS_NOT_FOUND = 'Citas no encontradas'
 }
