@@ -32,7 +32,7 @@ export default function page() {
   const [clientToUpdate, setClientToUpdate] = useState({});
   const [selectedClientForUpdate, setSelectedClientForUpdate] = useState();
   const [selectClientForDel, setSelectClientForDel] = useState();
-  const [clientServices, setClientServices] = useState([]);
+  const [clientServices, setClientServices] = useState({});
   const [clientAppointmentId, setClientAppointmentId] = useState("");
   const [notifications, setNotificatons] = useState({
     successNotification: "Cliente creado correctamente",
@@ -61,11 +61,12 @@ export default function page() {
       }
       const allClients = data.clients;
       setClients(allClients);
+      displayNotification("success", data.msg, 3000);
     };
 
     getAllClients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newClient, selectClientForDel, selectedClientForUpdate]);
+  }, [createClient, selectClientForDel, selectedClientForUpdate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -81,7 +82,7 @@ export default function page() {
     console.log(createdClient);
     setClients(createdClient);
 
-    console.log("success", data.msg, 3000);
+    displayNotification("success", createdClient.msg, 3000);
     resetCreateClient();
     setCreateClient(false);
   };
@@ -153,7 +154,7 @@ export default function page() {
         if (data.tokenExpired) router.push("/acceso");
         return;
       }
-      const appointments = data;
+      const appointments = data.appointments;
       setClientServices(appointments);
       console.log(clientServices);
     } catch (error) {
@@ -169,7 +170,7 @@ export default function page() {
   };
 
   return (
-    <div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
+    <div className="py-10 max-h-screen h-screen sm:h-screen overflow-y-scroll overflow-hidden relative border rounded-2xl px-7 bg-[#D9D9D9] scroll-smooth">
       <CreateClient
         createClient={createClient}
         setCreateClient={setCreateClient}
@@ -209,6 +210,7 @@ export default function page() {
         setShowHistory={setShowHistory}
         showAppointments={showAppointments}
         clientAppointmentId={clientAppointmentId}
+        clientServices={clientServices}
       />
     </div>
   );
