@@ -29,14 +29,14 @@ const CardClient = ({ fullName, email, _id }) => {
                         {email}
                     </p>
                 </div>
-                <div>
+                <div className="flex items-center gap-x-3">
                     <button
                         onClick={handleClickClient}
-                        className="px-4 py-2 bg-green-500 rounded-md">
-                        Contactar
-                    </button>
-                    <Link href={`https://wa.me/+543865559022?text=${textWhatsapp}`} className="px-4 py-2 bg-green-500 rounded-md">
+                        className="inline-block px-4 py-2 bg-green-500 rounded-md">
                         Agendar cita
+                    </button>
+                    <Link target="_blank" href={`https://wa.me/+543865559022?text=${textWhatsapp}`} className="inline-block px-4 py-2 bg-green-500 rounded-md">
+                        Contactar
                     </Link>
                 </div>
             </div>
