@@ -5,7 +5,7 @@ export default function CreateClient({ createClient, setCreateClient, submitHand
   return createClient ? (
     
     <form onSubmit={submitHandler}>
-      <div className="flex flex-col sm:flex-row mb-4">
+      <div className="flex flex-col sm:flex-row mb-4 mt-16">
         <div className="flex flex-col w-full sm:w-1/2 mr-10">
           <label className="text-lg sm:text-xl my-2" htmlFor="clientfullName">
             Nombre y Apellido

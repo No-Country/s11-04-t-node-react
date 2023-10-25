@@ -7,7 +7,7 @@ export default function ClientsHeader({
   setSearchClient,
 }) {
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between mt-10">
       <div id="clients-title-container" className="flex pt-10 px-10">
         <h1 className="text-3xl sm:text-4xl">Clientes</h1>
         <button

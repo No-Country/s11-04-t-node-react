@@ -9,10 +9,15 @@ import {
   getClients,
   createNewClient,
   deleteClient,
-  updateClient
+  updateClient,
+  getAppointments,
 } from "./services/client.services.js";
 
 export default function page() {
+  const [notification, setNotification] = useState({
+    messageType: "success",
+    message: "",
+  });
   const [searchClient, setSearchClient] = useState("");
   const [showHistory, setShowHistory] = useState(false);
   const [showClient, setShowClient] = useState(false);
@@ -24,9 +29,11 @@ export default function page() {
     phone: "",
     email: "",
   });
-  const [clientToUpdate, setClientToUpdate] = useState([]);
-  const [slectedClientForUpdate, setSelectedClientForUpdate] = useState()
+  const [clientToUpdate, setClientToUpdate] = useState({});
+  const [selectedClientForUpdate, setSelectedClientForUpdate] = useState();
   const [selectClientForDel, setSelectClientForDel] = useState();
+  const [clientServices, setClientServices] = useState({});
+  const [clientAppointmentId, setClientAppointmentId] = useState("");
   const [notifications, setNotificatons] = useState({
     successNotification: "Cliente creado correctamente",
     errorNotification: "Error al crear cliente",
@@ -48,24 +55,25 @@ export default function page() {
     const getAllClients = async () => {
       const data = await getClients(token);
       if (!data.success) {
-        console.log("error", data.msg, 5000);
+        displayNotification("error", data.msg, 5000);
         if (data.tokenExpired) router.push("/acceso");
         return;
       }
       const allClients = data.clients;
       setClients(allClients);
+      displayNotification("success", data.msg, 3000);
     };
 
     getAllClients();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newClient, selectClientForDel]);
+  }, [createClient, selectClientForDel, selectedClientForUpdate]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     const newClientToCreate = { ...newClient };
     const data = await createNewClient(token, newClientToCreate);
     if (!data.success) {
-      console.log("error", data.msg, 5000);
+      displayNotification("error", data.msg, 5000);
       if (data.tokenExpired) router.push("/acceso");
       return;
     }
@@ -74,7 +82,7 @@ export default function page() {
     console.log(createdClient);
     setClients(createdClient);
 
-    console.log("success", data.msg, 3000);
+    displayNotification("success", createdClient.msg, 3000);
     resetCreateClient();
     setCreateClient(false);
   };
@@ -98,12 +106,12 @@ export default function page() {
     const data = await deleteClient(token, selectedClienteForDelete);
     setShowClient(false);
     if (!data.success) {
-      console.log("error", data.msg, 5000);
+      displayNotification("error", data.msg, 5000);
       if (data.tokenExpired) router.push("/acceso");
       return;
     }
     setSelectClientForDel(selectedClienteForDelete);
-    console.log("success", data.msg, 3000);
+    displayNotification("success", data.msg, 3000);
     return;
   };
 
@@ -115,21 +123,54 @@ export default function page() {
   };
 
   const updateClientHandler = async () => {
-    const selectClientForUpdate = clientId._id;
-    const data = await updateClient(token, selectClientForUpdate,clientId);
-    setShowClient(false);
-    if (!data.success) {
-      console.log("error", data.msg, 5000);
-      if (data.tokenExpired) router.push("/acceso");
-      return;
+    try {
+      const selectClientForUpdate = clientId._id;
+      const data = await updateClient(
+        token,
+        selectClientForUpdate,
+        clientToUpdate
+      );
+
+      setSelectedClientForUpdate(selectClientForUpdate);
+      setShowClient(false);
+
+      if (!data.success) {
+        displayNotification("error", data.msg, 5000);
+        if (data.tokenExpired) router.push("/acceso");
+        return;
+      }
+      displayNotification("success", data.msg, 3000);
+    } catch (error) {
+      console.error("Error en updateClientHandler:", error);
     }
-    setSelectedClientForUpdate(selectClientForUpdate);
-    console.log("success", data.msg, 3000);
-    return;
+  };
+
+  const showAppointments = async () => {
+    try {
+      const clientIdForAppointment = clientAppointmentId;
+      const data = await getAppointments(token, clientIdForAppointment);
+      if (!data.success) {
+        displayNotification("error", data.msg, 5000);
+        if (data.tokenExpired) router.push("/acceso");
+        return;
+      }
+      const appointments = data.appointments;
+      setClientServices(appointments);
+      console.log(clientServices);
+    } catch (error) {
+      console.error("Error en showAppointments:", error);
+    }
+  };
+
+  const displayNotification = (messageType, message, time) => {
+    setNotification({ messageType: messageType, message: message });
+    setTimeout(() => {
+      setNotification({ message: "" });
+    }, time);
   };
 
   return (
-    <div className="h-[80vh] sm:h-screen overflow-hidden overflow-y-scroll relative border rounded-2xl py-5 px-7 bg-[#D9D9D9]">
+    <div className="py-10 max-h-screen h-screen sm:h-screen overflow-y-scroll overflow-hidden relative border rounded-2xl px-7 bg-[#D9D9D9] scroll-smooth">
       <CreateClient
         createClient={createClient}
         setCreateClient={setCreateClient}
@@ -158,8 +199,19 @@ export default function page() {
         clientToUpdate={clientToUpdate}
         setClientToUpdate={setClientToUpdate}
         updateClientHandler={updateClientHandler}
+        showAppointments={showAppointments}
+        clientServices={clientServices}
+        setClientAppointmentId={setClientAppointmentId}
+        clientAppointmentId={clientAppointmentId}
+        notification={notification}
       />
-      <HistoryModal showHistory={showHistory} setShowHistory={setShowHistory} />
+      <HistoryModal
+        showHistory={showHistory}
+        setShowHistory={setShowHistory}
+        showAppointments={showAppointments}
+        clientAppointmentId={clientAppointmentId}
+        clientServices={clientServices}
+      />
     </div>
   );
 }
