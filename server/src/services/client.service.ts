@@ -6,13 +6,13 @@ import {
   duplicateKeyErrorHandler,
   mongooseValidatonErrorHandler
 } from '../handlers/mongooseErrors.handler'
+import AppointmentModel from '../models/appointment.model'
 import ClientModel from '../models/client.model'
 import type {
   Client,
   ClientResponse,
   ClientsResponse
 } from '../types/client.type'
-import AppointmentModel from '../models/appointment.model'
 
 export const modifyClientService = async (
   id: string,
@@ -148,10 +148,17 @@ export const getClientsAppointmentsService = async (id: string) => {
       }
     }
 
-    const appointments = await AppointmentModel.find({ clientId: id })
+    const appointments = await AppointmentModel.find(
+      { clientId: id },
+      { __v: 0 }
+    )
+      .populate({ path: 'clientId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'barberId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'services', select: ['_id', 'name', 'price'] })
+
     if (appointments.length === 0) {
       return {
-        success: true,
+        success: false,
         msg: ERROR_MSGS.CLIENT_WITHOUT_APPOINTMENTS,
         statusCode: HttpStatusCode.NOT_FOUND
       }
