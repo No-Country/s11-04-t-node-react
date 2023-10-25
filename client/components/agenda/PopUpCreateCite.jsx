@@ -2,6 +2,7 @@
 
 import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulingProvider.jsx'
 import FormAgenda from './FormAppointmentScheduling'
+import axios from 'axios'
 
 const PopUpCreateCite = () => {
 
@@ -17,8 +18,11 @@ const PopUpCreateCite = () => {
       }
     }
 
+    const body = { ...formDataAppointmentScheduling, barberId: _id, clientId: client._id }
+    console.log(body)
+
     try {
-      const { data } = await axios("https://barberbuddy.fly.dev/api/v1/appointment/create", { ...formDataAppointmentScheduling, barberId: _id }, config)
+      const { data } = await axios.post("https://barberbuddy.fly.dev/api/v1/appointment/create", body, config)
       console.log(data)
     } catch (error) {
       console.log(error)
