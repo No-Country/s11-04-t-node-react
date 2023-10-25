@@ -204,6 +204,7 @@ export default function page() {
         setClientAppointmentId={setClientAppointmentId}
         clientAppointmentId={clientAppointmentId}
         notification={notification}
+        setClientId={setClientId}
       />
       <HistoryModal
         showHistory={showHistory}
@@ -211,6 +212,7 @@ export default function page() {
         showAppointments={showAppointments}
         clientAppointmentId={clientAppointmentId}
         clientServices={clientServices}
+        allClients={clients}
       />
     </div>
   );

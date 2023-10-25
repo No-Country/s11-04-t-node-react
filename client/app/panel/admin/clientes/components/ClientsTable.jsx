@@ -23,6 +23,7 @@ export default function ClientsTable({
   setClientAppointmentId,
   clientAppointmentId,
   notification,
+  setClientId,
 }) {
   const showModalHandler = () => {
     console.log("click");
@@ -33,7 +34,7 @@ export default function ClientsTable({
   console.log("appoint", clientAppointmentId);
   return clients.length >= 1 ? (
     <div>
-      <Notification notification={notification}/>
+      <Notification notification={notification} />
       <div className="border rounded-lg mt-5 flex flex-col  overflow-x-scroll">
         <table className="w-full divide-y divide-white bg-white bg-opacity-10 table-auto">
           <thead className="bg-slate-100 h-10">
@@ -70,6 +71,7 @@ export default function ClientsTable({
                       onClick={() => {
                         setClientAppointmentId(client._id);
                         showModalHandler();
+                        setClientId(client)
                       }}
                     >
                       <Image src={historiaLogo} width={30} height={30}></Image>
