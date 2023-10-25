@@ -358,7 +358,7 @@ export const createAppointmentService = async (
         servicesNames,
         appointment.totalPrice
       ),
-      'Se agendo su nuevo turno en BurberBuddy'
+      SUCCESS_MSGS.APPOINTMENT_CREATION_EMAIL_SUBJECT
     )
 
     return {
@@ -505,7 +505,7 @@ export const cancelAppointmentService = async (
         appointment.date,
         appointment.startTime
       ),
-      'Tu turno en BurberBuddy fue cancelado'
+      SUCCESS_MSGS.APPOINTMENT_CANCELATION_EMAIL_SUBJECT
     )
 
     return {
