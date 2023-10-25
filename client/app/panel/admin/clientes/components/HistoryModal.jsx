@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState,useEffect } from "react";
 
 export default function HistoryModal({
   showHistory,
@@ -6,17 +6,22 @@ export default function HistoryModal({
   showAppointments,
   clientAppointmentId,
   clientServices,
+  allClients
 }) {
   useEffect(() => {
     showAppointments();
   }, [clientAppointmentId]);
+
+
+  const foundClient = allClients.find((client) => client._id === clientAppointmentId)
+
   return showHistory ? (
     <div
       id="modal-container"
       className="bg-[#292D33] text-white border rounded-lg p-5 top-32 sm:top-1/2 h-[70vh] sm:h-fit overflow-hidden left-1/2 -translate-x-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 fixed"
     >
       <div id="modal-header" className="flex justify-between">
-        <h2 className="pt-5 pb-5">nombre.cliente</h2>
+        <h2 className="pt-5 pb-5">{foundClient.fullName}</h2>
         <button className="pb-12" onClick={() => setShowHistory(false)}>
           X
         </button>
