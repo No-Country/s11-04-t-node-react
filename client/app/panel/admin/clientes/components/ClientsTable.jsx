@@ -84,7 +84,7 @@ export default function ClientsTable({
                     </button>
                   </td>
                   <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
-                    <Link key={client._id} href={`agenda?id=${client._id}`}>
+                    <Link key={client._id} href={`agenda?id=${client._id}?name=${client.fullName}`}>
                       <button>
                         <Image
                           className=""
