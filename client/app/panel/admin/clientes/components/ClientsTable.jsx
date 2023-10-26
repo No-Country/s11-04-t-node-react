@@ -26,12 +26,8 @@ export default function ClientsTable({
   setClientId,
 }) {
   const showModalHandler = () => {
-    console.log("click");
     setShowHistory(true);
   };
-
-  console.log(clientId);
-  console.log("appoint", clientAppointmentId);
   return clients.length >= 1 ? (
     <div>
       <Notification notification={notification} />
@@ -71,7 +67,7 @@ export default function ClientsTable({
                       onClick={() => {
                         setClientAppointmentId(client._id);
                         showModalHandler();
-                        setClientId(client)
+                        setClientId(client);
                       }}
                     >
                       <Image src={historiaLogo} width={30} height={30}></Image>

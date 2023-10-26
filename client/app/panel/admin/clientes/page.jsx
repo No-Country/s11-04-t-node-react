@@ -79,7 +79,6 @@ export default function page() {
     }
 
     const createdClient = data;
-    console.log(createdClient);
     setClients(createdClient);
 
     displayNotification("success", createdClient.msg, 3000);
@@ -121,6 +120,7 @@ export default function page() {
     setClientId(findClient);
     console.log("Showing client with ID:", clientId);
   };
+  
 
   const updateClientHandler = async () => {
     try {
@@ -149,18 +149,22 @@ export default function page() {
     try {
       const clientIdForAppointment = clientAppointmentId;
       const data = await getAppointments(token, clientIdForAppointment);
+  
       if (!data.success) {
         displayNotification("error", data.msg, 5000);
         if (data.tokenExpired) router.push("/acceso");
+        setClientServices([]);
         return;
       }
+  
       const appointments = data.appointments;
       setClientServices(appointments);
-      console.log(clientServices);
     } catch (error) {
       console.error("Error en showAppointments:", error);
+      setClientServices([]);
     }
   };
+  
 
   const displayNotification = (messageType, message, time) => {
     setNotification({ messageType: messageType, message: message });
