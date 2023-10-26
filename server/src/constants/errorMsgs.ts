@@ -56,5 +56,6 @@ export enum ERROR_MSGS {
   BARBER_WITHOUT_CLIENTS = 'El barbero no tiene citas completadas con ningun cliente',
   CLIENT_WITHOUT_APPOINTMENTS = 'Cliente sin citas',
   CLIENT_NOT_FOUND = 'Cliente no encontrado',
-  APPOINTMENTS_NOT_FOUND = 'Citas no encontradas'
+  APPOINTMENTS_NOT_FOUND = 'Citas no encontradas',
+  TIME_LENGTH_INVALID = 'El tiempo ingresado debe tener 5 caracteres: HH:mm'
 }

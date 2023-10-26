@@ -6,7 +6,6 @@ import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
 import ClientModel from '../models/client.model'
-import ServiceModel from '../models/service.model'
 import {
   AppointmentStatus,
   type Appointment,
@@ -14,13 +13,20 @@ import {
   type AppointmentResponse,
   type AppointmentsResponse
 } from '../types/appointment.type'
-import { type Service } from '../types/service.type'
 import {
   generateCancelAppointmentTemplate,
   generateNewAppointmentTemplate
 } from '../utils/emailTemplates'
 import { sendEmail } from '../utils/mail.util'
-import { calculateServicesTotalPrice } from './dbValidations.services'
+import {
+  calculateDurationInMinutes,
+  calculateServicesTotalPrice,
+  differenceBtwNowAndDate,
+  existingAppointments,
+  existingAppointmentsWhenUpdating,
+  getServicesNames,
+  isStartTimeGreaterThanEndTime
+} from './dbValidations.services'
 dayjs.extend(customParseFormat)
 
 export const modifyAppointmentService = async (
@@ -28,8 +34,6 @@ export const modifyAppointmentService = async (
   clientId: string,
   body: AppointmentBody
 ): Promise<AppointmentResponse> => {
-  let durationInMinutes: number | undefined
-
   try {
     const appointment = await AppointmentModel.findById(id)
     if (!appointment) {
@@ -61,6 +65,15 @@ export const modifyAppointmentService = async (
 
     // Revisar que el startTime y el endTime tengan el formato HH:mm, formato de 24 horas
     if (startTime && endTime) {
+      // Revisar que las horas tengan una longitud de 5 caracteres
+      if (startTime.length !== 5 || endTime.length !== 5) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.TIME_LENGTH_INVALID
+        }
+      }
+
       if (!validator.isTime(startTime) || !validator.isTime(endTime)) {
         return {
           success: false,
@@ -69,35 +82,14 @@ export const modifyAppointmentService = async (
         }
       }
 
-      // Revisar que el endTime sea mayor al startTime:
-      // Divido las cadenas de tiempo en horas y minutos
-      const startTimeParts = startTime.split(':')
-      const endTimeParts = endTime.split(':')
-
-      // Paso a números
-      const startHour = parseInt(startTimeParts[0], 10)
-      const startMinute = parseInt(startTimeParts[1], 10)
-      const endHour = parseInt(endTimeParts[0], 10)
-      const endMinute = parseInt(endTimeParts[1], 10)
-
-      if (
-        startHour > endHour ||
-        (startHour === endHour && startMinute >= endMinute)
-      ) {
+      // Revisar que el endTime sea mayor al startTime
+      if (isStartTimeGreaterThanEndTime(startTime, endTime)) {
         return {
           success: false,
           statusCode: HttpStatusCode.BAD_REQUEST,
           msg: ERROR_MSGS.TIME_INVALID
         }
       }
-
-      // Duración de la cita:
-      // Diferencia en minutos
-      const hoursDifference = endHour - startHour
-      const minutesDifference = endMinute - startMinute
-
-      // Duración en minutos
-      durationInMinutes = hoursDifference * 60 + minutesDifference
     }
 
     // Revisar que la fecha tenga un formato válida
@@ -112,9 +104,7 @@ export const modifyAppointmentService = async (
     }
 
     // Revisar que la fecha de la cita no sea menor a la actual
-    const now = dayjs()
-    const formattedDate = dayjs(date, 'DD-MM-YYYY', 'es')
-    const differenceInDays = formattedDate.diff(now, 'day')
+    const differenceInDays = differenceBtwNowAndDate(date)
 
     if (differenceInDays < 0) {
       return {
@@ -143,7 +133,7 @@ export const modifyAppointmentService = async (
       }
 
       const totalPrice = await calculateServicesTotalPrice(services)
-      if (totalPrice === 0 || totalPrice === undefined) {
+      if (totalPrice === 0) {
         return {
           success: false,
           statusCode: HttpStatusCode.BAD_REQUEST,
@@ -153,25 +143,16 @@ export const modifyAppointmentService = async (
     }
 
     // Validar solapeo
-    const existingAppointments = await AppointmentModel.find({
-      barberId,
-      date,
-      status: AppointmentStatus.PENDING
-    })
-
-    let hasOverlap = false // Variable para rastrear si se ha encontrado una superposición
-
-    existingAppointments.forEach((existingAppointment) => {
-      // Si ya existe una cita con el mismo barbero en la misma fecha, verifica si hay superposición en el tiempo
-      if (
-        endTime > existingAppointment.startTime &&
-        startTime < existingAppointment.endTime &&
-        existingAppointment.clientId.toString() !== clientId
-      ) {
-        hasOverlap = true
-      }
-    })
-    if (hasOverlap) {
+    if (
+      await existingAppointmentsWhenUpdating(
+        startTime,
+        endTime,
+        barberId,
+        clientId,
+        date,
+        id
+      )
+    ) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -187,6 +168,9 @@ export const modifyAppointmentService = async (
         runValidators: true
       }
     )) as Appointment
+
+    // Duración de la cita en minutos
+    const durationInMinutes = calculateDurationInMinutes(startTime, endTime)
 
     return {
       success: true,
@@ -221,6 +205,15 @@ export const createAppointmentService = async (
       }
     }
 
+    // Revisar que las horas tengan una longitud de 5 caracteres
+    if (startTime.length !== 5 || endTime.length !== 5) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.TIME_LENGTH_INVALID
+      }
+    }
+
     // Revisar que el startTime y el endTime tengan el formato HH:mm, formato de 24 horas
     if (!validator.isTime(startTime) || !validator.isTime(endTime)) {
       return {
@@ -231,20 +224,7 @@ export const createAppointmentService = async (
     }
 
     // Revisar que el endTime sea mayor al startTime:
-    // Divido las cadenas de tiempo en horas y minutos
-    const startTimeParts = startTime.split(':')
-    const endTimeParts = endTime.split(':')
-
-    // Paso a números
-    const startHour = parseInt(startTimeParts[0], 10)
-    const startMinute = parseInt(startTimeParts[1], 10)
-    const endHour = parseInt(endTimeParts[0], 10)
-    const endMinute = parseInt(endTimeParts[1], 10)
-
-    if (
-      startHour > endHour ||
-      (startHour === endHour && startMinute >= endMinute)
-    ) {
+    if (isStartTimeGreaterThanEndTime(startTime, endTime)) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -252,13 +232,8 @@ export const createAppointmentService = async (
       }
     }
 
-    // Duración de la cita:
-    // Diferencia en minutos
-    const hoursDifference = endHour - startHour
-    const minutesDifference = endMinute - startMinute
-
-    // Duración en minutos
-    const durationInMinutes = hoursDifference * 60 + minutesDifference
+    // Duración de la cita en minutos
+    const durationInMinutes = calculateDurationInMinutes(startTime, endTime)
 
     // Revisar que la fecha tenga un formato válida
     if (!dayjs(date, 'DD-MM-YYYY', true).isValid()) {
@@ -270,9 +245,7 @@ export const createAppointmentService = async (
     }
 
     // Revisar que la fecha de la cita no sea menor a la actual
-    const now = dayjs()
-    const formattedDate = dayjs(date, 'DD-MM-YYYY', 'es')
-    const differenceInDays = formattedDate.diff(now, 'day')
+    const differenceInDays = differenceBtwNowAndDate(date)
 
     if (differenceInDays < 0) {
       return {
@@ -292,24 +265,7 @@ export const createAppointmentService = async (
     }
 
     // Validar solapeo
-    const existingAppointments = await AppointmentModel.find({
-      barberId,
-      date,
-      status: AppointmentStatus.PENDING
-    })
-
-    let hasOverlap = false // Variable para rastrear si se ha encontrado una superposición
-
-    existingAppointments.forEach((existingAppointment) => {
-      // Si ya existe una cita con el mismo barbero en la misma fecha, verifica si hay superposición en el tiempo
-      if (
-        endTime > existingAppointment.startTime &&
-        startTime < existingAppointment.endTime
-      ) {
-        hasOverlap = true
-      }
-    })
-    if (hasOverlap) {
+    if (await existingAppointments(startTime, endTime, barberId, date)) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -317,6 +273,7 @@ export const createAppointmentService = async (
       }
     }
 
+    // Validar que se hayan seleccionado servicios
     if (services.length === 0) {
       return {
         success: false,
@@ -326,7 +283,7 @@ export const createAppointmentService = async (
     }
 
     const totalPrice = await calculateServicesTotalPrice(services)
-    if (totalPrice === 0 || totalPrice === undefined) {
+    if (totalPrice === 0) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
@@ -345,20 +302,17 @@ export const createAppointmentService = async (
     })
 
     // Obtener todos los nombres de servicios para el mail
-    const servicesToEmail = await ServiceModel.find({ _id: { $in: services } })
-    const servicesNames = servicesToEmail
-      .map((serv: Service) => serv.name)
-      .join(' + ')
+    const servicesToEmail = await getServicesNames(services)
 
     await sendEmail(
       client.email,
       generateNewAppointmentTemplate(
         appointment.date,
         appointment.startTime,
-        servicesNames,
+        servicesToEmail,
         appointment.totalPrice
       ),
-      'Se agendo su nuevo turno en BurberBuddy'
+      SUCCESS_MSGS.APPOINTMENT_CREATION_EMAIL_SUBJECT
     )
 
     return {
@@ -505,7 +459,7 @@ export const cancelAppointmentService = async (
         appointment.date,
         appointment.startTime
       ),
-      'Tu turno en BurberBuddy fue cancelado'
+      SUCCESS_MSGS.APPOINTMENT_CANCELATION_EMAIL_SUBJECT
     )
 
     return {

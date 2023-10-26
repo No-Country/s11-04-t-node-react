@@ -7,8 +7,8 @@ const BarberSchema = new Schema<Barber>(
     fullName: {
       type: String,
       required: [true, ERROR_MSGS.FULL_NAME_REQUIRED],
-      min: [4, ERROR_MSGS.FULL_NAME_MIN_LENGTH],
-      max: [50, ERROR_MSGS.FULL_NAME_MAX_LENGTH],
+      minlength: [4, ERROR_MSGS.FULL_NAME_MIN_LENGTH],
+      maxlength: [50, ERROR_MSGS.FULL_NAME_MAX_LENGTH],
       trim: true
     },
     phone: {
@@ -36,7 +36,6 @@ const BarberSchema = new Schema<Barber>(
       }
     ]
   },
-
   { timestamps: true }
 )
 
