@@ -1,39 +1,47 @@
 "use client"
-const hours = [
-    {
-        name: "lavado_de_cabello",
-        text: "Lavado de cabello"
-    },
-    {
-        name: "tintura",
-        text: "Tintura"
-    }
-]
+import { useState } from "react";
 
 import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulingProvider";
+import { hours, lastHours } from "./Hours";
 
-import {IoIosArrowDown} from 'react-icons/io'
+import { IoIosArrowDown } from 'react-icons/io'
 
-const SelectHour = () => {
+const SelectHour = ({ horario, param }) => {
 
-    const { handleChange } = useAppointmentSchedulingContext()
+  const { handleChange, formDataAppointmentScheduling, setFormDataAppointmentScheduling } = useAppointmentSchedulingContext()
+  const [hiddenDropdownAnswer, setHiddenDropdownAnswer] = useState(true)
+  const [option, setOption] = useState(`Elija un horario`)
 
+  const handleClick = (hour) => {
+    setFormDataAppointmentScheduling({...formDataAppointmentScheduling, [param]: hour})
+  }
 
-    return (
-        <div className="relative flex flex-col text-sm gap-y-2 text-stone-700 w-72">
-            <label >Horario:</label>
-            <select name='hour' onChange={handleChange} className=" block py-1.5 px-2 w-full text-sm text-stone-700 bg-transparent border-2 border-b-2 border-gray-500 appearance-none focus:outline-none rounded-xl peer">
-                <option >Elige un horario</option>
-                {
-                    hours.map(category => {
-                        return (
-                            <option key={`${category.name}`} value={category.name}>{category.text}</option>
-                        )
-                    })
-                }
-            </select>
-            <div className="absolute bottom-1 right-3 text-black text-xl uppercase"><IoIosArrowDown/></div>
-        </div>
-    )
+  return (
+    <div className="relative flex flex-col text-sm gap-y-2 text-stone-700 w-72">
+      <button onClick={() => setHiddenDropdownAnswer(!hiddenDropdownAnswer)} className="w-full flex items-center justify-between text-black bg-slate-200 hover:bg-slate-300/80 font-medium rounded-lg text-sm px-5 py-3 text-center" type="button">
+        <span>{option}{option == 'Elija un horario'  ? horario : ''}</span>
+        <svg className="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+          <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
+        </svg>
+      </button>
+      <div className={`${hiddenDropdownAnswer ? 'hidden' : 'absolute '} mt-2 z-10 bg-white divide-y divide-gray-100 px-2 border shadow-lg w-full overflow-y-auto scroll-hidden`}>
+        {
+          [...hours, ...lastHours].map((hour) => {
+            return (
+              <button
+                key={hour.time}
+                onClick={() => {
+                  handleClick(hour.time)
+                  setOption(hour.time)
+                  setHiddenDropdownAnswer(!hiddenDropdownAnswer)
+                }} className="w-full text-start">
+                <span className="block px-4 py-2 hover:bg-slate-200 rounded-lg">{hour.time}</span>
+              </button>
+            )
+          })
+        }
+      </div>
+    </div>
+  )
 }
 export default SelectHour;

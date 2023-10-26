@@ -22,5 +22,7 @@ export enum SUCCESS_MSGS {
   CREATED_APPOINTMENT_SUCCESS = 'Cita creada correctamente',
   APPOINTMENT_COMPLETED = 'Cita finalizada.',
   GET_APPOINTMENTS_SUCCESS = 'Citas obtenidas correctamente',
-  APPOINTMENT_CANCELED = 'Cita cancelada correctamente'
+  APPOINTMENT_CANCELED = 'Cita cancelada correctamente',
+  APPOINTMENT_CREATION_EMAIL_SUBJECT = 'Se agendó su nuevo turno en BurberBuddy',
+  APPOINTMENT_CANCELATION_EMAIL_SUBJECT = 'Tu turno en BurberBuddy fue cancelado'
 }

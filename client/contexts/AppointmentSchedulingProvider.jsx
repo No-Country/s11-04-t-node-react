@@ -1,38 +1,38 @@
 "use client"
 import { validationErrors } from "@/components/agenda/utils";
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 const AppointmentSchedulingContext = createContext({})
 
 const appointmentSchedulingObject = {
-  name: '',
-  lastName: '',
-  celPhone: '',
-  email: '',
-  date: '',
-  serviceType: '',
-  hour: ''
+  clientId: '',
+  barberId: '',
+  services: [],
+  startTime: '',
+  endTime: '',
+  date: ''
 }
 
 export const AppointmentSchedulingProvider = ({ children }) => {
 
   const [formDataAppointmentScheduling, setFormDataAppointmentScheduling] = useState(appointmentSchedulingObject)
-  const [errors, setErrors] = useState("")
   const [date, setDate] = useState(new Date())
 
   const [hiddenPopUp, setHiddenPopUp] = useState(false)
+  const [hiddenListOfClients, setHiddenListOfClients] = useState(false)
+
+  const [client, setClient] = useState({
+    fullName: '',
+    _id: ''
+  })
 
   const handleChange = (e) => {
     setFormDataAppointmentScheduling({
       ...formDataAppointmentScheduling,
       [e.target.name]: e.target.value,
     })
-    setErrors(
-      validationErrors({
-        ...formDataAppointmentScheduling,
-        [e.target.name]: e.target.value,
-      }),
-    )
   }
+
+  useEffect(() => {console.log(client)}, [client])
 
   return (
     <AppointmentSchedulingContext.Provider
@@ -40,11 +40,14 @@ export const AppointmentSchedulingProvider = ({ children }) => {
         formDataAppointmentScheduling, 
         setFormDataAppointmentScheduling,
         handleChange,
-        errors,
         hiddenPopUp, 
         setHiddenPopUp,
         date, 
-        setDate
+        setDate,
+        hiddenListOfClients, 
+        setHiddenListOfClients,
+        client, 
+        setClient
       }}>
       {children}
     </AppointmentSchedulingContext.Provider>

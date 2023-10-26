@@ -6,6 +6,7 @@ import { HttpStatusCode } from '../constants/http'
 import { SUCCESS_MSGS } from '../constants/successMsgs'
 import AppointmentModel from '../models/appointment.model'
 import ClientModel from '../models/client.model'
+import ServiceModel from '../models/service.model'
 import {
   AppointmentStatus,
   type Appointment,
@@ -13,6 +14,7 @@ import {
   type AppointmentResponse,
   type AppointmentsResponse
 } from '../types/appointment.type'
+import { type Service } from '../types/service.type'
 import {
   generateCancelAppointmentTemplate,
   generateNewAppointmentTemplate
@@ -342,10 +344,21 @@ export const createAppointmentService = async (
       services
     })
 
+    // Obtener todos los nombres de servicios para el mail
+    const servicesToEmail = await ServiceModel.find({ _id: { $in: services } })
+    const servicesNames = servicesToEmail
+      .map((serv: Service) => serv.name)
+      .join(' + ')
+
     await sendEmail(
       client.email,
-      generateNewAppointmentTemplate(appointment.date, appointment.startTime),
-      'Se agendó su nuevo turno en BurberBuddy'
+      generateNewAppointmentTemplate(
+        appointment.date,
+        appointment.startTime,
+        servicesNames,
+        appointment.totalPrice
+      ),
+      SUCCESS_MSGS.APPOINTMENT_CREATION_EMAIL_SUBJECT
     )
 
     return {
@@ -419,11 +432,23 @@ export const getAppointmentsService = async (
   barberId: string
 ): Promise<AppointmentsResponse> => {
   try {
-    const appointments = await AppointmentModel.find({
-      barberId
-    })
-      .populate('clientId')
-      .populate('services')
+    const appointments = await AppointmentModel.find(
+      {
+        barberId
+      },
+      { __v: 0 }
+    )
+      .populate({ path: 'clientId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'barberId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'services', select: ['_id', 'name', 'price'] })
+
+    if (appointments.length === 0) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.NOT_FOUND,
+        msg: ERROR_MSGS.APPOINTMENTS_NOT_FOUND
+      }
+    }
     return {
       success: true,
       statusCode: HttpStatusCode.OK,
@@ -480,7 +505,7 @@ export const cancelAppointmentService = async (
         appointment.date,
         appointment.startTime
       ),
-      'Tu turno en BurberBuddy fue cancelado'
+      SUCCESS_MSGS.APPOINTMENT_CANCELATION_EMAIL_SUBJECT
     )
 
     return {
