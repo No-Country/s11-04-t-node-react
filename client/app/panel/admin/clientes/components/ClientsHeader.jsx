@@ -6,6 +6,10 @@ export default function ClientsHeader({
   setCreateClient,
   setSearchClient,
 }) {
+
+  const clearSearchHandler = () => {
+    setSearchClient("");
+  };
   return (
     <div className="flex justify-between mt-10">
       <div id="clients-title-container" className="flex pt-10 px-10">
@@ -44,7 +48,7 @@ export default function ClientsHeader({
             type="text"
             onChange={(e) => setSearchClient(e.target.value)}
           />
-          <button class="reset" type="reset">
+          <button class="reset" type="reset" onClick={clearSearchHandler}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6"
