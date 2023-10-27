@@ -20,7 +20,7 @@ export default function HistoryModal({
   return showHistory ? (
     <div
       id="modal-container"
-      className="bg-[#292D33] text-white border rounded-lg p-5 top-32 sm:top-1/2 h-[70vh] sm:h-fit overflow-hidden left-1/2 -translate-x-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 fixed"
+      className="bg-[#292D33] text-white border rounded-lg p-5 top-32 sm:top-1/2 h-[70vh] sm:h-fit overflow-x-auto  left-1/2 -translate-x-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 fixed sm:w-auto w-80"
     >
       <div id="modal-header" className="flex justify-between">
         <h2 className="pt-5 pb-5">{foundClient?.fullName}</h2>
@@ -38,7 +38,7 @@ export default function HistoryModal({
             </tr>
           </thead>
           {clientServices && clientServices.length >= 1 ? (
-            <tbody className="divide-y divide-white">
+            <tbody className="divide-y divide-white w-60">
               {clientServices.map((services) => (
                 <tr className="bg-slate-100" key={services.id}>
                   <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">

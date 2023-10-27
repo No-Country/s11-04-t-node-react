@@ -11,7 +11,7 @@ export default function ClientsHeader({
     setSearchClient("");
   };
   return (
-    <div className="grid mt-10 mx-auto">
+    <div className="sm:flex mt-10 mx-auto sm:justify-between">
       <div id="clients-title-container" className="flex pt-10 px-auto">
         <h1 className="text-3xl sm:text-4xl">Clientes</h1>
         <button
