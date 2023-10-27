@@ -5,7 +5,8 @@ const config: Config = {
   verbose: true,
   silent: true,
   testEnvironment: 'node',
-  setupFiles: ['dotenv/config']
+  setupFiles: ['dotenv/config'],
+  testPathIgnorePatterns: ['dist/']
 }
 
 export default config
