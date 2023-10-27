@@ -30,10 +30,10 @@ export const Sidebar = () => {
 				<Link href="/">
 					<RiHome3Line />
 				</Link>
-				<Link href="/notificaciones">
+				<Link href="/admin/agenda">
 					<RiNotification3Line />
 				</Link>
-				<Link href="/admin/perfil">
+				<Link href="/admin/clientes">
 					<RiUser3Line />
 				</Link>
 
