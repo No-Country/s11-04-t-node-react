@@ -1,7 +1,7 @@
 'use client'
 // import Link from 'next/link'
 import React, { useEffect } from 'react'
-import LoginForm from './acceso/loginComponents/LoginForm'
+import LoginForm from './loginComponents/LoginForm'
 import Image from 'next/image'
 
 export default function LoginPage() {
