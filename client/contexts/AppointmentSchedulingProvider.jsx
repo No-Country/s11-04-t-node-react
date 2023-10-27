@@ -1,5 +1,4 @@
 "use client"
-import { validationErrors } from "@/components/agenda/utils";
 import { useContext, createContext, useState, useEffect } from "react";
 const AppointmentSchedulingContext = createContext({})
 
@@ -18,7 +17,14 @@ export const AppointmentSchedulingProvider = ({ children }) => {
   const [date, setDate] = useState(new Date())
 
   const [hiddenPopUp, setHiddenPopUp] = useState(false)
+  const [hiddenChangeStatus, setHiddenChangeStatus] = useState(false)
+
+  const [flagEdit, setFlagEdit] = useState(false)
+  const [appointmentEditId, setAppointmentEditId] = useState("")
+
+
   const [hiddenListOfClients, setHiddenListOfClients] = useState(false)
+  const [appointments, setAppointments] = useState([])
 
   const [client, setClient] = useState({
     fullName: '',
@@ -31,8 +37,6 @@ export const AppointmentSchedulingProvider = ({ children }) => {
       [e.target.name]: e.target.value,
     })
   }
-
-  useEffect(() => {console.log(client)}, [client])
 
   return (
     <AppointmentSchedulingContext.Provider
@@ -47,7 +51,15 @@ export const AppointmentSchedulingProvider = ({ children }) => {
         hiddenListOfClients, 
         setHiddenListOfClients,
         client, 
-        setClient
+        setClient,
+        appointments, 
+        setAppointments,
+        hiddenChangeStatus, 
+        setHiddenChangeStatus,
+        flagEdit, 
+        setFlagEdit,
+        appointmentEditId, 
+        setAppointmentEditId
       }}>
       {children}
     </AppointmentSchedulingContext.Provider>
