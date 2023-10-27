@@ -1,139 +1,17 @@
 "use client"
 
 import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulingProvider.jsx'
-
-export const hours = [
-  {
-    time: '08:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '08:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '09:00',
-    cita: null
-  },
-  {
-    time: '09:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '10:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '10:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '11:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '11:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '12:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  }
-]
-
-export const lastHours = [
-  {
-    time: '14:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '14:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '15:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '15:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '16:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '16:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '17:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '17:30',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  },
-  {
-    time: '18:00',
-    cita: {
-      service: 'tintura',
-      client: 'Mochita la del barrio'
-    }
-  }
-]
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { hours } from './utils'
+import CardAppointment from './CardAppointment'
+import ChangeStatus from './ChangeStatus'
+import EditAppointment from './EditAppointment'
 
 const Hours = () => {
 
-  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients } = useAppointmentSchedulingContext()
+  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, appointments, hiddenChangeStatus, setHiddenChangeStatus } = useAppointmentSchedulingContext()
+
 
   const convertDateTime = (inputDateTime) => {
     const options = {
@@ -146,61 +24,79 @@ const Hours = () => {
 
   const handleClick = () => {
     const searchParams = new URLSearchParams(window.location.search);
-    const nameParam = searchParams.get('name');
-    const idParam = searchParams.get('_id');
+    const params = searchParams.get('id');
 
-    const decodedName = decodeURIComponent(nameParam);
-    const decodedId = decodeURIComponent(idParam);
+    const idParam = params?.split("?name=")[0]
+    const nameParam = params?.split("?name=")[1]
 
-    console.log(decodedId, decodedName)
-    if (decodedName == null && decodedId == null) {
-      setHiddenPopUp(!hiddenPopUp)
-    }else{
+    if (!nameParam || !idParam || !nameParam.length || !idParam.length) {
       setHiddenListOfClients(!hiddenListOfClients)
+    } else {
+      setClient({
+        fullName: nameParam,
+        _id: idParam
+      })
+      setHiddenPopUp(!hiddenPopUp)
     }
   }
 
   return (
-    <div className='w-2/3 flex flex-col'>
-      <h2 className='p-4 text-xl font-semibold uppercase'>
-        {convertDateTime(date)}
-      </h2>
-      <div className='w-full flex items-center justify-between'>
-        <div className='w-1/2'>
-          {
-            hours.map(hour => {
-              return (
-                <div key={hour.time} className={`${!hour.cita ? '' : ''} w-full flex items-center border`}>
-                  <div className='p-4 text-center border-r boder-r-black'>{hour.time}</div>
-                  {
-                    !hour.cita ?
-                      <div className='w-full flex items-center justify-center'>
-                        <button
-                          onClick={handleClick}
-                          className='text-center border rounded-md text-xl p-1.5'>
-                          +
-                        </button>
-                      </div> :
-                      <div className='bg-[#ccbb6f] w-full px-4 flex flex-col gap-y-1'><span>{hour.cita.client}</span><span>{hour.cita.service}</span></div>
-                  }
-                </div>
-              )
-            })
-          }
-        </div>
-        <div className='w-1/2'>
-          {
-            lastHours.map(hour => {
-              return (
-                <div key={hour.time} className='w-full flex items-center border'>
-                  <div className='p-4 text-center border-r boder-r-black'>{hour.time}</div>
-                  <div className='px-4 flex flex-col gap-y-1'><span>{hour.cita.client}</span><span>{hour.cita.service}</span></div>
-                </div>
-              )
-            })
-          }
-        </div>
+    <div className='w-2/3 flex flex-col gap-y-6'>
+      <div className='flex items-center justify-between'>
+        <h2 className='p-4 text-2xl font-semibold uppercase'>
+          {convertDateTime(date)}
+        </h2>
+        <button onClick={handleClick} className='px-4 py-2 rounded-lg bg-green-600 text-white font-semibold uppercase'>Crear cita</button>
       </div>
+      <table className="w-full text-sm text-left text-gray-500">
+        <thead className='text-gray-600 uppercase rounded-t-lg'>
+          <tr>
+            <th className="px-6 py-3 bg-transparent">
+              Horario
+            </th>
+            <th className="px-6 py-3 bg-transparent">
+              Cita
+            </th>
+            <th className="px-6 py-3 bg-transparent">
+              Eliminar
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {hours.map((hour, index) => {
+            const matchingAppointments = appointments.filter(appointment => appointment.startTime === hour.time);
+            return (
+              <tr key={hour.time} className="bg-white/5 border-b border-b-gray-700">
+                <th className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap '>{hour.time}</th>
+                <td className='px-6 py-4'>
+                  {matchingAppointments.length > 0 ? (
+                    matchingAppointments.map(matchingAppointment => (
+                      <CardAppointment key={matchingAppointment.id} clientId={matchingAppointment.clientId} totalPrice={matchingAppointment.totalPrice} status={matchingAppointment.status} services={matchingAppointment.services} />
+                    ))
+                  ) : (
+                    <div className='w-full flex items-center justify-start'>
+                      <span
+
+                        className='text-center text-xl text-green-600 font-semibold'>
+                        Libre
+                      </span>
+                    </div>
+                  )}
+                </td>
+                <td className="px-6 py-4">
+                  <button 
+                  onClick={() => setHiddenChangeStatus(!hiddenChangeStatus)}
+                  className="px-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                    Cambiar estado
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <ChangeStatus/>
+      <EditAppointment/>
     </div>
   )
 }
