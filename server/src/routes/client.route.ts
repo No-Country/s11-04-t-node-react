@@ -11,19 +11,13 @@ import { isBarberOrAdmin } from '../middlewares/role.middlewares'
 
 export const clientRouter = Router()
 
-clientRouter.put(
-  '/modify/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  modifyClient
-)
-clientRouter.get('/get-all', extractToken, auth, isBarberOrAdmin, getClients)
-clientRouter.post('/create', extractToken, auth, isBarberOrAdmin, createClient)
-clientRouter.get(
-  '/get-appointments/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  getClientAppointments
-)
+const applyCommonMiddleware = (router: Router) => {
+  router.use(extractToken, auth, isBarberOrAdmin)
+}
+
+applyCommonMiddleware(clientRouter)
+
+clientRouter.put('/modify/:id', modifyClient)
+clientRouter.get('/get-all', getClients)
+clientRouter.post('/create', createClient)
+clientRouter.get('/get-appointments/:id', getClientAppointments)

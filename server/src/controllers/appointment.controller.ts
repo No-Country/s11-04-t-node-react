@@ -3,6 +3,7 @@ import {
   cancelAppointmentService,
   completeAppointmentService,
   createAppointmentService,
+  getAppointmentsByDateService,
   getAppointmentsService,
   modifyAppointmentService
 } from '../services/appoiment.service'
@@ -76,5 +77,22 @@ export const cancelAppointment = async (
   res.status(statusCode).json({
     success,
     msg
+  })
+}
+
+export const getAppointmentsByDate = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { date } = req.params
+  const barberId = req.userInSessionId
+
+  const { success, statusCode, msg, appointments } =
+    await getAppointmentsByDateService(barberId, date)
+
+  res.status(statusCode).json({
+    success,
+    msg,
+    appointments
   })
 }

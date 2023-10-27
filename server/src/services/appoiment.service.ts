@@ -47,6 +47,24 @@ export const modifyAppointmentService = async (
     const { barberId } = appointment
     const { date, startTime, endTime, services } = body
 
+    // Forzar a que siempre me envíen la fecha de la cita
+    if (!date) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.DATE_REQUIRED
+      }
+    }
+
+    // Revisar que la fecha tenga un formato válida
+    if (!dayjs(date, 'DD-MM-YYYY', true).isValid()) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.DATE_INVALID_FORMAT
+      }
+    }
+
     if (appointment.status !== AppointmentStatus.PENDING) {
       return {
         success: false,
@@ -88,17 +106,6 @@ export const modifyAppointmentService = async (
           success: false,
           statusCode: HttpStatusCode.BAD_REQUEST,
           msg: ERROR_MSGS.TIME_INVALID
-        }
-      }
-    }
-
-    // Revisar que la fecha tenga un formato válida
-    if (date) {
-      if (!dayjs(date, 'DD-MM-YYYY', true).isValid()) {
-        return {
-          success: false,
-          statusCode: HttpStatusCode.BAD_REQUEST,
-          msg: ERROR_MSGS.DATE_INVALID_FORMAT
         }
       }
     }
@@ -466,6 +473,38 @@ export const cancelAppointmentService = async (
       success: true,
       statusCode: HttpStatusCode.OK,
       msg: SUCCESS_MSGS.APPOINTMENT_CANCELED
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
+export const getAppointmentsByDateService = async (
+  barberId: string,
+  date: string
+): Promise<AppointmentsResponse> => {
+  try {
+    const appointments = await AppointmentModel.find(
+      {
+        date,
+        barberId
+      },
+      { __v: 0 }
+    )
+      .populate({ path: 'clientId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'barberId', select: ['_id', 'fullName', 'email'] })
+      .populate({ path: 'services', select: ['_id', 'name', 'price'] })
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.GET_APPOINTMENTS_BY_DATE_SUCCESS,
+      appointments
     }
   } catch (error) {
     console.log(error)
