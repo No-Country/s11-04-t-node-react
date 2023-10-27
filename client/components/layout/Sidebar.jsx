@@ -27,13 +27,13 @@ export const Sidebar = () => {
 	return (
 		<>
 			<nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40">
-				<Link href="/panel">
+				<Link href="/">
 					<RiHome3Line />
 				</Link>
-				<Link href="/panel/notificaciones">
+				<Link href="/notificaciones">
 					<RiNotification3Line />
 				</Link>
-				<Link href="/panel/admin/perfil">
+				<Link href="/admin/perfil">
 					<RiUser3Line />
 				</Link>
 
@@ -52,7 +52,7 @@ export const Sidebar = () => {
 				<aside className="bg-[#292D33] flex flex-col min-h-full overflow-auto sm:rounded-t-2xl sm:border-2 sm:border-black">
 					{/* Global || Barbero */}
 					<Link
-						href="/panel/admin/clientes"
+						href="/admin/clientes"
 						className="sm:border-b-2 sm:border-black"
 					>
 						<div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
@@ -67,7 +67,7 @@ export const Sidebar = () => {
 					</Link>
 
 					<Link
-						href="/panel/admin/agenda"
+						href="/admin/agenda"
 						className="sm:border-b-2 sm:border-black"
 					>
 						<div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
@@ -166,7 +166,7 @@ export const Sidebar = () => {
 					<div className="mt-auto max-sm:pb-20">
 						<div className="flex flex-col py-4 px-6 sm:px-12 transition-colors items-center justify-between sm:text-white fill-current">
 							<Link
-								href="/"
+								href="/login"
 								onClick={() => setSidebarOpen(false)}
 								className="flex items-center gap-5 justify-between sm:justify-center text-xl sm:text-2xl w-full max-sm:text-[#B5AF93]"
 							>
@@ -197,7 +197,7 @@ const RoleLinks = () => {
 			{user.role === 'admin' && (
 				<>
 					<Link
-						href="/panel/admin/barberos"
+						href="/admin/barberos"
 						className="sm:border-b-2 sm:border-black"
 					>
 						<div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">
@@ -212,7 +212,7 @@ const RoleLinks = () => {
 					</Link>
 
 					<Link
-						href="/panel/admin/servicios"
+						href="/admin/servicios"
 						className="sm:border-b-2 sm:border-black"
 					>
 						<div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current">

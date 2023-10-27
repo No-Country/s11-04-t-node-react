@@ -16,7 +16,7 @@ export const Header = ({ fluid }) => {
 				>
 					<Link
 						className="flex items-end flex-col"
-						href="/panel"
+						href="/"
 					>
 						<Image
 							src="/images/BarberBuddyTextLogoWhite.svg"

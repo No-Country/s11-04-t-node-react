@@ -8,7 +8,7 @@ export const Footer = () => {
 			<div className="relative">
 				<div className="flex flex-col items-center justify-center py-4 sm:p-4 gap-2 sm:gap-3 border-t border-[#292D33]">
 					<div className="flex items-center gap-6 sm:gap-12">
-						<Link href="/panel">
+						<Link href="/">
 							<Image
 								className="w-6 sm:w-8"
 								src="/images/instagram.png"

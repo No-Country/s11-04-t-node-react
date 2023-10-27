@@ -50,7 +50,7 @@ export const UserMenu = () => {
 					<div className="flex flex-col justify-start mt-2 sm:mt-2.5 gap-3 p-2 w-36 sm:w-[150px] bg-gradient-to-t from-zinc-600 to-slate-50 border border-gray-100/40 shadow-md text-[#292D33] rounded">
 						<Menu.Item>
 							<Link
-								href="/panel/admin/perfil"
+								href="/admin/perfil"
 								className="flex items-center justify-start hover:text-white transition text-xl"
 							>
 								<p>Mi Perfil</p>
@@ -58,7 +58,7 @@ export const UserMenu = () => {
 						</Menu.Item>
 						<Menu.Item>
 							<Link
-								href="/"
+								href="/login"
 								className="flex items-center justify-start hover:text-white transition text-xl"
 							>
 								<p>Salir</p>

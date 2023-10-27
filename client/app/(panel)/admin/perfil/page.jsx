@@ -29,7 +29,7 @@ const Profile = () => {
 		const user = JSON.parse(localStorage.getItem('user'))
 
 		if (!user) {
-			router.push('/')
+			router.push('/login')
 			return
 		}
 
@@ -49,7 +49,7 @@ const Profile = () => {
 			const servicesData = await response.json()
 			if (!servicesData.success) {
 				displayNotification('error', servicesData.msg, 5000)
-				if (servicesData.tokenExpired) router.push('/acceso')
+				if (servicesData.tokenExpired) router.push('/login')
 				return
 			}
 			const servicesFromServer = servicesData.services
@@ -60,7 +60,7 @@ const Profile = () => {
 			const barberData = await getBarber(user.token, user._id, user.role)
 			if (!barberData.success) {
 				displayNotification('error', barberData.msg, 5000)
-				if (barberData.tokenExpired) router.push('/acceso')
+				if (barberData.tokenExpired) router.push('/login')
 				return
 			}
 			const barber = barberData.barber
@@ -113,7 +113,7 @@ const Profile = () => {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
-			if (data.tokenExpired) router.push('/acceso')
+			if (data.tokenExpired) router.push('/login')
 			return
 		}
 		setDisabled(true)

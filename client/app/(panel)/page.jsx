@@ -13,7 +13,7 @@ export default function PanelPage() {
 		const user = JSON.parse(localStorage.getItem('user'))
 
 		if (!user) {
-			router.push('/')
+			router.push('/login')
 			return
 		}
 
@@ -54,25 +54,25 @@ export default function PanelPage() {
 				<h3 className="pb-10">Que desea realizar?</h3>
 				<div className="w-1/2 sm:w-full grid grid-cols-1 sm:grid-cols-4 gap-2">
 					<Link
-						href="/panel/admin/servicios"
+						href="/admin/servicios"
 						className="py-2 bg-[#B5AF93] rounded-md border border-black"
 					>
 						Servicios
 					</Link>
 					<Link
-						href="/panel/admin/barberos"
+						href="/admin/barberos"
 						className="py-2 bg-[#B5AF93] rounded-md border border-black"
 					>
 						Barberos
 					</Link>
 					<Link
-						href="/panel/admin/clientes"
+						href="/admin/clientes"
 						className="py-2 bg-[#B5AF93] rounded-md border border-black"
 					>
 						Clientes
 					</Link>
 					<Link
-						href="/panel/admin/agenda"
+						href="/admin/agenda"
 						className="py-2 bg-[#B5AF93] rounded-md border border-black"
 					>
 						Agenda
