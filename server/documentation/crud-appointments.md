@@ -35,11 +35,25 @@
 - **Método HTTP**: PUT
 - **Descripción**: actualiza los datos de una cita existente según su ID. Debe proporcionar los nuevos datos en el cuerpo de la solicitud.
 - **Restriccones**: ruta protegida solo para administradores y barberos.
-- **Info importante**: si va a modificar la hora de la cita, tiene que pasar en el body, el startTime y el endTime.
+- **Info importante**: siempre tienen que enviar en el body la fecha de la cita, bien sea la nueva fecha, o la fecha que ya tiene la cita. Si van a modificar la hora de la cita, tiene que pasar en el body, el startTime y el endTime.
 
 ### Completar una cita
 
 - **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/complete/:id`
 - **Método HTTP**: PUT
 - **Descripción**: completa una cita, actualizando su estado. Si el precio de los servicios ha cambiado desde la creación de la cita, el precio total se actualizará automáticamente.
-- **Restriccones**: Ruta protegida solo para administradores y barberos.
+- **Restriccones**: ruta protegida solo para administradores y barberos.
+
+### Cancelar una cita
+
+- **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/cancel/:id`
+- **Método HTTP**: PUT
+- **Descripción**: cancela una cita actualizando su estado. El id que envía por el params, es el id de la cita a cancelar.
+- **Restriccones**: ruta protegida solo para administradores y barberos.
+
+### Obtener todas las citas por un barbero para una fecha específica
+
+- **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/appointments-by-date/:date`
+- **Método HTTP**: GET
+- **Descripción**: obitnene todas las citas del barbero en sesión, para una fecha específica. El date que envía por el params, es la fecha de la cita. Recuerda que la fecha la guardamos en la base de datos como string, con el formato en español, es decir, 01-11-2023 (1ero de noviembre de 2023). Esa ruta te devuelve un arreglo con las citas, si el arreglo es vacío, es porque no hay ninguna cita para esa fecha.
+- **Restriccones**: ruta protegida solo para administradores y barberos.

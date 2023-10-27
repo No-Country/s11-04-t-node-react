@@ -83,7 +83,7 @@ export const isStartTimeGreaterThanEndTime = (
  * @param endTime - La hora de fin en formato HH:mm.
  * @returns Un objeto con las partes de la hora de inicio y fin.
  */
-function timeInPieces(startTime: string, endTime: string) {
+export function timeInPieces(startTime: string, endTime: string) {
   const startTimeParts = startTime.split(':')
   const endTimeParts = endTime.split(':')
 

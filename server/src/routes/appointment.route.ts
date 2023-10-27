@@ -4,6 +4,7 @@ import {
   completeAppointment,
   createAppointment,
   getAppointments,
+  getAppointmentsByDate,
   modifyAppointment
 } from '../controllers/appointment.controller'
 import { auth } from '../middlewares/auth.middleware'
@@ -12,38 +13,15 @@ import { isBarberOrAdmin } from '../middlewares/role.middlewares'
 
 export const appoimentRouter = Router()
 
-appoimentRouter.put(
-  '/modify/:id/:clientId',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  modifyAppointment
-)
-appoimentRouter.post(
-  '/create',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  createAppointment
-)
-appoimentRouter.put(
-  '/complete/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  completeAppointment
-)
-appoimentRouter.get(
-  '/get-all',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  getAppointments
-)
-appoimentRouter.post(
-  '/cancel/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  cancelAppointment
-)
+const applyCommonMiddleware = (router: Router) => {
+  router.use(extractToken, auth, isBarberOrAdmin)
+}
+
+applyCommonMiddleware(appoimentRouter)
+
+appoimentRouter.put('/modify/:id/:clientId', modifyAppointment)
+appoimentRouter.post('/create', createAppointment)
+appoimentRouter.put('/complete/:id', completeAppointment)
+appoimentRouter.get('/get-all', getAppointments)
+appoimentRouter.put('/cancel/:id', cancelAppointment)
+appoimentRouter.get('/appointments-by-date/:date', getAppointmentsByDate)
