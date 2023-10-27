@@ -35,6 +35,8 @@ export const modifyAppointmentService = async (
   body: AppointmentBody
 ): Promise<AppointmentResponse> => {
   try {
+    let durationInMinutes: number | undefined
+    let recalculatedTotalPrice: number | undefined
     const appointment = await AppointmentModel.findById(id)
     if (!appointment) {
       return {
@@ -108,6 +110,9 @@ export const modifyAppointmentService = async (
           msg: ERROR_MSGS.TIME_INVALID
         }
       }
+
+      // Duración de la cita en minutos
+      durationInMinutes = calculateDurationInMinutes(startTime, endTime)
     }
 
     // Revisar que la fecha de la cita no sea menor a la actual
@@ -139,8 +144,8 @@ export const modifyAppointmentService = async (
         }
       }
 
-      const totalPrice = await calculateServicesTotalPrice(services)
-      if (totalPrice === 0) {
+      recalculatedTotalPrice = await calculateServicesTotalPrice(services)
+      if (recalculatedTotalPrice === 0) {
         return {
           success: false,
           statusCode: HttpStatusCode.BAD_REQUEST,
@@ -169,15 +174,12 @@ export const modifyAppointmentService = async (
 
     const modifiedAppointment = (await AppointmentModel.findByIdAndUpdate(
       { _id: id },
-      body,
+      { ...body, totalPrice: recalculatedTotalPrice },
       {
         new: true,
         runValidators: true
       }
     )) as Appointment
-
-    // Duración de la cita en minutos
-    const durationInMinutes = calculateDurationInMinutes(startTime, endTime)
 
     return {
       success: true,
@@ -363,6 +365,7 @@ export const completeAppointmentService = async (id: string) => {
     const newTotalPrice = await calculateServicesTotalPrice(
       appointment.services
     )
+
     if (newTotalPrice !== appointment.totalPrice) {
       await AppointmentModel.findByIdAndUpdate(
         id,
@@ -371,8 +374,11 @@ export const completeAppointmentService = async (id: string) => {
       )
     }
 
-    appointment.status = AppointmentStatus.COMPLETED
-    await appointment.save()
+    await AppointmentModel.findByIdAndUpdate(
+      id,
+      { status: AppointmentStatus.COMPLETED },
+      { new: true, runValidators: true }
+    )
 
     return {
       success: true,
