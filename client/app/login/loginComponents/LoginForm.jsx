@@ -27,14 +27,11 @@ const LoginForm = () => {
 
 	const handleRequestCode = async (e) => {
 		e.preventDefault()
-
 		if (!validateType(loginData.email)) {
 			setInputError('dirección de email inválida')
 			setLoginData({ email: '' })
 			return
 		}
-
-		// ----
 		Loading.standard()
 		try {
 			const res = await backend.post(`login/`, loginData)
@@ -53,8 +50,6 @@ const LoginForm = () => {
 			Loading.remove()
 			setLoginData({ email: '' })
 		}
-
-		// ---
 	}
 
 	return (

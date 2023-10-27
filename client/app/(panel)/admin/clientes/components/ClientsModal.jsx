@@ -37,7 +37,7 @@ export default function ClientsModal({
   return showClient ? (
     <div
       id="modal-clients-container"
-      className="bg-[#292D33] text-white border rounded-lg p-5 absolute top-[12vh] sm:top-1/3 h-[75vh] sm:h-fit overflow-hidden left-1/3 -translate-x-1/2 sm:-translate-x-1/4 sm:-translate-y-1/3"
+      className="bg-[#292D33] text-white border rounded-lg p-5 absolute top-[12vh] sm:top-1/3 h-[75vh] sm:h-fit overflow-hidden left-1/4 -translate-x-1/4 sm:-translate-x-1/4 sm:-translate-y-1/3"
     >
       <div className="flex justify-end">
         <button onClick={() => setShowClient(false)}>X</button>

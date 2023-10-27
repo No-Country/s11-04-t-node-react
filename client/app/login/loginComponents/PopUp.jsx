@@ -66,15 +66,13 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 		const data = {
 			otp: code.join(''),
 		}
-
-		//---
 		Loading.standard()
 		try {
 			const res = await backend.post(`verify-email`, data, {
 				headers: getAuthorization(OTPCode),
 			})
 			Loading.remove()
-			router.push('/panel')
+			router.push('/')
 			return dispatch(
 				login({
 					_id: res.data._id,
