@@ -1,8 +1,6 @@
 "use client"
 
 import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulingProvider.jsx'
-import axios from 'axios'
-import { useEffect, useState } from 'react'
 import { hours } from './utils'
 import CardAppointment from './CardAppointment'
 import ChangeStatus from './ChangeStatus'
@@ -58,7 +56,7 @@ const Hours = () => {
               Cita
             </th>
             <th className="px-6 py-3 bg-transparent">
-              Eliminar
+              Estado
             </th>
           </tr>
         </thead>
@@ -71,7 +69,7 @@ const Hours = () => {
                 <td className='px-6 py-4'>
                   {matchingAppointments.length > 0 ? (
                     matchingAppointments.map(matchingAppointment => (
-                      <CardAppointment key={matchingAppointment.id} clientId={matchingAppointment.clientId} totalPrice={matchingAppointment.totalPrice} status={matchingAppointment.status} services={matchingAppointment.services} />
+                      <CardAppointment key={matchingAppointment.id} appointmentId={matchingAppointment.id} clientId={matchingAppointment.clientId} totalPrice={matchingAppointment.totalPrice} status={matchingAppointment.status} services={matchingAppointment.services} date={matchingAppointment.date} startTime={matchingAppointment.startTime} endTime={matchingAppointment.endTime} barberId={matchingAppointment.barberId} />
                     ))
                   ) : (
                     <div className='w-full flex items-center justify-start'>
