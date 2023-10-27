@@ -18,7 +18,12 @@ export const AppointmentSchedulingProvider = ({ children }) => {
   const [date, setDate] = useState(new Date())
 
   const [hiddenPopUp, setHiddenPopUp] = useState(false)
+  const [hiddenChangeStatus, setHiddenChangeStatus] = useState(false)
+  const [hiddenEditAppointment, setHiddenEditAppointment] = useState(false)
+
+
   const [hiddenListOfClients, setHiddenListOfClients] = useState(false)
+  const [appointments, setAppointments] = useState([])
 
   const [client, setClient] = useState({
     fullName: '',
@@ -47,7 +52,13 @@ export const AppointmentSchedulingProvider = ({ children }) => {
         hiddenListOfClients, 
         setHiddenListOfClients,
         client, 
-        setClient
+        setClient,
+        appointments, 
+        setAppointments,
+        hiddenChangeStatus, 
+        setHiddenChangeStatus,
+        hiddenEditAppointment, 
+        setHiddenEditAppointment
       }}>
       {children}
     </AppointmentSchedulingContext.Provider>

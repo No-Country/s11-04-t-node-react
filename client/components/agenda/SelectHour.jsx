@@ -2,9 +2,9 @@
 import { useState } from "react";
 
 import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulingProvider";
-import { hours, lastHours } from "./Hours";
 
 import { IoIosArrowDown } from 'react-icons/io'
+import { hours } from "./utils";
 
 const SelectHour = ({ horario, param }) => {
 
@@ -24,9 +24,9 @@ const SelectHour = ({ horario, param }) => {
           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4" />
         </svg>
       </button>
-      <div className={`${hiddenDropdownAnswer ? 'hidden' : 'absolute '} mt-2 z-10 bg-white divide-y divide-gray-100 px-2 border shadow-lg w-full overflow-y-auto scroll-hidden`}>
+      <div className={`${hiddenDropdownAnswer ? 'hidden' : 'absolute '} h-72 top-10 z-10 bg-white divide-y divide-gray-100 px-2 border shadow-lg w-full overflow-y-auto scroll-hidden`}>
         {
-          [...hours, ...lastHours].map((hour) => {
+          hours.map((hour) => {
             return (
               <button
                 key={hour.time}
