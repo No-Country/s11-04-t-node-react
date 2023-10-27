@@ -12,6 +12,7 @@ import {
 	updateClient,
 	getAppointments,
 } from './services/client.services.js'
+import { useRouter } from 'next/navigation'
 
 export default function page() {
 	const [notification, setNotification] = useState({
@@ -40,6 +41,8 @@ export default function page() {
 	})
 	const [message, setMessage] = useState()
 	const [token, setToken] = useState('')
+
+	const router = useRouter()
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'))
