@@ -29,7 +29,7 @@ export default function HistoryModal({
         </button>
       </div>
       <div id="modal-table">
-        <table className="w-full divide-y divide-white bg-white bg-opacity-10">
+        <table className="w-full divide-y divide-white bg-white bg-opacity-10 table-auto">
           <thead className=" h-10">
             <tr className="border-white">
               <th className="w-1/12 text-sm sm:text-base">Fecha</th>
