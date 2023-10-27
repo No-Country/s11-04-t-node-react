@@ -3,6 +3,7 @@ import Input from './Input'
 import { useRouter } from 'next/navigation'
 import { backend, getAuthorization } from '@/utils/backend'
 import { Notify } from 'notiflix/build/notiflix-notify-aio'
+import { Loading } from 'notiflix/build/notiflix-loading-aio'
 import { useDispatch } from 'react-redux'
 import { login } from '@/redux/slices/userSlice'
 
@@ -67,12 +68,12 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 		}
 
 		//---
-
+		Loading.standard()
 		try {
 			const res = await backend.post(`verify-email`, data, {
 				headers: getAuthorization(OTPCode),
 			})
-
+			Loading.remove()
 			router.push('/panel')
 			return dispatch(
 				login({
@@ -86,6 +87,7 @@ const PopUp = ({ OTPCode, setOTPCode, isPopupOpen, setIsPopupOpen }) => {
 			Notify.failure(error.response.data.msg, {
 				position: 'center-top',
 			})
+			Loading.remove()
 			setcode(['', '', '', ''])
 			console.log(error)
 		}
