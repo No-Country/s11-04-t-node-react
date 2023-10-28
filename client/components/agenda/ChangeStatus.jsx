@@ -5,6 +5,13 @@ const ChangeStatus = () => {
 
   const { formDataAppointmentScheduling, client, hiddenChangeStatus, setHiddenChangeStatus } = useAppointmentSchedulingContext()
 
+  const handleSubmit = async () => {
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <div className={`${hiddenChangeStatus ? 'block' : 'hidden'} fixed w-full h-screen flex items-center justify-center top-0 left-0 z-40 overflow-x-hidden overflow-y-auto md:inset-0 bg-black/70`}>

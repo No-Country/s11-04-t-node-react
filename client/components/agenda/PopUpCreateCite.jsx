@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const PopUpCreateCite = () => {
 
-  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, hiddenPopUp, setHiddenPopUp, client, flagEdit, setFlagEdit, appointmentEditId } = useAppointmentSchedulingContext()
+  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, hiddenPopUp, setHiddenPopUp, client, flagEdit, setFlagEdit, appointmentEditId, hiddenLoader, setHiddenLoader, setHiddenAlertObject } = useAppointmentSchedulingContext()
 
   const editOrCreateAppointment = async () => {
 
@@ -19,19 +19,42 @@ const PopUpCreateCite = () => {
     }
 
     try {
+      setHiddenLoader(true)
       if (!flagEdit) {
         let body = { ...formDataAppointmentScheduling, barberId: _id, clientId: client._id }
         const { data } = await axios.post("https://barberbuddy.fly.dev/api/v1/appointment/create", body, config)
-        console.log(data)
+        setHiddenLoader(false)
+        setHiddenAlertObject({
+          isHidden: false,
+          text: '¡Se creó la cita con éxito!',
+          isSuccess: true
+        })
 
       } else {
         let body = { ...formDataAppointmentScheduling }
         const { data } = await axios.post(`https://barberbuddy.fly.dev/api/v1/appointment/modify/${appointmentEditId}/${formDataAppointmentScheduling.clientId}`, body, config)
-        console.log(data)
-
+        setHiddenLoader(false)
+        setHiddenAlertObject({
+          isHidden: false,
+          text: '¡Se editó la cita con éxito!',
+          isSuccess: true
+        })
       }
     } catch (error) {
-      console.log(error)
+      setHiddenAlertObject({
+        isHidden: false,
+        text: '¡Lo siento, intentalo de nuevo!',
+        isSuccess: false
+      })
+    } finally {
+      setHiddenPopUp(!hiddenPopUp)
+      setTimeout(() => {
+        setHiddenAlertObject({
+          isHidden: true,
+          text: '',
+          isSuccess: false
+        })
+      }, 4000);
     }
   }
 
