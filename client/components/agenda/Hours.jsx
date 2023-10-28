@@ -4,7 +4,8 @@ import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulin
 import { hours } from './utils'
 import CardAppointment from './CardAppointment'
 import ChangeStatus from './ChangeStatus'
-import EditAppointment from './EditAppointment'
+import Loader from './Loader'
+import Alert from './Alert'
 
 const Hours = () => {
 
@@ -94,7 +95,8 @@ const Hours = () => {
         </tbody>
       </table>
       <ChangeStatus/>
-      <EditAppointment/>
+      <Loader/>
+      <Alert/>
     </div>
   )
 }

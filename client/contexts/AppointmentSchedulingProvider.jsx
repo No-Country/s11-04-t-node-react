@@ -1,5 +1,5 @@
 "use client"
-import { useContext, createContext, useState, useEffect } from "react";
+import { useContext, createContext, useState } from "react";
 const AppointmentSchedulingContext = createContext({})
 
 const appointmentSchedulingObject = {
@@ -9,6 +9,12 @@ const appointmentSchedulingObject = {
   startTime: '',
   endTime: '',
   date: ''
+}
+
+const hiddenAlertTemplate = {
+  isHidden: true,
+  text: '',
+  isSuccess: false
 }
 
 export const AppointmentSchedulingProvider = ({ children }) => {
@@ -30,6 +36,10 @@ export const AppointmentSchedulingProvider = ({ children }) => {
     fullName: '',
     _id: ''
   })
+
+
+  const [hiddenLoader, setHiddenLoader] = useState(true)
+  const [hiddenAlertObject, setHiddenAlertObject] = useState(hiddenAlertTemplate)
 
   const handleChange = (e) => {
     setFormDataAppointmentScheduling({
@@ -59,7 +69,11 @@ export const AppointmentSchedulingProvider = ({ children }) => {
         flagEdit, 
         setFlagEdit,
         appointmentEditId, 
-        setAppointmentEditId
+        setAppointmentEditId,
+        hiddenLoader, 
+        setHiddenLoader,
+        hiddenAlertObject, 
+        setHiddenAlertObject
       }}>
       {children}
     </AppointmentSchedulingContext.Provider>
