@@ -32,8 +32,8 @@ export const UserMenu = () => {
 					className="border rounded-full mb-1"
 				/>
 				<div>
-					<p>{user.fullName}</p>
-					<p>Rol: {user.role}</p>
+					<p className='text-xs'>{user.fullName}</p>
+					<p className='text-xs'>Rol: {user.role}</p>
 				</div>
 			</Menu.Button>
 
