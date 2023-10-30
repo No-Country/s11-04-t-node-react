@@ -57,7 +57,7 @@ const FormAgenda = () => {
 
   return (
     <div className="w-full flex flex-col flex-wrap gap-y-8 p-6">
-      <div className='flex items-center'>
+      <div className='flex flex-col md:flex-row items-center'>
         <div>
           <label className='font-thin text-stone-700 text-sm'>Elija un horario de inicio</label>
           <SelectHour hourSelected={formDataAppointmentScheduling?.startTime} horario={"de inicio"} param={"startTime"} />

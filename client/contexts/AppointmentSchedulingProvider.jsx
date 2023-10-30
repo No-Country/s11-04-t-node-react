@@ -28,6 +28,10 @@ export const AppointmentSchedulingProvider = ({ children }) => {
   const [flagEdit, setFlagEdit] = useState(false)
   const [appointmentEditId, setAppointmentEditId] = useState("")
 
+  const [dataStatus, setDataStatus] = useState({
+    id: '',
+    status: ''
+  })
 
   const [hiddenListOfClients, setHiddenListOfClients] = useState(false)
   const [appointments, setAppointments] = useState([])
@@ -73,7 +77,9 @@ export const AppointmentSchedulingProvider = ({ children }) => {
         hiddenLoader, 
         setHiddenLoader,
         hiddenAlertObject, 
-        setHiddenAlertObject
+        setHiddenAlertObject,
+        dataStatus, 
+        setDataStatus
       }}>
       {children}
     </AppointmentSchedulingContext.Provider>
