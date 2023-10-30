@@ -25,8 +25,8 @@ export const Sidebar = () => {
   };
 
   return (
-    <div className="sm sm:ml-3 sm:w-25">
-      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40">
+    <div className="sm sm:ml-3 sm:w-25 mb-2">
+      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40 rounded-lg">
         <Link href="/">
           <RiHome3Line />
         </Link>
@@ -45,11 +45,11 @@ export const Sidebar = () => {
       <div
         className={clsx(
           `fixed sm:sticky left-0 z-20 flex flex-col h-full transition-all duration-500 bg-[#292D33] rounded-t-2xl`,
-          "w-full sm:w-auto",
+          "w-full sm:w-auto sm:rounded-b-2xl",
           sidebarOpen ? "top-0" : "-top-full"
         )}
       >
-        <aside className="bg-[#292D33] flex flex-col min-h-full overflow-auto sm:rounded-t-2xl sm:border-2 sm:border-black">
+        <aside className="bg-[#292D33] flex flex-col min-h-screen overflow-auto sm:rounded-t-2xl sm:rounded-b-2xl sm:border-2 sm:border-black">
           {/* Global || Barbero */}
           <Link
             href="/admin/clientes"
@@ -168,8 +168,8 @@ export const Sidebar = () => {
                 className="flex items-center gap-5 justify-between sm:justify-center text-xl sm:text-2xl w-full max-sm:text-[#B5AF93]"
               >
                 <div className="flex sm:flex-col items-center gap-3">
-                  <FaPowerOff className="text-[#C13636DB] sm:text-5xl" />
-                  <p>Salir</p>
+                  <FaPowerOff className="text-[#C13636DB] sm:text-3xl" />
+                  <p className="text-lg">Salir</p>
                 </div>
               </Link>
             </div>

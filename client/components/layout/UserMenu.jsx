@@ -51,7 +51,7 @@ export const UserMenu = () => {
 						<Menu.Item>
 							<Link
 								href="/admin/perfil"
-								className="flex items-center justify-start hover:text-white transition text-xl"
+								className="flex items-center justify-start hover:text-white transition text-sm/[10px]"
 							>
 								<p>Mi Perfil</p>
 							</Link>
@@ -59,7 +59,7 @@ export const UserMenu = () => {
 						<Menu.Item>
 							<Link
 								href="/login"
-								className="flex items-center justify-start hover:text-white transition text-xl"
+								className="flex items-center justify-start hover:text-white transition text-sm/[10px]"
 							>
 								<p>Salir</p>
 							</Link>
