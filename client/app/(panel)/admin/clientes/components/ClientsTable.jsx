@@ -12,16 +12,13 @@ export default function ClientsTable({
   setShowClient,
   clients,
   showClient,
-  deleteSelectedClient,
   clientId,
   showClientHandler,
   clientToUpdate,
   setClientToUpdate,
   updateClientHandler,
   searchClient,
-  clientServices,
   setClientAppointmentId,
-  clientAppointmentId,
   notification,
   setClientId,
 }) {
@@ -70,7 +67,12 @@ export default function ClientsTable({
                         setClientId(client);
                       }}
                     >
-                      <Image src={historiaLogo} width={30} height={30}></Image>
+                      <Image
+                        src={historiaLogo}
+                        width={30}
+                        height={30}
+                        alt="Historial de Cliente"
+                      ></Image>
                     </button>
                   </td>
                   <td className="text-center text-xs sm:text-sm flex justify-center pt-3 pb-3">
@@ -80,17 +82,22 @@ export default function ClientsTable({
                         src={editLogo}
                         width={30}
                         height={30}
+                        alt="Editar Cliente"
                       ></Image>
                     </button>
                   </td>
                   <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
-                    <Link key={client._id} href={`agenda?id=${client._id}?name=${client.fullName}`}>
+                    <Link
+                      key={client._id}
+                      href={`agenda?id=${client._id}?name=${client.fullName}`}
+                    >
                       <button>
                         <Image
                           className=""
                           src={agendaIcon}
                           width={30}
                           height={30}
+                          alt="Agendar Turno"
                         ></Image>
                       </button>
                     </Link>
@@ -104,7 +111,6 @@ export default function ClientsTable({
           setShowClient={setShowClient}
           clients={clients}
           clientId={clientId}
-          deleteSelectedClient={deleteSelectedClient}
           clientToUpdate={clientToUpdate}
           setClientToUpdate={setClientToUpdate}
           updateClientHandler={updateClientHandler}
