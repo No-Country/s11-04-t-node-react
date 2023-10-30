@@ -8,7 +8,7 @@ import axios from 'axios'
 import { formatDate } from './utils'
 
 const CalendarAppointmentScheduling = () => {
-  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate, setAppointments, hiddenLoader, setHiddenLoader, setHiddenAlertObject } = useAppointmentSchedulingContext()
+  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate, setAppointments, setHiddenLoader, setHiddenAlertObject } = useAppointmentSchedulingContext()
 
   const getAppointmentsForDate = async (actualDate) => {
     try {
@@ -29,6 +29,7 @@ const CalendarAppointmentScheduling = () => {
         isSuccess: true
       })
     } catch (error) {
+      setHiddenLoader(true)
       setHiddenAlertObject({
         isHidden: false,
         text: '¡No se pudieron obtener las citas!',
@@ -56,7 +57,7 @@ const CalendarAppointmentScheduling = () => {
   }, [date])
 
   return (
-    <div className='fixed right-10'>
+    <div className='block lg:fixed right-10'>
       <Calendar
         mode="single"
         selected={date}
