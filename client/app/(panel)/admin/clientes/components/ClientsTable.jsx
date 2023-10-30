@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import editLogo from "@/public/images/Edit.png";
 import historiaLogo from "@/public/images/historial.png";
@@ -25,6 +25,9 @@ export default function ClientsTable({
   notification,
   setClientId,
 }) {
+  useEffect(() => {
+    setClientToUpdate(clientId);
+  }, [clientId]);
   const showModalHandler = () => {
     setShowHistory(true);
   };
@@ -81,7 +84,10 @@ export default function ClientsTable({
                   <td className="text-center text-xs sm:text-sm flex justify-center pt-3 pb-3">
                     <button
                       className="text-amber-500 hover:text-amber-700 transition text-3xl"
-                      onClick={() => showClientHandler(client._id)}
+                      onClick={() => {
+                        showClientHandler(client._id);
+                        setClientToUpdate(client);
+                      }}
                     >
                       <TbEdit src={editLogo} width={30} height={30} />
                     </button>
