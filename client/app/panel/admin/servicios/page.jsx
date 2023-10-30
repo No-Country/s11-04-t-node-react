@@ -155,7 +155,7 @@ const ServiceForm = ({ service, onDone, onCancel }) => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-        <div className="grid grid-cols-1 sm:grid-cols-3 sm:justify-between gap-2 sm:gap-4 pb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 sm:justify-between gap-2 sm:gap-32 pb-8">
           <div>
             <label className="flex flex-col gap-2 pb-1">
               <span className="sm:text-2xl">Servicio</span>
