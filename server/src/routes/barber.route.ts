@@ -26,36 +26,18 @@ export const barberRouter = Router()
 loginRouter.post('/login', login)
 loginRouter.post('/verify-email', extractToken, verifyEmail)
 
-barberRouter.post('/create', extractToken, auth, isAdmin, createBarber)
-barberRouter.get('/get-barbers', extractToken, auth, isAdmin, getBarbers)
-barberRouter.delete('/delete/:id', extractToken, auth, isAdmin, deleteBarber)
-barberRouter.get('/get-barber/:id', extractToken, auth, isAdmin, getBarberById)
-barberRouter.put('/modify/:id', extractToken, auth, isAdmin, modifyBarber)
-barberRouter.get(
-  '/barbers-with-services',
-  extractToken,
-  auth,
-  isAdmin,
-  getBarbersWithTheirServices
-)
-barberRouter.put(
-  '/modify-me/:id',
-  extractToken,
-  auth,
-  isBarber,
-  modifyBerberInSession
-)
-barberRouter.get(
-  '/get-me/:id',
-  extractToken,
-  auth,
-  isBarber,
-  getBarberInSession
-)
-barberRouter.get(
-  '/get-clients/:id',
-  extractToken,
-  auth,
-  isBarberOrAdmin,
-  getBarberClients
-)
+const applyCommonMiddleware = (router: Router) => {
+  router.use(extractToken, auth)
+}
+
+applyCommonMiddleware(barberRouter)
+
+barberRouter.post('/create', isAdmin, createBarber)
+barberRouter.get('/get-barbers', isAdmin, getBarbers)
+barberRouter.delete('/delete/:id', isAdmin, deleteBarber)
+barberRouter.get('/get-barber/:id', isAdmin, getBarberById)
+barberRouter.put('/modify/:id', isAdmin, modifyBarber)
+barberRouter.get('/barbers-with-services', isAdmin, getBarbersWithTheirServices)
+barberRouter.put('/modify-me/:id', isBarber, modifyBerberInSession)
+barberRouter.get('/get-me/:id', isBarber, getBarberInSession)
+barberRouter.get('/get-clients/:id', isBarberOrAdmin, getBarberClients)

@@ -11,8 +11,8 @@ export default function ClientsHeader({
     setSearchClient("");
   };
   return (
-    <div className="flex justify-between mt-10">
-      <div id="clients-title-container" className="flex pt-10 px-10">
+    <div className="sm:flex mt-10 mx-auto sm:justify-between">
+      <div id="clients-title-container" className="flex pt-10 px-auto">
         <h1 className="text-3xl sm:text-4xl">Clientes</h1>
         <button
           className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-2 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white ml-10 mt-1"

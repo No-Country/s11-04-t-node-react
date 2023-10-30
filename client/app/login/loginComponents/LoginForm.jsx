@@ -1,6 +1,7 @@
 'use client'
 import { backend } from '@/utils/backend'
 import { Notify } from 'notiflix/build/notiflix-notify-aio'
+import { Loading } from 'notiflix/build/notiflix-loading-aio'
 import { useState } from 'react'
 import Input from './Input'
 import PopUp from './PopUp'
@@ -26,17 +27,15 @@ const LoginForm = () => {
 
 	const handleRequestCode = async (e) => {
 		e.preventDefault()
-
 		if (!validateType(loginData.email)) {
 			setInputError('dirección de email inválida')
 			setLoginData({ email: '' })
 			return
 		}
-
-		// ----
-
+		Loading.standard()
 		try {
 			const res = await backend.post(`login/`, loginData)
+			Loading.remove()
 			Notify.success(`${res.data.msg}, por favor revisa tu email`, {
 				position: 'center-top',
 				timeout: 10000,
@@ -48,10 +47,9 @@ const LoginForm = () => {
 			Notify.failure(error.response.data.msg, {
 				position: 'center-top',
 			})
+			Loading.remove()
 			setLoginData({ email: '' })
 		}
-
-		// ---
 	}
 
 	return (

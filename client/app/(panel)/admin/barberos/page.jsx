@@ -44,7 +44,7 @@ export default function Barbers() {
 		const user = JSON.parse(localStorage.getItem('user'))
 
 		if (!user) {
-			router.push('/')
+			router.push('/login')
 			return
 		}
 
@@ -55,7 +55,7 @@ export default function Barbers() {
 			const data = await getBarbers(token)
 			if (!data.success) {
 				displayNotification('error', data.msg, 5000)
-				if (data.tokenExpired) router.push('/acceso')
+				if (data.tokenExpired) router.push('/login')
 				return
 			}
 			const barbers = data.barbers
@@ -137,7 +137,7 @@ export default function Barbers() {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
-			if (data.tokenExpired) router.push('/acceso')
+			if (data.tokenExpired) router.push('/login')
 			return
 		}
 
@@ -167,7 +167,7 @@ export default function Barbers() {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
-			if (data.tokenExpired) router.push('/acceso')
+			if (data.tokenExpired) router.push('/login')
 			return
 		}
 
@@ -194,7 +194,7 @@ export default function Barbers() {
 
 		if (!data.success) {
 			displayNotification('error', data.msg, 5000)
-			if (data.tokenExpired) router.push('/acceso')
+			if (data.tokenExpired) router.push('/login')
 			return
 		}
 		setBarbers(
