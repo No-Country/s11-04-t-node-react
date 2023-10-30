@@ -26,5 +26,6 @@ export enum SUCCESS_MSGS {
   APPOINTMENT_CREATION_EMAIL_SUBJECT = 'Se agendó su nuevo turno en BurberBuddy',
   APPOINTMENT_CANCELATION_EMAIL_SUBJECT = 'Tu turno en BurberBuddy fue cancelado',
   GET_APPOINTMENTS_BY_DATE_SUCCESS = 'Citas por fecha especificada obtenidas correctamente',
-  APPOINTMENT_FROM_COMPLETED_TO_PENDING = 'Cita pasada de completada a pendiente'
+  APPOINTMENT_FROM_COMPLETED_TO_PENDING = 'Cita pasada de completada a pendiente',
+  OTP_SENT_EMAIL_SUBJECT = 'Usar este código para iniciar sesión en BarberBuddy'
 }
