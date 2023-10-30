@@ -464,6 +464,116 @@ export const completePendingAppointmentService = async (
   }
 }
 
+export const cancelPendingAppointmentService = async (
+  id: string,
+  barberInSession: string
+) => {
+  try {
+    const appointment = await AppointmentModel.findById(id)
+    if (!appointment) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.APPOIMENTID_INVALID
+      }
+    }
+
+    const { startTime, endTime, barberId, date, status, totalPrice } =
+      appointment
+    const clientId = appointment.clientId.toString()
+
+    // Valido que el usuario en sesión sea el barbero de la cita a modificar
+    if (barberInSession !== barberId.toString()) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.UNAUTHORIZED,
+        msg: ERROR_MSGS.APPOINTMENTS_UNAUTHORIZED
+      }
+    }
+
+    if (status === AppointmentStatus.COMPLETED) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.BAD_REQUEST,
+        msg: ERROR_MSGS.APPOINTMENT_NOT_PENDING_OR_CANCELED
+      }
+    }
+
+    // Calcular de nuevo el precio total de los servicios
+    const newTotalPrice = await calculateServicesTotalPrice(
+      appointment.services
+    )
+
+    if (status === AppointmentStatus.CANCELLED) {
+      // Validar solapeo
+      if (
+        await existingAppointmentsWhenUpdating(
+          startTime,
+          endTime,
+          barberId,
+          clientId,
+          date,
+          id
+        )
+      ) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME
+        }
+      }
+
+      if (newTotalPrice !== totalPrice) {
+        await AppointmentModel.findByIdAndUpdate(
+          id,
+          { status: AppointmentStatus.PENDING, totalPrice: newTotalPrice },
+          { new: true, runValidators: true }
+        )
+      }
+
+      await AppointmentModel.findByIdAndUpdate(
+        id,
+        {
+          status: AppointmentStatus.PENDING
+        },
+        { new: true, runValidators: true }
+      )
+      return {
+        success: true,
+        statusCode: HttpStatusCode.OK,
+        msg: SUCCESS_MSGS.APPOINTMENT_FROM_CANCELED_TO_PENDING
+      }
+    }
+
+    if (newTotalPrice !== totalPrice) {
+      await AppointmentModel.findByIdAndUpdate(
+        id,
+        { status: AppointmentStatus.CANCELLED, totalPrice: newTotalPrice },
+        { new: true, runValidators: true }
+      )
+    }
+
+    await AppointmentModel.findByIdAndUpdate(
+      id,
+      { status: AppointmentStatus.CANCELLED },
+      { new: true, runValidators: true }
+    )
+
+    return {
+      success: true,
+      statusCode: HttpStatusCode.OK,
+      msg: SUCCESS_MSGS.APPOINTMENT_CANCELED
+    }
+  } catch (error) {
+    console.log(error)
+    return {
+      success: false,
+      statusCode: HttpStatusCode.INTERNAL_SERVER_ERROR,
+      msg: ERROR_MSGS.SERVER_ERROR
+    }
+  }
+}
+
 export const getAppointmentsService = async (
   barberId: string
 ): Promise<AppointmentsResponse> => {
