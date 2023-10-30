@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import editLogo from "@/public/images/Edit.png";
 import historiaLogo from "@/public/images/historial.png";
@@ -6,6 +6,9 @@ import agendaIcon from "@/public/images/agenda-icon.svg";
 import ClientsModal from "./ClientsModal";
 import Link from "next/link";
 import { Notification } from "./Notification";
+import { TbEdit } from "react-icons/tb";
+import { TbHistory } from "react-icons/tb";
+import { TbCalendarTime } from "react-icons/tb";
 
 export default function ClientsTable({
   setShowHistory,
@@ -22,6 +25,9 @@ export default function ClientsTable({
   notification,
   setClientId,
 }) {
+  useEffect(() => {
+    setClientToUpdate(clientId);
+  }, [clientId]);
   const showModalHandler = () => {
     setShowHistory(true);
   };
@@ -61,29 +67,29 @@ export default function ClientsTable({
                   </td>
                   <td className="text-center text-xs sm:text-sm pt-3 pb-3">
                     <button
+                      className="text-blue-700 hover:text-blue-900 transition text-3xl"
                       onClick={() => {
                         setClientAppointmentId(client._id);
                         showModalHandler();
                         setClientId(client);
                       }}
                     >
-                      <Image
-                        src={historiaLogo}
+                      <TbHistory
                         width={30}
                         height={30}
                         alt="Historial de Cliente"
-                      ></Image>
+                      />
                     </button>
                   </td>
                   <td className="text-center text-xs sm:text-sm flex justify-center pt-3 pb-3">
-                    <button onClick={() => showClientHandler(client._id)}>
-                      <Image
-                        className=""
-                        src={editLogo}
-                        width={30}
-                        height={30}
-                        alt="Editar Cliente"
-                      ></Image>
+                    <button
+                      className="text-amber-500 hover:text-amber-700 transition text-3xl"
+                      onClick={() => {
+                        showClientHandler(client._id);
+                        setClientToUpdate(client);
+                      }}
+                    >
+                      <TbEdit src={editLogo} width={30} height={30} />
                     </button>
                   </td>
                   <td className="text-center text-xs  sm:text-sm pt-3 pb-3">
@@ -91,14 +97,12 @@ export default function ClientsTable({
                       key={client._id}
                       href={`agenda?id=${client._id}?name=${client.fullName}`}
                     >
-                      <button>
-                        <Image
-                          className=""
-                          src={agendaIcon}
+                      <button className="text-green-700 hover:text-green-900 transition text-3xl">
+                        <TbCalendarTime
                           width={30}
                           height={30}
                           alt="Agendar Turno"
-                        ></Image>
+                        />
                       </button>
                     </Link>
                   </td>

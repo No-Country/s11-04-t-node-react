@@ -27,7 +27,8 @@ export default function ClientsModal({
       setClientToUpdate(originalClientState);
       setCancelUpdate(false);
     }
-  }, [cancelUpdate, setClientToUpdate, originalClientState]);
+  }, [cancelUpdate, setClientToUpdate, originalClientState,
+    clientId]);
 
   const handleModifyClick = (e) => {
     e.preventDefault();
@@ -54,10 +55,10 @@ export default function ClientsModal({
                 type="name"
                 id="clientName"
                 name="clientName"
-                placeholder={clientId.fullName}
+                value={clientToUpdate.fullName}
                 onChange={(e) =>
                   setClientToUpdate({
-                    ...clientToUpdate,
+                    ...clientToUpdate.fullName,
                     fullName: e.target.value,
                   })
                 }
@@ -74,7 +75,7 @@ export default function ClientsModal({
                 type="phone"
                 id="clientPhone"
                 name="clientPhone"
-                placeholder={clientId.phone}
+                value={clientToUpdate.phone}
                 onChange={(e) =>
                   setClientToUpdate({
                     ...clientToUpdate,
@@ -92,7 +93,7 @@ export default function ClientsModal({
                 type="email"
                 id="clientEmail"
                 name="clientEmail"
-                placeholder={clientId.email}
+                value={clientToUpdate.email}
                 onChange={(e) =>
                   setClientToUpdate({
                     ...clientToUpdate,
