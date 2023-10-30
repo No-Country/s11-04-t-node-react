@@ -37,11 +37,11 @@
 - **Restriccones**: ruta protegida solo para administradores y barberos.
 - **Info importante**: siempre tienen que enviar en el body la fecha de la cita, bien sea la nueva fecha, o la fecha que ya tiene la cita. Si van a modificar la hora de la cita, tiene que pasar en el body, el startTime y el endTime.
 
-### Completar una cita
+### Pasa una cita de completada a pendiente y viceversa
 
-- **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/complete/:id`
+- **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/complete-pending/:id`
 - **Método HTTP**: PUT
-- **Descripción**: completa una cita, actualizando su estado. Si el precio de los servicios ha cambiado desde la creación de la cita, el precio total se actualizará automáticamente.
+- **Descripción**: completa una cita si está pendiente, o pasa una cita de completada a pendiente, actualizando su estado. Si el precio de los servicios ha cambiado desde la creación de la cita, el precio total se actualizará automáticamente.
 - **Restriccones**: ruta protegida solo para administradores y barberos.
 
 ### Cancelar una cita
