@@ -8,6 +8,7 @@ BarberBuddy es una aplicación web diseñada para la gestión de turnos en barbe
 - **Base de Datos:** MongoDB
 - **Backend:** JavaScript, NodeJS, Express, JSON Web Token
 - **Frontend:** JavaScript, HTML5, CSS3, NextJS, Redux Toolkit, Axios, Date FNS, Notiflix, React Day Picker, SWR, TailwindCSS
+- **Testing:** Jest
 
 ## Roles de los Integrantes
 
