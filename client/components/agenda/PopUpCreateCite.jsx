@@ -60,7 +60,7 @@ const PopUpCreateCite = () => {
 
   return (
     <div className={`${hiddenPopUp ? 'block' : 'hidden'} fixed w-full h-screen flex items-center justify-center top-0 left-0 z-40 overflow-x-hidden overflow-y-auto md:inset-0 bg-black/70`}>
-      <div className='relative w-1/2 bg-slate-200 text-black p-4 rounded-lg'>
+      <div className='relative w-full md:w-3/4 lg:w-1/2 bg-slate-200 text-black p-4 rounded-lg'>
         <h2 className='text-center'>{!flagEdit ? 'Agende una ' : 'Edite la '}cita con el cliente {client.fullName}</h2>
         <button
           onClick={() => {
