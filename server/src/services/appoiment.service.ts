@@ -32,7 +32,8 @@ dayjs.extend(customParseFormat)
 export const modifyAppointmentService = async (
   id: string,
   clientId: string,
-  body: AppointmentBody
+  body: AppointmentBody,
+  barberInSession: string
 ): Promise<AppointmentResponse> => {
   try {
     let durationInMinutes: number | undefined
@@ -47,6 +48,16 @@ export const modifyAppointmentService = async (
     }
 
     const { barberId } = appointment
+
+    // Valido que el usuario en sesión sea el barbero de la cita a modificar
+    if (barberInSession !== barberId.toString()) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.UNAUTHORIZED,
+        msg: ERROR_MSGS.APPOINTMENTS_UNAUTHORIZED
+      }
+    }
+
     const { date, startTime, endTime, services } = body
 
     // Forzar a que siempre me envíen la fecha de la cita
@@ -199,10 +210,11 @@ export const modifyAppointmentService = async (
 }
 
 export const createAppointmentService = async (
-  body: AppointmentBody
+  body: AppointmentBody,
+  barberId: string
 ): Promise<AppointmentResponse> => {
   try {
-    const { date, startTime, endTime, barberId, clientId, services } = body
+    const { date, startTime, endTime, clientId, services } = body
 
     // Validacion de la existencia del cliente
     const client = await ClientModel.findById(clientId)
@@ -342,7 +354,10 @@ export const createAppointmentService = async (
   }
 }
 
-export const completeAppointmentService = async (id: string) => {
+export const completePendingAppointmentService = async (
+  id: string,
+  barberInSession: string
+) => {
   try {
     const appointment = await AppointmentModel.findById(id)
     if (!appointment) {
@@ -353,11 +368,24 @@ export const completeAppointmentService = async (id: string) => {
       }
     }
 
-    if (appointment.status !== AppointmentStatus.PENDING) {
+    const { startTime, endTime, barberId, date, status, totalPrice } =
+      appointment
+    const clientId = appointment.clientId.toString()
+
+    // Valido que el usuario en sesión sea el barbero de la cita a modificar
+    if (barberInSession !== barberId.toString()) {
+      return {
+        success: false,
+        statusCode: HttpStatusCode.UNAUTHORIZED,
+        msg: ERROR_MSGS.APPOINTMENTS_UNAUTHORIZED
+      }
+    }
+
+    if (status === AppointmentStatus.CANCELLED) {
       return {
         success: false,
         statusCode: HttpStatusCode.BAD_REQUEST,
-        msg: ERROR_MSGS.APPOINTMENT_NOT_PENDING
+        msg: ERROR_MSGS.APPOINTMENT_NOT_PENDING_OR_COMPLETED
       }
     }
 
@@ -366,7 +394,48 @@ export const completeAppointmentService = async (id: string) => {
       appointment.services
     )
 
-    if (newTotalPrice !== appointment.totalPrice) {
+    if (status === AppointmentStatus.COMPLETED) {
+      // Validar solapeo
+      if (
+        await existingAppointmentsWhenUpdating(
+          startTime,
+          endTime,
+          barberId,
+          clientId,
+          date,
+          id
+        )
+      ) {
+        return {
+          success: false,
+          statusCode: HttpStatusCode.BAD_REQUEST,
+          msg: ERROR_MSGS.APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME
+        }
+      }
+
+      if (newTotalPrice !== totalPrice) {
+        await AppointmentModel.findByIdAndUpdate(
+          id,
+          { status: AppointmentStatus.PENDING, totalPrice: newTotalPrice },
+          { new: true, runValidators: true }
+        )
+      }
+
+      await AppointmentModel.findByIdAndUpdate(
+        id,
+        {
+          status: AppointmentStatus.PENDING
+        },
+        { new: true, runValidators: true }
+      )
+      return {
+        success: true,
+        statusCode: HttpStatusCode.OK,
+        msg: SUCCESS_MSGS.APPOINTMENT_FROM_COMPLETED_TO_PENDING
+      }
+    }
+
+    if (newTotalPrice !== totalPrice) {
       await AppointmentModel.findByIdAndUpdate(
         id,
         { status: AppointmentStatus.COMPLETED, totalPrice: newTotalPrice },

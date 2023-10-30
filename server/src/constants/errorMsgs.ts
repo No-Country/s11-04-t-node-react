@@ -51,11 +51,13 @@ export enum ERROR_MSGS {
   APPOINTMENT_ALREADY_EXISTS_IN_THAT_TIME = 'Existe ya una cita en este lapso de tiempo para este barbero.',
   TIME_INVALID = 'Los tiempos de inicio y finalización de la cita son inválidos.',
   APPOINTMENT_NOT_PENDING = 'La cita no está pendiente.',
+  APPOINTMENT_NOT_PENDING_OR_COMPLETED = 'La cita no está pendiente o completada.',
   CALCULATE_SERVICES_TOTAL_PRICE_ERROR = 'Los servicios no se encontraron o no tienen precio.',
   DATE_TOO_FAR = 'La fecha de la cita no puede ser mayor a 30 días de la actual.',
   BARBER_WITHOUT_CLIENTS = 'El barbero no tiene citas completadas con ningun cliente',
   CLIENT_WITHOUT_APPOINTMENTS = 'Cliente sin citas',
   CLIENT_NOT_FOUND = 'Cliente no encontrado',
   APPOINTMENTS_NOT_FOUND = 'Citas no encontradas',
-  TIME_LENGTH_INVALID = 'El tiempo ingresado debe tener 5 caracteres: HH:mm'
+  TIME_LENGTH_INVALID = 'El tiempo ingresado debe tener 5 caracteres: HH:mm',
+  APPOINTMENTS_UNAUTHORIZED = 'No tiene permiso para modificar citas que usted no creó.'
 }

@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import {
   cancelAppointment,
-  completeAppointment,
+  completePendingAppointment,
   createAppointment,
   getAppointments,
   getAppointmentsByDate,
@@ -21,7 +21,7 @@ applyCommonMiddleware(appoimentRouter)
 
 appoimentRouter.put('/modify/:id/:clientId', modifyAppointment)
 appoimentRouter.post('/create', createAppointment)
-appoimentRouter.put('/complete/:id', completeAppointment)
+appoimentRouter.put('/complete/:id', completePendingAppointment)
 appoimentRouter.get('/get-all', getAppointments)
 appoimentRouter.put('/cancel/:id', cancelAppointment)
 appoimentRouter.get('/appointments-by-date/:date', getAppointmentsByDate)
