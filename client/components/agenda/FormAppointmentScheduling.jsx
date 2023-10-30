@@ -1,16 +1,16 @@
 "use client"
-import { useRouter } from 'next/navigation'
 
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation'
+import axios from 'axios';
 
 import { useAppointmentSchedulingContext } from "@/contexts/AppointmentSchedulingProvider";
-import axios from 'axios';
 import SelectHour from './SelectHour';
 
 const FormAgenda = () => {
 
   const router = useRouter()
-  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, handleChange, date } = useAppointmentSchedulingContext()
+  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, handleChange, flagEdit } = useAppointmentSchedulingContext()
 
   const [services, setServices] = useState([])
 
@@ -52,27 +52,24 @@ const FormAgenda = () => {
       updatedLocalServices.push(serviceId);
     }
 
-    setFormDataAppointmentScheduling({...formDataAppointmentScheduling, services: updatedLocalServices})
+    setFormDataAppointmentScheduling({ ...formDataAppointmentScheduling, services: updatedLocalServices })
   };
-
-  useEffect(() => { console.log(formDataAppointmentScheduling) }, [formDataAppointmentScheduling])
 
   return (
     <div className="w-full flex flex-col flex-wrap gap-y-8 p-6">
-      <div className='flex items-center'>
+      <div className='flex flex-col md:flex-row items-center'>
         <div>
           <label className='font-thin text-stone-700 text-sm'>Elija un horario de inicio</label>
-          <SelectHour horario={"de inicio"} param={"startTime"}/>
+          <SelectHour hourSelected={formDataAppointmentScheduling?.startTime} horario={"de inicio"} param={"startTime"} />
         </div>
         <div>
           <label className='font-thin text-stone-700 text-sm'>Elija un horario de final</label>
-          <SelectHour horario={"de fin"} param={"endTime"}/>
+          <SelectHour hourSelected={formDataAppointmentScheduling?.endTime} horario={"de fin"} param={"endTime"} />
         </div>
       </div>
-      {/* <div className="w-72">
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-        <input type="text" value={formDataAppointmentScheduling.name} onChange={(e) => handleChange(e)} name="name" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="John" />
-      </div> */}
+      <div className={`${flagEdit ? '' : 'hidden'}`}>
+        <input type="date" name="name" onChange={handleChange} value={`${formDataAppointmentScheduling?.date.split('-')[2]}-${formDataAppointmentScheduling?.date.split('-')[1]}-${formDataAppointmentScheduling?.date.split('-')[0]}`} />
+      </div>
       <div className='flex flex-col gap-y-2'>
         <label className='font-thin text-stone-700 text-sm'>Elija el/los servicio/s que brindará al cliente:</label>
         <div className='flex items-center flex-wrap gap-x-6'>

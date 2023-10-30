@@ -32,8 +32,8 @@ export const UserMenu = () => {
 					className="border rounded-full mb-1"
 				/>
 				<div>
-					<p>{user.fullName}</p>
-					<p>Rol: {user.role}</p>
+					<p className='text-xs'>{user.fullName}</p>
+					<p className='text-xs'>Rol: {user.role}</p>
 				</div>
 			</Menu.Button>
 
@@ -50,16 +50,16 @@ export const UserMenu = () => {
 					<div className="flex flex-col justify-start mt-2 sm:mt-2.5 gap-3 p-2 w-36 sm:w-[150px] bg-gradient-to-t from-zinc-600 to-slate-50 border border-gray-100/40 shadow-md text-[#292D33] rounded">
 						<Menu.Item>
 							<Link
-								href="/panel/admin/perfil"
-								className="flex items-center justify-start hover:text-white transition text-xl"
+								href="/admin/perfil"
+								className="flex items-center justify-start hover:text-white transition text-sm/[10px]"
 							>
 								<p>Mi Perfil</p>
 							</Link>
 						</Menu.Item>
 						<Menu.Item>
 							<Link
-								href="/"
-								className="flex items-center justify-start hover:text-white transition text-xl"
+								href="/login"
+								className="flex items-center justify-start hover:text-white transition text-sm/[10px]"
 							>
 								<p>Salir</p>
 							</Link>

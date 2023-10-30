@@ -6,20 +6,20 @@ import {
   duplicateKeyErrorHandler,
   mongooseValidatonErrorHandler
 } from '../handlers/mongooseErrors.handler'
+import AppointmentModel from '../models/appointment.model'
 import BarberModel from '../models/barber.model'
+import ClientModel from '../models/client.model'
 import type {
   Barber,
   BarberResponse,
   CreateBarberProps,
   ILoginUser
 } from '../types/barber.type'
+import { generateSendOTPTemplate } from '../utils/emailTemplates'
 import { generateOTP } from '../utils/generateOTP.util'
 import { generateHashOTP } from '../utils/hashOTP.util'
 import { jwtOTPHash } from '../utils/jwtOTPHash.util'
 import { sendEmail } from '../utils/mail.util'
-import { generateSendOTPTemplate } from '../utils/emailTemplates'
-import AppointmentModel from '../models/appointment.model'
-import ClientModel from '../models/client.model'
 
 export const loginService = async (email: string): Promise<ILoginUser> => {
   try {
@@ -50,7 +50,7 @@ export const loginService = async (email: string): Promise<ILoginUser> => {
     await sendEmail(
       barber.email,
       generateSendOTPTemplate(OTP),
-      'Usar este codigo para iniciar sesion en BarberBuddy'
+      SUCCESS_MSGS.OTP_SENT_EMAIL_SUBJECT
     )
 
     return {
