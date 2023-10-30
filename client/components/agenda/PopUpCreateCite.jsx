@@ -41,6 +41,7 @@ const PopUpCreateCite = () => {
         })
       }
     } catch (error) {
+      setHiddenLoader(true)
       setHiddenAlertObject({
         isHidden: false,
         text: '¡Lo siento, intentalo de nuevo!',

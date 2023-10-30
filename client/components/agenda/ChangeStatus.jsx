@@ -19,7 +19,6 @@ const ChangeStatus = () => {
 
   const handleSubmit = async () => {
     try {
-      // if(optionSelected == 'pending') setHiddenChangeStatus(!hiddenChangeStatus)
       const user = JSON.parse(localStorage.getItem('user'))
       const { token } = user
       const config = {
@@ -27,9 +26,8 @@ const ChangeStatus = () => {
           Authorization: `bearer ${token}`
         }
       }
-console.log(dataStatus, optionSelected, config)
       setHiddenLoader(false)
-      const { data } = await axios(`https://barberbuddy.fly.dev/api/v1/appointment/${optionSelected}/${dataStatus.id}`, {status: 'cancel'}, config)
+      const { data } = await axios.put(`https://barberbuddy.fly.dev/api/v1/appointment/${optionSelected}/${dataStatus.id}`, config)
       setHiddenLoader(true)
       setHiddenAlertObject({
         isHidden: false,
@@ -37,7 +35,6 @@ console.log(dataStatus, optionSelected, config)
         isSuccess: true
       })
     } catch (error) {
-      console.log(error)
       setHiddenLoader(true)
       setHiddenAlertObject({
         isHidden: false,
