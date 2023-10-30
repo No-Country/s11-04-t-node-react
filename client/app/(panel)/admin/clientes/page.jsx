@@ -8,7 +8,6 @@ import CreateClient from './components/CreateClient'
 import {
 	getClients,
 	createNewClient,
-	deleteClient,
 	updateClient,
 	getAppointments,
 } from './services/client.services.js'
@@ -194,7 +193,6 @@ export default function page() {
 				setShowHistory={setShowHistory}
 				showClient={showClient}
 				setShowClient={setShowClient}
-				deleteSelectedClient={deleteSelectedClient}
 				clientId={clientId}
 				showClientHandler={showClientHandler}
 				clientToUpdate={clientToUpdate}
