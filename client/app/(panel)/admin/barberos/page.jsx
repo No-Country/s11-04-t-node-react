@@ -1,7 +1,5 @@
 'use client'
 
-import iconInfo from '@/public/images/icon-info.svg'
-import iconDel from '@/public/images/icon-delete.png'
 import {
 	createBarber,
 	deleteBarber,
@@ -262,9 +260,7 @@ export default function Barbers() {
 
 				<BarbersTable
 					barbers={barbers}
-					iconInfo={iconInfo}
 					handleDetailsClick={handleDetailsClick}
-					iconDel={iconDel}
 					handleDeleteClick={handleDeleteClick}
 				/>
 			</div>

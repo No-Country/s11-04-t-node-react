@@ -154,7 +154,7 @@ const Profile = () => {
 			/>
 			<div className="flex justify-center">
 				<button
-					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-56 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
+					className="text-sm sm:text-base text-black mb-6 border-2 border-white rounded-lg py-1 w-56 bg-[#BC8F86] hover:bg-white hover:border-[#BC8F86] transition duration-300disabled:bg-slate-200 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
 					onClick={editClickHandle}
 					disabled={!disabled}
 				>
@@ -165,3 +165,5 @@ const Profile = () => {
 	)
 }
 export default Profile
+
+// text-sm sm:text-base text-black mb-6 border-2 border-white rounded-lg py-1 w-28 bg-[#BC8F86] hover:bg-white hover:border-[#BC8F86] transition duration-300
