@@ -55,13 +55,13 @@ export default function CreateClient({ createClient, setCreateClient, submitHand
       <div className="flex justify-center sm:justify-end gap-2 sm:gap-6">
         <>
           <button
-            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
+            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white hover:bg-[#748a72]"
             type="submit"
           >
             Guardar
           </button>
           <button
-            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
+            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white hover:bg-[#95716a]"
             type="button"
             onClick={() => setCreateClient(false)}
           >
