@@ -1,9 +1,16 @@
 import React from "react";
 
-export default function CreateClient({ createClient, setCreateClient, submitHandler, newClient, setNewClient, clients,manageNotifications,
-  notifications }) {
+export default function CreateClient({
+  createClient,
+  setCreateClient,
+  submitHandler,
+  newClient,
+  setNewClient,
+  clients,
+  manageNotifications,
+  notifications,
+}) {
   return createClient ? (
-    
     <form onSubmit={submitHandler}>
       <div className="flex flex-col sm:flex-row mb-4 mt-16">
         <div className="flex flex-col w-full sm:w-1/2 mr-10">
@@ -16,7 +23,9 @@ export default function CreateClient({ createClient, setCreateClient, submitHand
             id="clientName"
             name="clientName"
             value={clients.fullName}
-            onChange={(e) => setNewClient({ ...newClient, fullName: e.target.value })}
+            onChange={(e) =>
+              setNewClient({ ...newClient, fullName: e.target.value })
+            }
             required
           />
         </div>
@@ -32,7 +41,9 @@ export default function CreateClient({ createClient, setCreateClient, submitHand
             id="clientPhone"
             name="clientPhone"
             value={clients.phone}
-            onChange={(e) => setNewClient({ ...newClient, phone: e.target.value })}
+            onChange={(e) =>
+              setNewClient({ ...newClient, phone: e.target.value })
+            }
             required
           />
         </div>
@@ -47,7 +58,9 @@ export default function CreateClient({ createClient, setCreateClient, submitHand
             id="clientEmail"
             name="ClientEmail"
             value={clients.email}
-            onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
+            onChange={(e) =>
+              setNewClient({ ...newClient, email: e.target.value })
+            }
             required
           />
         </div>
@@ -55,13 +68,13 @@ export default function CreateClient({ createClient, setCreateClient, submitHand
       <div className="flex justify-center sm:justify-end gap-2 sm:gap-6">
         <>
           <button
-            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white hover:bg-[#748a72]"
+            className="py-1 w-28 mb-6 text-sm sm:text-base text-black border-2 border-white rounded-lg bg-[#96B593] hover:bg-white hover:border-[#96B593] transition duration-300 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
             type="submit"
           >
             Guardar
           </button>
           <button
-            className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white hover:bg-[#95716a]"
+            className="py-1 w-28 mb-6 text-sm sm:text-base text-black border-2 border-white rounded-lg bg-[#BC8F86] hover:bg-white hover:border-[#BC8F86] transition duration-300 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
             type="button"
             onClick={() => setCreateClient(false)}
           >
