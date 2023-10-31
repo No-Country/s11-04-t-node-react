@@ -1,10 +1,10 @@
 import Image from 'next/image'
+import { MdOutlineDoNotDisturbOn } from 'react-icons/md'
+import { TbEdit } from 'react-icons/tb'
 
 export const BarbersTable = ({
 	barbers,
-	iconInfo,
 	handleDetailsClick,
-	iconDel,
 	handleDeleteClick,
 }) => {
 	return (
@@ -12,10 +12,10 @@ export const BarbersTable = ({
 			<table className="w-full divide-y divide-white bg-white bg-opacity-10">
 				<thead className="bg-slate-100 h-10">
 					<tr className="border-white">
-						<th className="w-4/12 text-sm sm:text-base">Nombre</th>
-						<th className=" w-6/12 text-sm sm:text-base">Servicios</th>
-						<th className="w-1/12"></th>
-						<th className="w-1/12"></th>
+						<th className="w-4/12 text-sm sm:text-base text">Nombre</th>
+						<th className="w-auto text-sm sm:text-base">Servicios</th>
+						<th className="w-auto"></th>
+						<th className="w-auto"></th>
 					</tr>
 				</thead>
 				<tbody className="divide-y divide-white">
@@ -25,13 +25,13 @@ export const BarbersTable = ({
 								className="even:bg-gray-100"
 								key={barber._id}
 							>
-								<td className="text-center text-xs sm:text-sm">{barber.fullName}</td>
+								<td className="text-left pl-4 text-xs sm:text-sm">{barber.fullName}</td>
 								<td>
-									<div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+									<div className="flex flex-wrap justify-center gap-1">
 										{barber.services.map((service) => {
 											return (
 												<div
-													className="text-center border rounded-lg bg-slate-950 text-slate-200 text-xs"
+													className="text-center border rounded-xl bg-slate-950 text-slate-200 text-xs px-2 py-1"
 													key={service._id}
 												>
 													{service.name}
@@ -41,21 +41,19 @@ export const BarbersTable = ({
 									</div>
 								</td>
 								<td>
-									<button onClick={() => handleDetailsClick(barber)}>
-										<Image
-											width={28}
-											src={iconInfo}
-											alt="info_icon"
-										/>
+									<button
+										title="Modificar"
+										onClick={() => handleDetailsClick(barber)}
+									>
+										<TbEdit className="text-amber-500 hover:text-amber-700 flex items-center transition text-3xl" />
 									</button>
 								</td>
 								<td>
-									<button onClick={() => handleDeleteClick(barber)}>
-										<Image
-											width={24}
-											src={iconDel}
-											alt="info_icon"
-										/>
+									<button
+										title="Eliminar"
+										onClick={() => handleDeleteClick(barber)}
+									>
+										<MdOutlineDoNotDisturbOn className="text-red-500 hover:text-red-700 flex items-center transition text-3xl" />
 									</button>
 								</td>
 							</tr>
