@@ -55,7 +55,7 @@ const PopUpCreateCite = () => {
           text: '',
           isSuccess: false
         })
-      }, 4000);
+      }, 2300);
     }
   }
 

@@ -73,7 +73,7 @@ const Hours = () => {
                       <CardAppointment key={matchingAppointment._id} appointmentId={matchingAppointment._id} clientId={matchingAppointment.clientId} totalPrice={matchingAppointment.totalPrice} status={matchingAppointment.status} services={matchingAppointment.services} date={matchingAppointment.date} startTime={matchingAppointment.startTime} endTime={matchingAppointment.endTime} barberId={matchingAppointment.barberId} />
                     ))
                   ) : (
-                    <div className='w-full flex items-center justify-start'>
+                    <div key={`${hour.time}c`} className='w-full flex items-center justify-start'>
                       <span
 
                         className='text-center text-xl text-green-600 font-semibold'>
@@ -85,7 +85,7 @@ const Hours = () => {
                 <td className="px-6 py-4">
                   {matchingAppointments.length > 0 ? (
                     matchingAppointments.map(matchingAppointment => (
-                      <button key={matchingAppointment.id}
+                      <button key={`${matchingAppointment.id}a`}
                         onClick={() => {
                           setHiddenChangeStatus(!hiddenChangeStatus)
                           setDataStatus({
@@ -98,7 +98,7 @@ const Hours = () => {
                       </button>
                     ))
                   ) : (
-                    <div className='w-full flex items-center justify-start'>
+                    <div key={`${hour.time}b`} className='w-full flex items-center justify-start'>
                       <span
 
                         className='text-center text-xl text-stone-600 font-semibold'>
