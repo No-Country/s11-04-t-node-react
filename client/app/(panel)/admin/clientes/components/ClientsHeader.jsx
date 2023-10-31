@@ -6,7 +6,6 @@ export default function ClientsHeader({
   setCreateClient,
   setSearchClient,
 }) {
-
   const clearSearchHandler = () => {
     setSearchClient("");
   };
@@ -15,7 +14,7 @@ export default function ClientsHeader({
       <div id="clients-title-container" className="flex pt-10 px-auto">
         <h1 className="text-3xl sm:text-4xl">Clientes</h1>
         <button
-          className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-2 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white ml-10 mt-1 hover:bg-[#748a72]"
+          className="mb-6 py-2 w-28  ml-10 mt-1 text-sm sm:text-base text-black border-2 border-white rounded-lg bg-[#96B593] hover:bg-white hover:border-[#96B593] transition duration-300 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
           onClick={() => setCreateClient(true)}
         >
           Crear Cliente
