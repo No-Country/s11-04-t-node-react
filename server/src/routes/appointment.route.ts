@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import {
-  cancelAppointment,
   cancelPendingAppointment,
   completePendingAppointment,
   createAppointment,
@@ -25,6 +24,4 @@ appoimentRouter.post('/create', createAppointment)
 appoimentRouter.put('/complete/:id', completePendingAppointment)
 appoimentRouter.put('/cancel/:id', cancelPendingAppointment)
 appoimentRouter.get('/get-all', getAppointments)
-appoimentRouter.put('/cancel/:id', cancelAppointment)
 appoimentRouter.get('/appointments-by-date/:date', getAppointmentsByDate)
-
