@@ -26,7 +26,7 @@ export const Sidebar = () => {
 
   return (
     <div className="sm sm:ml-3 sm:w-25 mb-2">
-      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40 rounded-lg">
+      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40">
         <Link href="/">
           <RiHome3Line />
         </Link>
