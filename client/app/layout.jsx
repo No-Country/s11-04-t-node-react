@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
 			lang="es"
 			className={`${poppins.variable} font-sans`}
 		>
-			<body className="flex flex-col">
+			<body className="flex flex-col mb-5">
 				<Providers>
 					{children}
 					<Toaster />

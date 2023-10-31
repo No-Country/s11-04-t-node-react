@@ -6,8 +6,8 @@ import { UserMenu } from './UserMenu'
 
 export const Header = ({ fluid }) => {
 	return (
-		<header>
-			<nav className="bg-[#292D33] fixed sm:sticky z-20 w-full top-0 left-0 text-white max-sm:py-2 px-4 sm:pt-1 sm:border-b-[10px] border-white">
+		<header className='sm:w-screen sm:pl-3 sm:pr-7 sm:mt-2'>
+			<nav className="bg-[#292D33] fixed sm:sticky z-20 w-full top-0 left-0 text-white max-sm:py-2 px-4 sm:pt-1 sm:mb-5 border-white sm:rounded-lg">
 				<div
 					className={clsx(
 						'flex items-center justify-between px-2',
@@ -23,7 +23,7 @@ export const Header = ({ fluid }) => {
 							alt="logo"
 							width="0"
 							height="0"
-							className="w-[208px] h-auto mb-0 hidden sm:flex"
+							className="w-[190px] h-auto mb-0 hidden sm:flex"
 							priority
 						/>
 						<Image

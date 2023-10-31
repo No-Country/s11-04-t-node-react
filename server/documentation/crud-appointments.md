@@ -20,7 +20,6 @@
 
   ```json
   {
-    "barberId": "652f1522ce0c88e010aaddb1",
     "clientId": "652f1bf5bcbada72e70a920d",
     "date": "24-10-2023",
     "startTime": "13:00",
@@ -37,18 +36,18 @@
 - **Restriccones**: ruta protegida solo para administradores y barberos.
 - **Info importante**: siempre tienen que enviar en el body la fecha de la cita, bien sea la nueva fecha, o la fecha que ya tiene la cita. Si van a modificar la hora de la cita, tiene que pasar en el body, el startTime y el endTime.
 
-### Completar una cita
+### Pasa una cita de completada a pendiente y viceversa
 
 - **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/complete/:id`
 - **Método HTTP**: PUT
-- **Descripción**: completa una cita, actualizando su estado. Si el precio de los servicios ha cambiado desde la creación de la cita, el precio total se actualizará automáticamente.
+- **Descripción**: completa una cita si está pendiente, o pasa una cita de completada a pendiente, actualizando su estado. Si el precio de los servicios ha cambiado desde la creación de la cita, el precio total se actualizará automáticamente.
 - **Restriccones**: ruta protegida solo para administradores y barberos.
 
 ### Cancelar una cita
 
 - **Ruta**: `https://barberbuddy.fly.dev/api/v1/appointment/cancel/:id`
 - **Método HTTP**: PUT
-- **Descripción**: cancela una cita actualizando su estado. El id que envía por el params, es el id de la cita a cancelar.
+- **Descripción**: cancela una cita si está pendiente, o pasa una cita a pendiente si está cancelada, actualizando su estado. El id que envía por el params, es el id de la cita a cambiar su estado.
 - **Restriccones**: ruta protegida solo para administradores y barberos.
 
 ### Obtener todas las citas por un barbero para una fecha específica

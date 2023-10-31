@@ -1,7 +1,7 @@
 import { type Request, type Response } from 'express'
 import {
-  cancelAppointmentService,
-  completeAppointmentService,
+  cancelPendingAppointmentService,
+  completePendingAppointmentService,
   createAppointmentService,
   getAppointmentsByDateService,
   getAppointmentsService,
@@ -14,9 +14,10 @@ export const modifyAppointment = async (
 ): Promise<void> => {
   const { id, clientId } = req.params
   const { body } = req
+  const barberInSession = req.userInSessionId
 
   const { success, statusCode, msg, appointment, durationInMinutes } =
-    await modifyAppointmentService(id, clientId, body)
+    await modifyAppointmentService(id, clientId, body, barberInSession)
   res.status(statusCode).json({
     success,
     msg,
@@ -30,8 +31,9 @@ export const createAppointment = async (
   res: Response
 ): Promise<void> => {
   const { body } = req
+  const barberId = req.userInSessionId
   const { success, statusCode, msg, appointment, durationInMinutes } =
-    await createAppointmentService(body)
+    await createAppointmentService(body, barberId)
   res.status(statusCode).json({
     success,
     msg,
@@ -40,12 +42,34 @@ export const createAppointment = async (
   })
 }
 
-export const completeAppointment = async (
+export const completePendingAppointment = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   const { id } = req.params
-  const { success, msg, statusCode } = await completeAppointmentService(id)
+  const barberInSession = req.userInSessionId
+
+  const { success, msg, statusCode } = await completePendingAppointmentService(
+    id,
+    barberInSession
+  )
+  res.status(statusCode).json({
+    success,
+    msg
+  })
+}
+
+export const cancelPendingAppointment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const { id } = req.params
+  const barberInSession = req.userInSessionId
+
+  const { success, msg, statusCode } = await cancelPendingAppointmentService(
+    id,
+    barberInSession
+  )
   res.status(statusCode).json({
     success,
     msg
@@ -64,19 +88,6 @@ export const getAppointments = async (
     success,
     msg,
     appointments
-  })
-}
-
-export const cancelAppointment = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { id } = req.params
-  const { success, msg, statusCode } = await cancelAppointmentService(id)
-
-  res.status(statusCode).json({
-    success,
-    msg
   })
 }
 

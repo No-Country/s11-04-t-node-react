@@ -11,11 +11,11 @@ export default function ClientsHeader({
     setSearchClient("");
   };
   return (
-    <div className="sm:flex mt-10 mx-auto sm:justify-between">
+    <div className="sm:flex mx-auto sm:justify-between">
       <div id="clients-title-container" className="flex pt-10 px-auto">
         <h1 className="text-3xl sm:text-4xl">Clientes</h1>
         <button
-          className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-2 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white ml-10 mt-1"
+          className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-2 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white ml-10 mt-1 hover:bg-[#748a72]"
           onClick={() => setCreateClient(true)}
         >
           Crear Cliente
@@ -35,7 +35,7 @@ export default function ClientsHeader({
               <path
                 d="M7.667 12.667A5.333 5.333 0 107.667 2a5.333 5.333 0 000 10.667zM14.334 14l-2.9-2.9"
                 stroke="currentColor"
-                stroke-width="1.333"
+                strokeWidth="1.333"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               ></path>
