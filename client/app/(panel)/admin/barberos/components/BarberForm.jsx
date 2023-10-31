@@ -96,14 +96,14 @@ const BarberForm = ({
 
 			<div className="flex justify-center sm:justify-end gap-2 sm:gap-6">
 				<button
-					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#96B593] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
+					className="text-sm sm:text-base text-black mb-6 border-2 border-white rounded-lg py-1 w-28 bg-[#96B593] hover:bg-white hover:border-[#96B593] transition duration-300 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
 					type="submit"
 					disabled={disabled}
 				>
 					{confirmButtonTag}
 				</button>
 				<button
-					className="text-sm sm:text-base text-slate-950 mb-6 border border-black rounded-lg py-1 w-28 bg-[#BC8F86] disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
+					className="text-sm sm:text-base text-black mb-6 border-2 border-white rounded-lg py-1 w-28 bg-[#BC8F86] hover:bg-white hover:border-[#BC8F86] transition duration-300 disabled:bg-slate-200 disabled:text-slate-400 disabled:border-white"
 					type="button"
 					onClick={onClickCancel}
 					disabled={disabled}

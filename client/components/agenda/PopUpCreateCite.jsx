@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const PopUpCreateCite = () => {
 
-  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, hiddenPopUp, setHiddenPopUp, client, flagEdit, setFlagEdit, appointmentEditId } = useAppointmentSchedulingContext()
+  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, hiddenPopUp, setHiddenPopUp, client, flagEdit, setFlagEdit, appointmentEditId, hiddenLoader, setHiddenLoader, setHiddenAlertObject } = useAppointmentSchedulingContext()
 
   const editOrCreateAppointment = async () => {
 
@@ -19,25 +19,49 @@ const PopUpCreateCite = () => {
     }
 
     try {
+      setHiddenLoader(true)
       if (!flagEdit) {
         let body = { ...formDataAppointmentScheduling, barberId: _id, clientId: client._id }
         const { data } = await axios.post("https://barberbuddy.fly.dev/api/v1/appointment/create", body, config)
-        console.log(data)
+        setHiddenLoader(false)
+        setHiddenAlertObject({
+          isHidden: false,
+          text: '¡Se creó la cita con éxito!',
+          isSuccess: true
+        })
 
       } else {
         let body = { ...formDataAppointmentScheduling }
         const { data } = await axios.post(`https://barberbuddy.fly.dev/api/v1/appointment/modify/${appointmentEditId}/${formDataAppointmentScheduling.clientId}`, body, config)
-        console.log(data)
-
+        setHiddenLoader(false)
+        setHiddenAlertObject({
+          isHidden: false,
+          text: '¡Se editó la cita con éxito!',
+          isSuccess: true
+        })
       }
     } catch (error) {
-      console.log(error)
+      setHiddenLoader(true)
+      setHiddenAlertObject({
+        isHidden: false,
+        text: '¡Lo siento, intentalo de nuevo!',
+        isSuccess: false
+      })
+    } finally {
+      setHiddenPopUp(!hiddenPopUp)
+      setTimeout(() => {
+        setHiddenAlertObject({
+          isHidden: true,
+          text: '',
+          isSuccess: false
+        })
+      }, 4000);
     }
   }
 
   return (
     <div className={`${hiddenPopUp ? 'block' : 'hidden'} fixed w-full h-screen flex items-center justify-center top-0 left-0 z-40 overflow-x-hidden overflow-y-auto md:inset-0 bg-black/70`}>
-      <div className='relative w-1/2 bg-slate-200 text-black p-4 rounded-lg'>
+      <div className='relative w-full md:w-3/4 lg:w-1/2 bg-slate-200 text-black p-4 rounded-lg'>
         <h2 className='text-center'>{!flagEdit ? 'Agende una ' : 'Edite la '}cita con el cliente {client.fullName}</h2>
         <button
           onClick={() => {

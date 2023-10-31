@@ -32,8 +32,8 @@ export const UserMenu = () => {
 					className="border rounded-full mb-1"
 				/>
 				<div>
-					<p>{user.fullName}</p>
-					<p>Rol: {user.role}</p>
+					<p className='text-xs'>{user.fullName}</p>
+					<p className='text-xs'>Rol: {user.role}</p>
 				</div>
 			</Menu.Button>
 
@@ -51,7 +51,7 @@ export const UserMenu = () => {
 						<Menu.Item>
 							<Link
 								href="/admin/perfil"
-								className="flex items-center justify-start hover:text-white transition text-xl"
+								className="flex items-center justify-start hover:text-white transition text-sm/[10px]"
 							>
 								<p>Mi Perfil</p>
 							</Link>
@@ -59,7 +59,7 @@ export const UserMenu = () => {
 						<Menu.Item>
 							<Link
 								href="/login"
-								className="flex items-center justify-start hover:text-white transition text-xl"
+								className="flex items-center justify-start hover:text-white transition text-sm/[10px]"
 							>
 								<p>Salir</p>
 							</Link>

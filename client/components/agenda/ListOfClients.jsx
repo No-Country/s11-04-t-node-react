@@ -20,6 +20,7 @@ const ListOfClients = () => {
         Authorization: `bearer ${token}`
       }
     }
+
     try {
       const { data } = await axios("https://barberbuddy.fly.dev/api/v1/client/get-all", config)
       setClients(data.clients)
@@ -29,17 +30,6 @@ const ListOfClients = () => {
   }
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const nameParam = searchParams.get('name');
-    const idParam = searchParams.get('_id');
-
-    const decodedName = decodeURIComponent(nameParam);
-    const decodedId = decodeURIComponent(idParam);
-
-    if (decodedName && decodedId) {
-      console.log(decodedId, decodedName)
-    }
-
     getClients()
   }, [])
 
@@ -52,7 +42,7 @@ const ListOfClients = () => {
         </svg></button>
         <ul role="list" className="divide-y divide-gray-200 h-full overflow-y-auto scroll-hidden py-4">
           {
-            clients.map((client) => {
+            clients?.map((client) => {
               return (
                 <CardClient fullName={client.fullName} email={client.email} key={client._id} _id={client._id} />
               )

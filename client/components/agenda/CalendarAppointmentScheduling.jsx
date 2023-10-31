@@ -8,7 +8,7 @@ import axios from 'axios'
 import { formatDate } from './utils'
 
 const CalendarAppointmentScheduling = () => {
-  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate, setAppointments } = useAppointmentSchedulingContext()
+  const { formDataAppointmentScheduling, setFormDataAppointmentScheduling, date, setDate, setAppointments, setHiddenLoader, setHiddenAlertObject } = useAppointmentSchedulingContext()
 
   const getAppointmentsForDate = async (actualDate) => {
     try {
@@ -19,11 +19,30 @@ const CalendarAppointmentScheduling = () => {
           Authorization: `bearer ${token}`
         }
       }
+      setHiddenLoader(false)
       const { data } = await axios(`https://barberbuddy.fly.dev/api/v1/appointment/appointments-by-date/${actualDate}`, config)
-      console.log(data)
+      setHiddenLoader(true)
       setAppointments(data.appointments)
+      setHiddenAlertObject({
+        isHidden: false,
+        text: `¡Se obtuvieron las citas del día ${actualDate} con éxito!`,
+        isSuccess: true
+      })
     } catch (error) {
-      console.log(error)
+      setHiddenLoader(true)
+      setHiddenAlertObject({
+        isHidden: false,
+        text: '¡No se pudieron obtener las citas!',
+        isSuccess: false
+      })
+    } finally {
+      setTimeout(() => {
+        setHiddenAlertObject({
+          isHidden: true,
+          text: '',
+          isSuccess: false
+        })
+      }, 4000);
     }
   }
 
@@ -38,7 +57,7 @@ const CalendarAppointmentScheduling = () => {
   }, [date])
 
   return (
-    <div className='fixed right-10'>
+    <div className='block lg:fixed right-10'>
       <Calendar
         mode="single"
         selected={date}
