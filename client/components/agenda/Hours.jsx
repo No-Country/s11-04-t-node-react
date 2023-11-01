@@ -9,7 +9,7 @@ import Alert from './Alert'
 
 const Hours = () => {
 
-  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, appointments, hiddenChangeStatus, setHiddenChangeStatus, setDataStatus } = useAppointmentSchedulingContext()
+  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, client, appointments, hiddenChangeStatus, setHiddenChangeStatus, setDataStatus } = useAppointmentSchedulingContext()
 
 
   const convertDateTime = (inputDateTime) => {
@@ -73,7 +73,7 @@ const Hours = () => {
                       <CardAppointment key={matchingAppointment._id} appointmentId={matchingAppointment._id} clientId={matchingAppointment.clientId} totalPrice={matchingAppointment.totalPrice} status={matchingAppointment.status} services={matchingAppointment.services} date={matchingAppointment.date} startTime={matchingAppointment.startTime} endTime={matchingAppointment.endTime} barberId={matchingAppointment.barberId} />
                     ))
                   ) : (
-                    <div className='w-full flex items-center justify-start'>
+                    <div key={`${hour.time}c`} className='w-full flex items-center justify-start'>
                       <span
 
                         className='text-center text-xl text-green-600 font-semibold'>
@@ -85,20 +85,24 @@ const Hours = () => {
                 <td className="px-6 py-4">
                   {matchingAppointments.length > 0 ? (
                     matchingAppointments.map(matchingAppointment => (
-                      <button key={matchingAppointment.id}
+                      <button key={`${matchingAppointment.id}a`}
                         onClick={() => {
-                          setHiddenChangeStatus(!hiddenChangeStatus)
                           setDataStatus({
                             id: matchingAppointment._id,
                             status: matchingAppointment.status
                           })
+                          setClient({
+                            id: matchingAppointment.clientId?._id,
+                            fullName: matchingAppointment.clientId?.fullName
+                          })
+                          setHiddenChangeStatus(!hiddenChangeStatus)
                         }}
                         className="px-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Cambiar estado
                       </button>
                     ))
                   ) : (
-                    <div className='w-full flex items-center justify-start'>
+                    <div key={`${hour.time}b`} className='w-full flex items-center justify-start'>
                       <span
 
                         className='text-center text-xl text-stone-600 font-semibold'>
