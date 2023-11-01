@@ -1,5 +1,6 @@
 "use client"
 import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulingProvider.jsx'
+import { useEffect } from 'react'
 
 import { AiFillClockCircle, AiFillCheckCircle } from 'react-icons/ai'
 import { MdCancel } from 'react-icons/md'
@@ -7,8 +8,7 @@ import { MdCancel } from 'react-icons/md'
 
 const CardAppointment = ({ clientId, totalPrice, status, services, startTime, endTime, date, barberId, appointmentId }) => {
 
-  const { setFormDataAppointmentScheduling, hiddenPopUp, setHiddenPopUp, flagEdit, setFlagEdit, setAppointmentEditId, setClient } = useAppointmentSchedulingContext()
-
+  const { setFormDataAppointmentScheduling, hiddenPopUp, setHiddenPopUp, setFlagEdit, setAppointmentEditId, setClient } = useAppointmentSchedulingContext()
 
   return (
     <button onClick={() => {
@@ -47,7 +47,7 @@ const CardAppointment = ({ clientId, totalPrice, status, services, startTime, en
         {
           services?.map(service => {
             return (
-              <span className="text-xs uppercase bg-black text-white rounded-md px-2 py-1">
+              <span key={service._id} className="text-xs uppercase bg-black text-white rounded-md px-2 py-1">
                 {service.name}
               </span>
             )

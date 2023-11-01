@@ -9,7 +9,8 @@ import Alert from './Alert'
 
 const Hours = () => {
 
-  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, client, appointments, hiddenChangeStatus, setHiddenChangeStatus, setDataStatus } = useAppointmentSchedulingContext()
+  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, appointments, hiddenChangeStatus, setHiddenChangeStatus, setDataStatus } = useAppointmentSchedulingContext()
+
 
 
   const convertDateTime = (inputDateTime) => {
