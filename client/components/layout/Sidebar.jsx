@@ -26,7 +26,7 @@ export const Sidebar = () => {
 
   return (
     <div className="sm sm:ml-3 sm:w-25 mb-2">
-      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40 rounded-lg">
+      <nav className="flex items-center justify-between text-3xl sm:hidden bg-[#292D33] text-[#B5AF93] py-4 px-11 fixed z-50 bottom-0 w-full border-t border-gray-100/40">
         <Link href="/">
           <RiHome3Line />
         </Link>
@@ -58,11 +58,11 @@ export const Sidebar = () => {
             <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current sm:hover:bg-[#B5AF93] sm:hover:opacity-70 sm:active:opacity-80 sm:checked:bg-opacity-90">
               <div
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center justify-between sm:justify-start text-lg w-full font-bold"
+                className="flex items-center justify-between sm:justify-start text-lg w-full"
               >
                 <p>Clientes</p>
-              </div>
               <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
             </div>
           </Link>
 
@@ -70,11 +70,11 @@ export const Sidebar = () => {
             <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current sm:hover:bg-[#B5AF93] sm:hover:opacity-70 sm:active:opacity-80 sm:checked:bg-opacity-90">
               <div
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center justify-between sm:justify-start text-left text-lg w-full font-bold"
+                className="flex items-center justify-between sm:justify-start text-left text-lg w-full"
               >
                 <p>Agenda</p>
-              </div>
               <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
             </div>
           </Link>
 
@@ -200,7 +200,7 @@ const RoleLinks = () => {
             <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current sm:hover:bg-[#B5AF93] sm:hover:opacity-70 sm:active:opacity-80 sm:checked:bg-opacity-90">
               <div
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center justify-between sm:justify-start text-left text-lg w-full font-bold"
+                className="flex items-center justify-between sm:justify-start text-left text-lg w-full"
               >
                 <p>Barberos</p>
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
@@ -215,11 +215,11 @@ const RoleLinks = () => {
             <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current sm:hover:bg-[#B5AF93] sm:hover:opacity-70 sm:active:opacity-80 sm:checked:bg-opacity-90">
               <div
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center justify-between sm:justify-start text-lg w-full font-bold"
+                className="flex items-center justify-between sm:justify-start text-lg w-full"
               >
                 <p>Servicios</p>
-              </div>
               <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
             </div>
           </Link>
         </>

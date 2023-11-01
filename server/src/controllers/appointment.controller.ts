@@ -1,6 +1,5 @@
 import { type Request, type Response } from 'express'
 import {
-  cancelAppointmentService,
   cancelPendingAppointmentService,
   completePendingAppointmentService,
   createAppointmentService,
@@ -89,19 +88,6 @@ export const getAppointments = async (
     success,
     msg,
     appointments
-  })
-}
-
-export const cancelAppointment = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  const { id } = req.params
-  const { success, msg, statusCode } = await cancelAppointmentService(id)
-
-  res.status(statusCode).json({
-    success,
-    msg
   })
 }
 

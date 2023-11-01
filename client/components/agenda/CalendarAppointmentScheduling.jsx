@@ -42,7 +42,7 @@ const CalendarAppointmentScheduling = () => {
           text: '',
           isSuccess: false
         })
-      }, 4000);
+      }, 2300);
     }
   }
 

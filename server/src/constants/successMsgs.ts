@@ -28,5 +28,5 @@ export enum SUCCESS_MSGS {
   GET_APPOINTMENTS_BY_DATE_SUCCESS = 'Citas por fecha especificada obtenidas correctamente',
   APPOINTMENT_FROM_COMPLETED_TO_PENDING = 'Cita pasada de completada a pendiente',
   OTP_SENT_EMAIL_SUBJECT = 'Usar este código para iniciar sesión en BarberBuddy',
-  APPOINTMENT_FROM_CANCELED_TO_PENDING = "Cita pasada ded cancelada a pendiente"
+  APPOINTMENT_FROM_CANCELED_TO_PENDING = 'Cita pasada de cancelada a pendiente'
 }

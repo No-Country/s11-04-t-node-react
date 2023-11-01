@@ -20,7 +20,6 @@
 
   ```json
   {
-    "barberId": "652f1522ce0c88e010aaddb1",
     "clientId": "652f1bf5bcbada72e70a920d",
     "date": "24-10-2023",
     "startTime": "13:00",

@@ -60,5 +60,5 @@ export enum ERROR_MSGS {
   APPOINTMENTS_NOT_FOUND = 'Citas no encontradas',
   TIME_LENGTH_INVALID = 'El tiempo ingresado debe tener 5 caracteres: HH:mm',
   APPOINTMENTS_UNAUTHORIZED = 'No tiene permiso para modificar citas que usted no creó.',
-  APPOINTMENT_NOT_PENDING_OR_CANCELED = "La cita no esta pendiente o cancelada"
+  APPOINTMENT_NOT_PENDING_OR_CANCELED = 'La cita no está pendiente o cancelada'
 }
