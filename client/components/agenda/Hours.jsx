@@ -48,7 +48,7 @@ const Hours = () => {
         </h2>
         <button onClick={handleClick} className='px-4 py-2 rounded-lg bg-green-600 text-white font-semibold uppercase'>Crear cita</button>
       </div>
-      <table className="overflow-x-auto w-full text-sm text-left text-gray-500">
+      <table className="overflow-x-scroll md:overflow-x-auto w-full text-sm text-left text-gray-500">
         <thead className='text-gray-600 uppercase rounded-t-lg overflow-x-auto'>
           <tr>
             <th className="px-6 py-3 bg-transparent">
