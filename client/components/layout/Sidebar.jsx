@@ -58,11 +58,11 @@ export const Sidebar = () => {
             <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current sm:hover:bg-[#B5AF93] sm:hover:opacity-70 sm:active:opacity-80 sm:checked:bg-opacity-90">
               <div
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center justify-between sm:justify-start text-lg w-fulld"
+                className="flex items-center justify-between sm:justify-start text-lg w-full"
               >
                 <p>Clientes</p>
-              </div>
               <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
             </div>
           </Link>
 
@@ -73,8 +73,8 @@ export const Sidebar = () => {
                 className="flex items-center justify-between sm:justify-start text-left text-lg w-full"
               >
                 <p>Agenda</p>
-              </div>
               <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
             </div>
           </Link>
 
@@ -200,7 +200,7 @@ const RoleLinks = () => {
             <div className="text-[#B5AF93] sm:bg-[#B5AF93] py-4 px-6 sm:px-16 transition-colors flex items-center  sm:text-black fill-current sm:hover:bg-[#B5AF93] sm:hover:opacity-70 sm:active:opacity-80 sm:checked:bg-opacity-90">
               <div
                 onClick={() => setSidebarOpen(false)}
-                className="flex items-center justify-between sm:justify-start text-left text-lg w-fulld"
+                className="flex items-center justify-between sm:justify-start text-left text-lg w-full"
               >
                 <p>Barberos</p>
                 <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
@@ -218,8 +218,8 @@ const RoleLinks = () => {
                 className="flex items-center justify-between sm:justify-start text-lg w-full"
               >
                 <p>Servicios</p>
-              </div>
               <RiArrowUpSLine className="text-[#B5AF93] text-4xl sm:hidden" />
+              </div>
             </div>
           </Link>
         </>

@@ -55,7 +55,7 @@ export default function HistoryModal({
                     ))}
                   </td>
                   <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">
-                    {services.barberId.fullName}
+                    {services.barberId?.fullName}
                   </td>
                 </tr>
               ))}
