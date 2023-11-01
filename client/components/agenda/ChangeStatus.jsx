@@ -2,6 +2,7 @@
 import { useAppointmentSchedulingContext } from '@/contexts/AppointmentSchedulingProvider.jsx'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import Toggle from './Toggle'
 
 const ChangeStatus = () => {
 
@@ -9,11 +10,6 @@ const ChangeStatus = () => {
 
   const [optionSelectedCancel, setOptionSelectedCancel] = useState(false)
   const [optionSelectedComplete, setOptionSelectedComplete] = useState(false)
-
-  // const [errorMessage, setErrorMessage] = useState({
-  //   isHidden: true,
-  //   text: ''
-  // })
 
   useEffect(() => {
     console.log(dataStatus)
@@ -28,26 +24,36 @@ const ChangeStatus = () => {
     }
   }, [dataStatus])
 
-  const handleChangeCancel = () => {
+  const handleChangeCancel = (e) => {
     if (optionSelectedComplete) {
-      // setErrorMessage({
-      //   isHidden: false,
-      //   text: 'La cita no puede tener más de un estado a la vez'
-      // })
       setOptionSelectedComplete(false)
     }
-    setOptionSelectedCancel(true)
+    setOptionSelectedCancel(!optionSelectedCancel)
+    // if (optionSelectedCancel) {
+    //   setOptionSelectedCancel(false)
+    // }else{
+    //   setOptionSelectedCancel(true)
+    // }
   }
 
-  const handleChangeComplete = () => {
+  const handleChangeComplete = (e) => {
     if (optionSelectedCancel) {
-      // setErrorMessage({
-      //   isHidden: false,
-      //   text: 'La cita no puede tener más de un estado a la vez'
-      // })
+      console.log("hola0")
+    
       setOptionSelectedCancel(false)
     }
-    setOptionSelectedComplete(true)
+
+    setOptionSelectedComplete(!optionSelectedComplete)
+
+    // if (optionSelectedComplete) {
+    //   console.log("hola")
+    //   setOptionSelectedComplete(false)
+      
+    // }else{
+    //   console.log("hola2")
+  
+    //   setOptionSelectedComplete(true)
+    // }
   }
 
   const handleSubmit = async () => {
@@ -67,13 +73,13 @@ const ChangeStatus = () => {
         text: `¡Se cambió el estado de la cita con éxito!`,
         isSuccess: true
       })
-      window.location.href = './'
+      window.location.href = '/admin/agenda'
     } catch (error) {
       console.log(error)
       setHiddenLoader(true)
       setHiddenAlertObject({
         isHidden: false,
-        text: '¡No se pudo cambiar el estado de la cita!',
+        text: error.response.data.msg,
         isSuccess: false
       })
     } finally {
@@ -87,7 +93,7 @@ const ChangeStatus = () => {
     }
   }
 
-  useEffect(() => {console.log(optionSelectedComplete, optionSelectedCancel)}, [optionSelectedComplete, optionSelectedCancel])
+  useEffect(() => { console.log(optionSelectedCancel, optionSelectedComplete, client) }, [optionSelectedComplete, optionSelectedCancel])
 
   return (
     <div className={`${hiddenChangeStatus ? 'block' : 'hidden'} fixed w-full h-screen flex items-center justify-center top-0 left-0 z-40 overflow-x-hidden overflow-y-auto md:inset-0 bg-black/70`}>
@@ -97,29 +103,32 @@ const ChangeStatus = () => {
         </svg></button>
         <h3 className='text-center'>Cambiar el estado de la cita de <b>{client?.fullName}</b></h3>
         {/* <span className=''>Estados posibles de la cita:</span> */}
-        <div className='flex items-center gap-x-6'>
+        <div className='flex flex-col md:flex-row items-center gap-x-6'>
           <div className='flex flex-col gap-y-4 items-start'>
             <span className='text-sm text-stone-700'>Cambia de pendiente a cancelado o viceversa</span>
-            <button className="relative">
+            {/* <button className="relative">
               <input
                 onClick={() => handleChangeCancel()}
                 className={`mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-slate-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-slate-500 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] ${optionSelectedCancel ? "checked:bg-blue-600 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-blue-600 checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-['']hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12]focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-blue-600 checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]" : ''}`}
                 type="checkbox"
               />
-            </button>
+            </button> */}
+            {/* <Toggle isActive={optionSelectedCancel} setIsActive={handleChangeCancel} /> */}
+            <label  className="relative inline-flex items-center mr-5 cursor-pointer">
+              <input onChange={handleChangeCancel} type="checkbox" value="" className="sr-only peer" checked={optionSelectedCancel}/>
+                <div className={` peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:bg-green-600 peer-focus:ring-4 peer-focus:ring-green-300 w-11 h-6 bg-gray-500 rounded-full peer  after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+            </label>
           </div>
           <div className='flex flex-col gap-y-4 items-start'>
             <span className='text-sm text-stone-700'>Cambia de pendiente a completado o viceversa</span>
-            <button className="relative hover:cursor-pointer">
-              <input
-                onClick={() => handleChangeComplete()}
-                className={`mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-slate-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-slate-500 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] ${optionSelectedComplete ? "checked:bg-blue-600 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-blue-600 checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-['']hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12]focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-blue-600 checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s]" : ''}`}
-                type="checkbox"
-              />
-            </button>
+            <label  className="relative inline-flex items-center mr-5 cursor-pointer">
+              <input onChange={handleChangeComplete}  type="checkbox" value="" className="sr-only peer" checked={optionSelectedComplete}/>
+                <div className={` peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:bg-green-600 peer-focus:ring-4 peer-focus:ring-green-300 w-11 h-6 bg-gray-500 rounded-full peer  after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+            </label>
+            {/* <Toggle isActive={optionSelectedComplete} setIsActive={handleChangeComplete} /> */}
           </div>
         </div>
-        <div className='flex items-center gap-x-4 self-center'>
+        <div className='flex flex-col md:flex-row items-center gap-x-4 self-center'>
           <button onClick={handleSubmit} className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">Guardar cambios</button>
           <button onClick={() => setHiddenChangeStatus(!hiddenChangeStatus)} className="px-4 py-2 bg-black text-white rounded-md hover:bg-black/90">Cancelar</button>
         </div>

@@ -9,7 +9,7 @@ import Alert from './Alert'
 
 const Hours = () => {
 
-  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, appointments, hiddenChangeStatus, setHiddenChangeStatus, setDataStatus } = useAppointmentSchedulingContext()
+  const { date, hiddenPopUp, setHiddenPopUp, hiddenListOfClients, setHiddenListOfClients, setClient, client, appointments, hiddenChangeStatus, setHiddenChangeStatus, setDataStatus } = useAppointmentSchedulingContext()
 
 
   const convertDateTime = (inputDateTime) => {
@@ -87,11 +87,15 @@ const Hours = () => {
                     matchingAppointments.map(matchingAppointment => (
                       <button key={`${matchingAppointment.id}a`}
                         onClick={() => {
-                          setHiddenChangeStatus(!hiddenChangeStatus)
                           setDataStatus({
                             id: matchingAppointment._id,
                             status: matchingAppointment.status
                           })
+                          setClient({
+                            id: matchingAppointment.clientId?._id,
+                            fullName: matchingAppointment.clientId?.fullName
+                          })
+                          setHiddenChangeStatus(!hiddenChangeStatus)
                         }}
                         className="px-2 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
                         Cambiar estado

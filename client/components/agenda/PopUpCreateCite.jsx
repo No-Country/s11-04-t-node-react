@@ -29,7 +29,7 @@ const PopUpCreateCite = () => {
           text: '¡Se creó la cita con éxito!',
           isSuccess: true
         })
-
+        window.location.href = '/admin/agenda'
       } else {
         let body = { ...formDataAppointmentScheduling }
         const { data } = await axios.post(`https://barberbuddy.fly.dev/api/v1/appointment/modify/${appointmentEditId}/${formDataAppointmentScheduling.clientId}`, body, config)
@@ -39,6 +39,7 @@ const PopUpCreateCite = () => {
           text: '¡Se editó la cita con éxito!',
           isSuccess: true
         })
+        window.location.href = '/admin/agenda'
       }
     } catch (error) {
       setHiddenLoader(true)
