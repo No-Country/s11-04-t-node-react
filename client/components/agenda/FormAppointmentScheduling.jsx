@@ -20,16 +20,16 @@ const FormAgenda = () => {
       router.push('/')
       return
     }
-    const { token } = user
+    const { token, _id } = user
 
     const getServices = async () => {
       try {
-        const { data } = await axios("https://barberbuddy.fly.dev/api/v1/services/get-services", {
+        const { data } = await axios(`https://barberbuddy.fly.dev/api/v1/barber/get-barber/${_id}`, {
           headers: {
             Authorization: `bearer ${token}`
           }
         })
-        setServices(data.services)
+        setServices(data?.barber.services)
 
       } catch (error) {
         console.log(error)
