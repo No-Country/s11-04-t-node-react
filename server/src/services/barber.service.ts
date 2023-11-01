@@ -133,7 +133,7 @@ export const createBarberService = async (
 
 export const getBarbersService = async () => {
   try {
-    const barbers = await BarberModel.find().populate({ path: 'services', select: ['_id', 'name'] });
+    const barbers = await BarberModel.find();
     return {
       success: true,
       msg: SUCCESS_MSGS.GET_BARBERS_SUCCESS,
@@ -176,7 +176,7 @@ export const deleteBarberService = async (id: string) => {
 
 export const getBarberByIdService = async (id: string) => {
   try {
-    const barber = await BarberModel.findById(id)
+    const barber = await BarberModel.findById(id).populate({ path: 'services', select: ['_id', 'name'] })
     if (!barber) {
       return {
         success: false,
