@@ -6,7 +6,7 @@ BarberBuddy es una aplicación web diseñada para la gestión de turnos en barbe
 
 - **Diseño:** Figma
 - **Base de Datos:** MongoDB
-- **Backend:** JavaScript, NodeJS, Express, JSON Web Token
+- **Backend:** JavaScript, NodeJS, Express, JSONWebToken
 - **Frontend:** JavaScript, HTML5, CSS3, NextJS, Redux Toolkit, Axios, Date FNS, Notiflix, React Day Picker, SWR, TailwindCSS
 - **Testing:** Jest
 
@@ -14,7 +14,7 @@ BarberBuddy es una aplicación web diseñada para la gestión de turnos en barbe
 
 - **Diseño:** Emanuel Pagés
 - **Frontend:** Emanuel Pagés, John Pablo, Fabian Carabajal, Marco Perez Donoso
-- **Backend:** Juan Carlos Galué, Juan Pablo Saluzzo, Luca Valentín Vitorino
+- **Backend:** Juan Carlos Galué, Juan Pablo Saluzzo
 
 ## Demo
 
@@ -22,9 +22,9 @@ Puedes acceder al proyecto en vivo [aquí](https://barberbuddyapp.vercel.app/).
 
 ## Video promocional
 
-Mira el video promocional en [YouTube](https://discord.com/channels/1158470809816416287/1158470810395234398/1169695843373289492)
+Mira el video promocional en [YouTube](https://discord.com/channels/1158470809816416287/1158470810395234398/1169695843373289492).
 
-## Instalación y Uso
+## Instalación y uso
 
 1. Clona el proyecto desde el repositorio.
 2. Navega hasta la carpeta `/client`.
