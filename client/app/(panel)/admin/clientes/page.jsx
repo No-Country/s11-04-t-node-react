@@ -161,7 +161,7 @@ export default function page() {
   };
 
   return (
-    <div className="py-10 max-h-screen h-screen sm:h-screen overflow-y-scroll overflow-hidden relative border rounded-2xl px-7 bg-[#D9D9D9] scroll-smooth">
+    <div className="py-10 max-h-screen h-screen sm:h-screen overflow-y-scroll overflow-hidden relative border rounded-2xl px-7 bg-[#D9D9D9] scroll-smooth mr-3">
       <CreateClient
         createClient={createClient}
         setCreateClient={setCreateClient}
