@@ -9,6 +9,7 @@ import {
 import AppointmentModel from '../models/appointment.model'
 import BarberModel from '../models/barber.model'
 import ClientModel from '../models/client.model'
+import { AppointmentStatus } from '../types/appointment.type'
 import type {
   Barber,
   BarberResponse,
@@ -219,7 +220,11 @@ export const getBarberInSessionService = async (
     }
 
     // Revisar si el barbero existe en la base de datos
-    const barber = await BarberModel.findById({ _id: id })
+    const barber = await BarberModel.findById({ _id: id }).populate({
+      path: 'services',
+      select: ['_id', 'name']
+    })
+
     if (!barber) {
       return {
         success: false,
@@ -351,11 +356,11 @@ export const getBarberClientsService = async (
       }
     }
 
-    const citasCompletadas = await AppointmentModel.aggregate([
+    const completedAppointments = await AppointmentModel.aggregate([
       {
         $match: {
           barberId: barber._id,
-          status: 'completed'
+          status: AppointmentStatus.COMPLETED
         }
       },
       {
@@ -365,7 +370,7 @@ export const getBarberClientsService = async (
       }
     ])
 
-    const clienteIds = citasCompletadas.map((item) => item._id)
+    const clienteIds = completedAppointments.map((item) => item._id)
 
     const clients = await ClientModel.find({
       _id: { $in: clienteIds }
