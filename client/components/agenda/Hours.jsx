@@ -41,7 +41,7 @@ const Hours = () => {
   }
 
   return (
-    <div className='w-full md:w-2/3 flex flex-col gap-y-6'>
+    <div className='w-full md:w-2/3 flex flex-col gap-y-6 overflow-y-auto h-96'>
       <div className='flex flex-col lg:flex-row items-start lg:items-center justify-between gap-y-4'>
         <h2 className='p-4 text-2xl font-semibold uppercase'>
           {convertDateTime(date)}
