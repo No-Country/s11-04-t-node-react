@@ -16,7 +16,7 @@ export default function HistoryModal({
   const foundClient = allClients?.length
   ? allClients.find((client) => client._id === clientAppointmentId)
   : null;
-
+console.log(clientServices);
   return showHistory ? (
     <div
       id="modal-container"
@@ -35,6 +35,7 @@ export default function HistoryModal({
               <th className="w-1/12 text-sm sm:text-base">Fecha</th>
               <th className="w-1/12 text-sm sm:text-base">Servicio</th>
               <th className="w-1/12 text-sm sm:text-base">Barbero</th>
+              <th className="w-1/12 text-sm sm:text-base">Estado</th>
             </tr>
           </thead>
           {clientServices && clientServices.length >= 1 ? (
@@ -44,11 +45,11 @@ export default function HistoryModal({
                   <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">
                     {services.date}
                   </td>
-                  <td>
+                  <td className="flex flex-wrap">
                     {services.services.map((service) => (
                       <span
                         key={service._id}
-                        className="text-center border rounded-lg bg-slate-950 text-slate-200 text-md mx-5 px-5"
+                        className=" text-center border rounded-lg bg-slate-950 text-slate-200 text-[0.5rem] sm:text-sm mx-5 px-5"
                       >
                         {service.name}
                       </span>
@@ -56,6 +57,9 @@ export default function HistoryModal({
                   </td>
                   <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">
                     {services.barberId?.fullName}
+                  </td>
+                  <td className="text-center text-xs sm:text-sm pt-3 pb-3 text-black">
+                    {services.status}
                   </td>
                 </tr>
               ))}
