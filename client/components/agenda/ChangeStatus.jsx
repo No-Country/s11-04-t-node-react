@@ -13,12 +13,12 @@ const ChangeStatus = () => {
 
   useEffect(() => {
     console.log(dataStatus)
-    if (dataStatus.status == 'cancelled') {
+    if (dataStatus.status == 'cancelado') {
       setOptionSelectedCancel(true)
       return;
     }
 
-    if (dataStatus.status == 'completed') {
+    if (dataStatus.status == 'completado') {
       setOptionSelectedComplete(true)
       return;
     }
