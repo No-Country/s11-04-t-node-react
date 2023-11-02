@@ -35,11 +35,11 @@ const CardAppointment = ({ clientId, totalPrice, status, services, startTime, en
         </div>
         <span className="rounded-md p-1 text-xl text-black">
           {
-            status == 'pending' ?
-              <AiFillClockCircle /> :
-              status == 'cancelled' ?
-                <MdCancel /> :
-                <AiFillCheckCircle />
+            status == 'pendiente' ?
+              <AiFillClockCircle className=' text-blue-600'/> :
+              status == 'cancelado' ?
+                <MdCancel className='text-[red]'/> :
+                <AiFillCheckCircle className='text-[green]'/>
           }
         </span>
       </div>
