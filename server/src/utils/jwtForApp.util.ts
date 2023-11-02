@@ -13,9 +13,8 @@ export const jwtForApp = async (barberId: string): Promise<string> => {
       case 'development':
         expiresIn = '2d'
         break
-
       default:
-        expiresIn = '1d'
+        expiresIn = '5d' // Esto es para el ambiente de frontend
         break
     }
     jwt.sign(payload, SECRET_KEY_APP_USE_JWT, { expiresIn }, (error, token) => {
