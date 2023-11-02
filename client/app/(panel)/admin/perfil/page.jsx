@@ -69,7 +69,7 @@ const Profile = () => {
 				return {
 					_id: service._id,
 					name: service.name,
-					checked: barber.services.some((s) => s === service._id),
+					checked: barber.services.some((s) => s._id === service._id),
 				}
 			})
 
