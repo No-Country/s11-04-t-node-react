@@ -23,10 +23,12 @@ Puedes acceder al proyecto en vivo [aquí](https://barberbuddyapp.vercel.app/).
 ## Instalación y Uso
 
 1. Clona el proyecto desde el repositorio.
-2. Abre el proyecto desde la carpeta `client/`.
+2. Navega hasta la carpeta `/client`.
 3. Instala las dependencias con `npm install`.
-4. Ejecuta el servidor de desarrollo con `npm run dev`.
-5. Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+4. Navega hasta la carpeta `/server`.
+5. Instala las dependencias con `npm install`. SI usas windows, debes hacer el install con `pnpm` para que no tengas problemas. Si no estás familiarizado con `pnpm`, acá te dejo la [documentación](https://pnpm.io/installation). Para que el backend funcione correctamente, debes tener una cuenta en [Nodemailer](https://nodemailer.com/) y usar tus credenciales en el .env que debes crear dentro de la carpeta `/server`.
+6. Ejecuta el servidor de desarrollo con `npm run dev` tanto en el cliente como en el servidor.
+7. Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
 
 ## Capturas de Pantalla
 
