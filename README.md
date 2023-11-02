@@ -54,7 +54,6 @@ Si tienes preguntas o comentarios, no dudes en ponerte en contacto con el equipo
 - Marco Perez Donoso: [marcopdonoso@gmail.com](mailto:marcopdonoso@gmail.com)
 - Juan Carlos Galué: [juancgalue@gmail.com](mailto:juancgalue@gmail.com)
 - Juan Pablo Saluzzo: [saluzzojuampi@gmail.com](mailto:saluzzojuampi@gmail.com)
-- Luca Valentín Vitorino: [valentinvitorimo28@gmail.com](mailto:valentinvitorimo28@gmail.com)
 
 ## Agradecimientos
 
