@@ -20,6 +20,10 @@ BarberBuddy es una aplicación web diseñada para la gestión de turnos en barbe
 
 Puedes acceder al proyecto en vivo [aquí](https://barberbuddyapp.vercel.app/).
 
+## Video promocional
+
+Mira el video promocional en [YouTube](https://discord.com/channels/1158470809816416287/1158470810395234398/1169695843373289492)
+
 ## Instalación y Uso
 
 1. Clona el proyecto desde el repositorio.
